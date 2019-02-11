@@ -1,0 +1,16 @@
+<div id="popup-registration" class="content">
+			<h2>Регистрация</h2>
+			
+			<p class="subheader1">Регистрация через социальную сеть</p>
+			<p class="note">Мы не будем ничего публиковать от вашего имени</p>
+			<a href="#" onclick="VK.Auth.login(vkAuth);" id="btn_login_vk" title="Войти через Вконтакте">Вконтакте</a>
+			<a href="#" onclick="FB.login(fbAuth);" id="btn_login_fb" title="Войти через Вконтакте">Facebook</a>
+			
+			<p class="subheader2">Регистрация через e-mail</p>
+			<form action="/user-act-Registration/" method="post" onsubmit="regSendForm(this);return false;">
+			<div class="form">
+				<input type="email" name="email" value="" maxlength="255" placeholder="E-mail"/>				
+				<div class="btn-line"><input type="submit" value="Зарегистрироваться" class="submit" name="submit_btn"/></div>
+			</div>
+			</form>
+		</div>

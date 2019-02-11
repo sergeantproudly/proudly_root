@@ -1,0 +1,59 @@
+Order allow,deny
+Allow from all
+
+Options +FollowSymlinks
+RewriteEngine on
+
+#RewriteCond %{HTTPS} off
+#RewriteCond %{HTTP:X-Forwarded-Proto} !https
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteCond %{REQUEST_FILENAME} !/robots.txt [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+RewriteCond %{REQUEST_URI} admin(.*)$
+RewriteRule admin(.*)$ mycms$1 [L]
+
+RewriteCond %{REQUEST_URI} images\/([^/]+)\/([^/]+)\.([^/-]+)$
+RewriteRule images\/([^/]+)\/([^/]+)\.([^/-]+)$ images/$1/$2\.$3 [L]
+RewriteCond %{REQUEST_URI} assets\/([^/]+)\/([^/]+)\.([^/-]+)$
+RewriteRule assets\/([^/]+)\/([^/]+)\.([^/-]+)$ assets/$1/$2\.$3 [L]
+RewriteCond %{REQUEST_URI} files\/([^/]+)\/([^/]+)\.([^/-]+)$
+RewriteRule files\/([^/]+)\/([^/]+)\.([^/-]+)$ files/$1/$2\.$3 [L]
+RewriteCond %{REQUEST_URI} extends\/([^/]+)\/([^/]+)\.([^/-]+)$
+RewriteRule extends\/([^/]+)\/([^/]+)\.([^/-]+)$ extends/$1/$2\.$3 [L]
+RewriteCond %{REQUEST_URI} ([^/]+)\/([^/]+)\.?([^/-]*)$
+RewriteRule ([^/]+)\/([^/]+)\.([^/-]+)$ $1/$2.$3 [L]
+RewriteCond %{REQUEST_URI} ([^/]+)\.?([^/-]*)$
+RewriteRule ([^/]+)\.([^/-]+)$ $1.$2 [L]
+
+RewriteCond %{REQUEST_URI} !(^.+/|^/|^)index
+RewriteRule ([^-/]+)\/([^-/]+)\/([^/]+)\/?$ index&p_code=$1&r_code=$2&r_code2=$3 [L]
+RewriteCond %{REQUEST_URI} !(^.+/|^/|^)index
+RewriteRule ([^-/]+)\/([^/]+)\/?$ index&p_code=$1&r_code=$2 [L]
+RewriteCond %{REQUEST_URI} !(^.+/|^/|^)index
+RewriteRule (^.+/|^)([^\-/]+)((-|\.)[^\/]*)\/?$ $1index&p_code=$2$3 [L]
+RewriteCond %{REQUEST_URI} !(^.+/|^/|^)index
+RewriteRule ([^-/]+)\/?$ index&p_code=$1 [L]
+
+#RewriteRule (.*)\/$ $1 
+RewriteRule ([^\-]+)-([^\-]+)-([^\-]*)-([^\-]+)-([^\-]*)-([^\-]+)-([^\-]*)-([^\-]+)-([^\-]*)$ $1&$2=$3&$4=$5&$6=$7&$8=$9
+RewriteRule ([^\-]+)-([^\-]+)-([^\-]*)-([^\-]+)-([^\-]*)-([^\-]+)-([^\-]*)$ $1&$2=$3&$4=$5&$6=$7
+RewriteRule ([^\-]+)-([^\-]+)-([^\-]*)-([^\-]+)-([^\-]*)$ $1&$2=$3&$4=$5
+RewriteRule ([^\-]+)-([^\-]+)-([^\-]*)$ $1&$2=$3
+
+RewriteRule (^.+/|^)index$ $1index.php [L]
+RewriteRule (^.+/|^)index&([^\/]*)\/?$ $1index.php?$2 [L]
+
+php_value error_reporting 7
+php_value upload_max_filesize 50M
+php_value post_max_size 55M
+php_value session.use_cookies 1
+php_value session.use_trans_sid 0
+php_value max_execution_time 0
+php_value magic_quotes_gpc 0
+php_value magic_quotes_runtime 0
+php_value register_globals 0
+php_flag log_errors on
+php_value error_log /home/osagom/osago.market/docs/error.log

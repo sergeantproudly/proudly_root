@@ -1,0 +1,19 @@
+<div class="content" id="popup-auth">
+			<h2>Вход</h2>
+			
+			<a href="#" onclick="VK.Auth.login(vkAuth);" id="btn_login_vk" title="Войти через Вконтакте">Вконтакте</a>
+			<a href="#" onclick="FB.login(fbAuth);" id="btn_login_fb" title="Войти через Вконтакте">Facebook</a>
+			
+			<div class="or">или</div>
+			
+			<form action="/user-act-Authorisation/" method="post" onsubmit="aSendForm(this);return false;">
+			<div class="form">
+				<input type="email" name="email" value="" maxlength="255" placeholder="E-mail"/>
+				<input type="password" name="password" value="" maxlength="255" placeholder="Пароль"/>
+				
+				<a href="#" class="forget" onclick="Popup('forget',{width:515});">Забыли пароль</a>
+				
+				<div class="btn-line"><input type="submit" value="Войти" class="submit" name="submit_btn"/></div>
+			</div>
+			</form>
+		</div>

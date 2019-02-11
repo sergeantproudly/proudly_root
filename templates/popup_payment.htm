@@ -1,0 +1,26 @@
+<div id="popup-payment" class="content">
+			<h2><%HEADERTEXT%></h2>
+			
+			<form action="<%PAYMENTPREACTION%>" data-action="<%PAYMENTACTION%>" method="post" onsubmit="paymentSendForm(this); return false;">
+			<div class="form">
+				<%FIELDS%>
+				
+				<input type="text" name="name" value="<%NAME%>" maxlength="255" placeholder="Фамилия Имя Отчество"/>
+				<input type="text" name="cps_phone" value="<%PHONE%>" maxlength="255" placeholder="Телефон" data-mask="+7 9999999999"/>
+				<input type="email" name="cps_email" value="<%EMAIL%>" maxlength="255" placeholder="E-mail"/>
+				<input type="hidden" name="customerNumber" value="<%USERID%>"/>				
+				
+				<input type="hidden" name="shopId" value="<%SHOPID%>"/>
+			    <input type="hidden" name="scid" value="<%SCID%>"/>
+			    <input type="hidden" name="sum" value="<%SUM%>"/>
+			    <input type="hidden" name="product" value="<%PRODUCT%>"/>
+			    <input type="hidden" name="company_id" value="<%COMPANYID%>"/>
+			    <input type="hidden" name="invoice_id" value=""/>
+			    <input type="hidden" name="orderNumber" value=""/>
+			    
+				<div class="text"><%TEXT%></div>
+							
+				<div class="btn-line"><input type="submit" value="<%BUTTONTEXT%>" class="submit" name="submit_btn"/></div>
+			</div>
+			</form>
+		</div>

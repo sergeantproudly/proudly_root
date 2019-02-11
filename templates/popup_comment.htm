@@ -1,0 +1,10 @@
+<div class="content" id="popup-comment">
+			<h2>Комментировать</h2>
+			
+			<form action="/user-act-Comment/" method="post" onsubmit="comSendForm(this); return false;">
+							<textarea name="text" placeholder="Ваш комментарий"></textarea>
+							<input type="hidden" name="module" value="<%MODULE%>"/>
+							<input type="hidden" name="material_id" value="<%MATERIALID%>"/>
+							<div class="btn-line w40-60"><button class="cancel reset">Отмена</button><input type="submit" name="submit_btn" class="submit" value="Комментировать"/></div>
+						</form>
+		</div>

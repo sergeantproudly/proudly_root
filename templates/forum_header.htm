@@ -1,0 +1,57 @@
+<%YANDEX_METRIKA%>
+
+	<div id="fb-root"></div>
+	<!--
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v2.3&appId=<%FBAPPID%>";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+	-->
+	<script>
+		window.fbAsyncInit = function() {
+		    FB.init({
+		      appId      : '<%FBAPPID%>',
+		      xfbml      : true,
+		      version    : 'v2.9'
+		    });
+		  };
+		
+		  (function(d, s, id){
+		     var js, fjs = d.getElementsByTagName(s)[0];
+		     if (d.getElementById(id)) {return;}
+		     js = d.createElement(s); js.id = id;
+		     js.src = "//connect.facebook.net/en_US/sdk.js";
+		     fjs.parentNode.insertBefore(js, fjs);
+		   }(document, 'script', 'facebook-jssdk'));
+	</script>
+
+	<header>
+			<div class="holder">
+			
+				<div id="logo"><a href="<%SITE_URL%>"><img src="/images/logo.png?1" alt="<%SITE_TITLE%>" title="<%SITE_TITLE%>"/></a></div>
+				
+				<%BL_CITY%>
+				
+				<%BL_AUTH%>
+				
+				<%BL_CURRENCY%>
+			
+			</div>
+		</header>		
+		
+		<div id="top-line">
+			<div class="holder">
+				<%MN_MAIN%>
+				<form action="/search.html" method="post">
+					<div id="bl-search">
+						<div class="search"><input type="text" name="keyword" maxlength="255" value="" placeholder="Поиск по порталу"/><input type="submit" value="ОК" class="submit"/></div>
+						<div class="ico"></div>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+	

@@ -1,0 +1,40 @@
+<div id="companies-list" class="service" data-service-id="<%ID%>">
+					
+					<form action="/services-act-Filter/" method="post" onsubmit="serviceCompListFilter(); return false;">
+					<div class="filter-top">
+						<strong class="count"><%TOTAL%></strong>
+						<select name="sort" class="sort" priority="1">
+							<option disabled selected>Сортировать</option>
+							<option data-sort-field="c.Title">Наименование</option>
+							<option data-sort-field="c.ScoreSum" data-sort-direction="DESC">Рейтинг</option>
+							<option data-sort-field="c2s.InsuranceSum">Страховая сумма</option>
+							<option data-sort-field="c2s.Price">Стоимость полиса</option>
+						</select>
+						<div class="clear-r"></div>
+					</div>
+					
+					<div class="search"><input type="text" name="keyword" value="" maxlength="255" placeholder="Поиск по названию или номеру лицензии"/></div>
+					</form>
+					
+					<ul>
+						<%CONTENT%>
+					</ul>
+					
+					<%MORE%>
+					
+					<%PAGINATION%>
+				</div>
+				
+				<dialog id="service-order-popup">
+					<div class="header">Заявка на оформление полиса <%TITLEGENITIVE%></div>
+					
+					<form method="post" action="/services-act-Order/">
+						<input type="text" name="name" value="" placeholder="Имя" maxlength="255"/>
+						<input type="email" name="email" value="" placeholder="E-mail" maxlength="255"/>
+						<input type="tel" name="phone" value="" placeholder="+7 " data-mask="+7 9999999999" maxlength="255"/>
+						
+						<input type="hidden" name="service_id" value="<%SERVICEID%>"/>
+						<input type="hidden" name="company_id" value=""/>
+						<div class="btn-line halfed"><button class="cancel">Отмена</button><button name="submit_btn">Отправить</button></div>
+					</form>					
+				</dialog>

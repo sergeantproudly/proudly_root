@@ -1,0 +1,54 @@
+<?php
+    
+    class Site{	
+
+		function GetCurrentPage(){
+			$page=false;
+			if(preg_match('/\/([a-zA-Z0-9_\-]+)\/?$/',$_SERVER['REQUEST_URI'],$match)){
+				$page=$match[1];
+			}elseif(preg_match('/\/$/',$_SERVER['REQUEST_URI'])){
+				$page='/';
+			}
+			return $page;
+		}
+		
+		function SetLinks($html){
+			$result=preg_replace('~<a +href="(?!http[s]?://)([^\>]+)~i','<a href="/$1',$html);
+			return strtr($result,array(
+				'<a href="//'		=> '<a href="/',
+				'<a href="/#'		=> '<a href="#',
+				'<a href="/tel:'	=> '<a href="tel:',
+				'<a href="/mailto'	=> '<a href="mailto' 
+			));
+		}
+
+		function GetPage(){
+			krnLoadLib('settings');
+			global $krnModule;
+			$Blocks=krnLoadModuleByName('blocks');
+			$Main=krnLoadModuleByName('main');
+			$result=strtr($krnModule->GetResult(),array(
+		    	'<%META_KEYWORDS%>'			=> $Config['Site']['Keywords'],
+		    	'<%META_DESCRIPTION%>'		=> $Config['Site']['Description'],
+		    	'<%META_IMAGE%>'			=> '',
+		    	'<%PAGE_TITLE%>'			=> stGetSetting('SiteTitle',$Config['Site']['Title']),
+		    	'<%SITE_URL%>'				=> stGetSetting('SiteUrl',$Config['Site']['Url']),
+		    	'<%SITE_EMAIL%>'			=> stGetSetting('SiteEmail',$Config['Site']['Email']),
+		    	'<%SITE_TITLE%>'			=> stGetSetting('SiteTitle',$Config['Site']['Title']),
+		    	'<%META_VERIFICATION%>'		=> stGetSetting('MetaVerification'),
+		    	'<%YANDEX_METRIKA%>'		=> stGetSetting('YandexMetrika'),
+		    	'<%MN_MAIN%>'				=> $Blocks->MenuMain(),
+		    	'<%BL_CITY%>'				=> $Blocks->BlockCity(),
+		    	'<%BREAD_CRUMBS%>'			=> '',
+		    	'<%CONSULTANT%>'			=> stGetSetting('ConsultantCode'),
+		    	'<%ANALYTICS%>'				=> stGetSetting('AnalyticsCode'),
+		    	'<%BL_SOCIAL%>'				=> $Blocks->BlockSocial(),
+			));
+			return $this->SetLinks($result);
+		}	
+
+	}
+
+	$Site=new Site();
+	
+?>

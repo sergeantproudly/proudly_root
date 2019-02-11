@@ -1,0 +1,48 @@
+<div id="companies-list" class="rating">
+					
+					<form action="/rating-act-Filter/" method="post" onsubmit="ratingListFilter(); return false;">
+					<div class="filter-top">
+						<strong class="count"><%TOTAL%></strong>
+						<ul class="rating-type">
+							<li class="active"><input type="radio" name="rating_type" value="0" class="sort" id="rating-type-all" data-sort-field="c.ScoreSum" data-sort-direction="DESC"/><label for="rating-type-all">Все</label></li>
+							<li><input type="radio" class="sort" name="rating_type" value="1" id="rating-type-service" data-sort-field="c.ScoreService" data-sort-direction="DESC"/><label for="rating-type-service">Обслуживание</label></li>
+							<li><input type="radio" class="sort" name="rating_type" value="2" id="rating-type-product" data-sort-field="c.ScoreProduct" data-sort-direction="DESC"/><label for="rating-type-product">Продукт</label></li>
+							<li><input type="radio" class="sort" name="rating_type" value="3" id="rating-type-total" data-sort-field="c.ScoreTotal" data-sort-direction="DESC"/><label for="rating-type-total">Общая оценка</label></li>
+						</ul>
+						<select name="sort" class="sort">
+							<option disabled selected>Сортировать</option>
+							<option data-sort-field="c.Title">Наименование</option>
+							<option data-sort-field="c.PremiumSum" data-sort-direction="DESC">Объем премий</option>
+							<option data-sort-field="c.PaymentsSum" data-sort-direction="DESC">Объем выплат</option>
+						</select>
+						<div class="clear-r"></div>
+					</div>
+					</form>
+					
+					<ol start="<%INDEX%>" style="counter-reset: companies-rating <%INDEX%>;">
+						<%CONTENT%>
+					</ol>
+					
+					<%MORE%>
+					
+					<%PAGINATION%>
+				</div>
+				
+				<dialog id="rate-popup">
+					<div class="step1">
+						<div class="header">Напишите отзыв</div>
+						<textarea name="text" id="rate-review" placeholder="Напишите отзыв"></textarea>
+						<div class="btn-line halfed"><button class="cancel">Отмена</button><button>Далее</button></div>
+					</div>
+					<div class="step2">
+						<div class="header">Дайте оценку</div>
+						<ul>
+							<li class="service"><span class="label">Обслуживание</span><span class="score"></span></li>
+							<li class="product"><span class="label">Продукт</span><span class="score"></span></li>
+							<li class="total"><span class="label">Общая оценка</span><span class="score"></span></li>
+						</ul>
+						<div class="btn-line halfed"><button class="cancel">Отмена</button><button>Готово</button></div>
+					</div>
+				</dialog>
+			
+			

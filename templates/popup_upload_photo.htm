@@ -1,0 +1,19 @@
+<div class="content" id="popup-upload-photo">
+	<h2>Загрузить фотографию</h2>
+	
+	<form action="/user-act-ManagePhoto/" method="post" onsubmit="photoSendForm(this);return false;">
+	<div class="form">
+		<div class="var">
+			<h3>С утройства</h3>
+			<div class="fld"><span class="inp-file"><span class="c"></span><span class="faux-inp"></span><span class="browse-btn">Выбрать</span><input type="file" value="" size="40" data-element-id="1" data-inp-name="photo" onchange="uplUpload(this,'Image',{id:1,element_id:$(this).attr('data-element-id')});"/><input type="hidden" name="photo" value=""/></span></div>
+		</div>
+		
+		<div class="var">
+			<h3>Из интернета</h3>
+			<input type="text" name="photo_url" maxlength="255" value="" placeholder="Введите ссылку на изображение"/>
+		</div>
+		
+		<div class="btn-line halfed"><button class="cancel" onclick="return photoCancel();">Отмена</button><button name="submit_btn">Сохранить</button></div>
+	</div>
+	</form>
+</div>

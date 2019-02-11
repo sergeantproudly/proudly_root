@@ -1,0 +1,72 @@
+<div id="company">
+					<div class="logo">
+						<img src="<%LOGO%>" alt="<%ALT%>" title="<%ALT%>"/>
+						<h1 class="title">Страховая компания <%TITLE%></h1>
+					</div>
+					<!--<div class="edit-tool">Редактировать страницу</div>-->
+					<div class="total btn">Общая оценка<span><%SCORETOTAL%></span><%BUTTON%></div>
+					<div class="section-rating">
+						<span class="license"><%LICENSE%></span>
+						<span class="status active"><%STATUS%></span>
+						<ul class="scores">
+							<li><span class="label">Обслуживание</span><span class="score" data-score="<%SCORESERVICE%>"></span></li>
+							<li><span class="label">Продукт</span><span class="score" data-score="<%SCOREPRODUCT%>"></span></li>
+						</ul>
+					</div>				
+					
+					<div class="tabs">
+						<ul>
+							<li><a href="#information">Информация</a></li>
+							<li><a href="#reviews">Отзывы</a></li>
+							<li><a href="#my-reviews">Мои коментарии</a></li>
+						</ul>
+						
+						<div class="wrap">
+							<%ADDBOOKMARK%>
+							<%COMMERCIALOFFER%>
+						</div>
+						
+						<div id="information">
+							<%STATS%>
+							
+							<section class="about">
+								<h2>О компании</h2>
+								<%ABOUTTEXT%>
+							</section>
+							
+							<%SERVICES%>
+							
+							<%LICENSES%>
+							
+							<%CONTACTS%>
+							
+							<%NEWS%>
+							
+						</div>
+						
+						<div id="reviews">
+							<div class="empty-folder"><h2>Пока что здесь пусто</h2><p>Вы можете оставить комментарий или написать отзыв</p></div>
+						</div>
+						<div id="my-reviews">
+							<div class="empty-folder"><h2>Пока что здесь пусто</h2><p>Вы можете оставить комментарий или написать отзыв</p></div>
+						</div>
+						
+					</div>
+				</div>
+				
+				<dialog id="rate-popup">
+					<div class="step1">
+						<div class="header">Напишите отзыв</div>
+						<textarea name="text" id="rate-review" placeholder="Напишите отзыв"></textarea>
+						<div class="btn-line halfed"><button class="cancel">Отмена</button><button>Далее</button></div>
+					</div>
+					<div class="step2">
+						<div class="header">Дайте оценку</div>
+						<ul>
+							<li class="service"><span class="label">Обслуживание</span><span class="score"></span></li>
+							<li class="product"><span class="label">Продукт</span><span class="score"></span></li>
+							<li class="total"><span class="label">Общая оценка</span><span class="score"></span></li>
+						</ul>
+						<div class="btn-line halfed"><button class="cancel">Отмена</button><button>Готово</button></div>
+					</div>
+				</dialog>
