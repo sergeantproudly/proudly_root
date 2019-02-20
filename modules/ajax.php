@@ -48,7 +48,7 @@ class ajax extends krn_abstract{
 			if ($name) $request .= "Имя: $name\r\n";
 			if ($email) $request .= "E-mail: $email\r\n";
 			if ($tel) $request .= "Телефон: $tel\r\n";
-			$request.='Текст:'."\r\n$text\r\n";
+			$request .= 'Текст:'."\r\n$text\r\n";
 			$this->db->query('INSERT INTO requests SET DateTime=NOW(), Name=?s, Phone=?s, Text=?s, RefererPage=?s, IsSet=0',
 			 	$name,
 			 	$tel,
@@ -57,18 +57,16 @@ class ajax extends krn_abstract{
 			);
 				
 			global $Config;
-			$siteTitle=strtr(stGetSetting('SiteEmailTitle',$Config['Site']['Title']),array('«'=>'"','»'=>'"','—'=>'-'));
-			$siteEmail=stGetSetting('SiteEmail',$Config['Site']['Email']);
-			$adminTitle='Администратор';
-			$adminEmail=stGetSetting('AdminEmail',$siteEmail);
+			$siteTitle = strtr(stGetSetting('SiteEmailTitle', $Config['Site']['Title']), array('«'=>'"','»'=>'"','—'=>'-'));
+			$siteEmail = stGetSetting('SiteEmail', $Config['Site']['Email']);
+			$adminTitle = 'Администратор';
+			$adminEmail = stGetSetting('AdminEmail', $siteEmail);
 				
-			$letter['subject']=$form['Title'].' с сайта "'.$siteTitle.'"';
-			$letter['html']='<b>'.$form['Title'].'</b><br/><br/>';
-			$letter['html'].=str_replace("\r\n",'<br/>',$request);
-			$letter['text']=strip_tags(str_replace('<br/>',"\r\n",$letter['html']));
-			//SendMail($siteEmail,$siteTitle,$adminEmail,$adminTitle,$letter['Subject'],$letter['Html'],$letter['Text']);
+			$letter['subject'] = $form['Title'].' с сайта "'.$siteTitle.'"';
+			$letter['html'] = '<b>'.$form['Title'].'</b><br/><br/>';
+			$letter['html'] .= str_replace("\r\n",'<br/>',$request);
 			$mail=new Mail();
-			$mail->SendMailFromSite($admin_email,$letter['subject'],$letter['html']);
+			$mail->SendMailFromSite($adminEmail, $letter['subject'], $letter['html']);
 										
 			$json = array(
 				'status' => true,
