@@ -49,8 +49,9 @@ class ajax extends krn_abstract{
 			if ($email) $request .= "E-mail: $email\r\n";
 			if ($tel) $request .= "Телефон: $tel\r\n";
 			$request.='Текст:'."\r\n$text\r\n";
-			$this->db->query('INSERT INTO requests SET DateTime=NOW(), Name=?s, Text=?s, RefererPage=?s, IsSet=0',
+			$this->db->query('INSERT INTO requests SET DateTime=NOW(), Name=?s, Phone=?s Text=?s, RefererPage=?s, IsSet=0',
 			 	$name,
+			 	$tel,
 				str_replace('"','\"',$request),
 				$_SERVER['HTTP_REFERER']
 			);
