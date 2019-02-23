@@ -928,10 +928,10 @@ function checkElements(elements,patterns,mode){
 			
 			var form = this;
 			msgUnset(form);
-			checkResetStatus(form,0);
-			if(checkElements([form.name, form.tel],[{1:true}, {1:true}])){
-				form.submit_btn.disabled=true;
-				var waitNode=msgSetWait(form);
+			checkResetStatus(form, 0);
+			if (checkElements([form.name, form.tel],[{1:true}, {1:true}])) {
+				form.submit_btn.disabled = true;
+				var waitNode = msgSetWait(form);
 					
 				$.ajax({
 					type: $(form).attr('method'),
@@ -947,11 +947,11 @@ function checkElements(elements,patterns,mode){
 							msgSetError(form,response.error);
 						}
 						$(waitNode).remove();
-						form.submit_btn.disabled=false;
+						form.submit_btn.disabled = false;
 					}
 				});
 			}else{
-				msgSetError(form,'Пожалуйста, заполните все поля');
+				msgSetError(form, 'Пожалуйста, заполните все поля');
 			}
 		});
 
@@ -960,10 +960,10 @@ function checkElements(elements,patterns,mode){
 			
 			var form = this;
 			msgUnset(form);
-			checkResetStatus(form,0);
-			if(checkElements([form.name, form.tel],[{1:true}, {1:true}])){
-				form.submit_btn.disabled=true;
-				var waitNode=msgSetWait(form);
+			checkResetStatus(form, 0);
+			if (checkElements([form.name, form.tel],[{1:true}, {1:true}])) {
+				form.submit_btn.disabled = true;
+				var waitNode = msgSetWait(form);
 					
 				$.ajax({
 					type: $(form).attr('method'),
@@ -979,11 +979,11 @@ function checkElements(elements,patterns,mode){
 							msgSetError(form,response.error);
 						}
 						$(waitNode).remove();
-						form.submit_btn.disabled=false;
+						form.submit_btn.disabled = false;
 					}
 				});
 			}else{
-				msgSetError(form,'Пожалуйста, заполните все поля');
+				msgSetError(form, 'Пожалуйста, заполните все поля');
 			}
 		});
 	})
