@@ -6,7 +6,7 @@ var __isMobile = ($(window).width() <= __widthMobile);
 var __isMobileTablet = ($(window).width() <= __widthMobileTablet);
 var __isMobileTabletMiddle = ($(window).width() <= __widthMobileTabletMiddle);
 var __isMobileSmall = ($(window).width() <= __widthMobileSmall);
-var __animationSpeed = 350;
+var __animationSpeed = 800;
 
 function initElements(element) {
 	$element=$(element ? element : 'body');
@@ -872,6 +872,21 @@ function checkElements(elements,patterns,mode){
 			});
 		});
 
+		$('#services ul>li').click(function() {
+			if (!$(this).hasClass('opened')) {
+				$(this).addClass('opened')
+					.children('.desc').stop().slideDown(__animationSpeed);
+			}
+		});
+		$('#services ul>li>h3, #services ul>li>.exp, #services ul>li>.toggler').click(function(e) {
+			var $li = $(this).closest('li');
+			if ($li.hasClass('opened')) {
+				e.stopPropagation();
+				$li.removeClass('opened')
+					.children('.desc').stop().slideUp(__animationSpeed);
+			}
+		});
+
 		$('#feedback form input').each(function() {
 			//if ()
 		});
@@ -909,6 +924,38 @@ function checkElements(elements,patterns,mode){
 		});
 
 		$('#modal-feedback form').on('submit', function(e) {
+			e.preventDefault();
+			
+			var form = this;
+			msgUnset(form);
+			checkResetStatus(form,0);
+			if(checkElements([form.name, form.tel],[{1:true}, {1:true}])){
+				form.submit_btn.disabled=true;
+				var waitNode=msgSetWait(form);
+					
+				$.ajax({
+					type: $(form).attr('method'),
+					url: $(form).attr('action'),
+					data: $(form).serialize(),
+					dataType: 'json',
+					success: function(response){									
+						if(response.status == true){
+							showModal('modal-done');
+							form.reset();
+								
+						}else{
+							msgSetError(form,response.error);
+						}
+						$(waitNode).remove();
+						form.submit_btn.disabled=false;
+					}
+				});
+			}else{
+				msgSetError(form,'Пожалуйста, заполните все поля');
+			}
+		});
+
+		$('#modal-question form').on('submit', function(e) {
 			e.preventDefault();
 			
 			var form = this;

@@ -32,7 +32,7 @@ $padding-edges: 3.5%;
 $padding-edges-tablet: 3.5%;
 $padding-edges-tablet-small: 4.75%;
 $padding-edges-mobile: 4.75%;
-$animation-speed: 0.45s;
+$animation-speed: 0.8s;
 $adaptive-width-desktop-small: 1280px;
 $adaptive-width-tablet: 1000px;
 $adaptive-width-tablet-middle: 850px;
@@ -394,6 +394,14 @@ a.dotted{
 	-ms-transform: rotate(180deg);
 	transform: rotate(180deg);
 	@extend .transition-all;
+}
+@mixin rotate($deg) {
+	-moz-transform: rotate($deg+ deg);
+    -ms-transform: rotate($deg + deg);
+    -webkit-transform: rotate($deg + deg);
+    -o-transform: rotate($deg + deg);
+    transform: rotate($deg + deg);
+    @extend .transition-all;
 }
 .nowrap {
 	white-space: nowrap;
