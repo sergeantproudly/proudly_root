@@ -904,7 +904,7 @@ header {
 			}
 
 			&.project3 {
-				background: linear-gradient(126.35deg, #3477DC 61.23%, rgba(52, 119, 220, 0) 100.77%);
+				background: #3477DC;
 
 				&:after {
 					content: '';
@@ -913,7 +913,7 @@ header {
 					height: 172px;
 
 					@media (max-width: $adaptive-width-mobile) {
-						background-size: 337px auto;
+						background-size: 197px auto;
 					}
 				}
 			}
