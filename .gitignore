@@ -6,6 +6,7 @@ sitemap.xml
 robots.txt
 *.sql
 /node_modules
+/src
 package.json
 package-lock.json
 gulpfile.js
