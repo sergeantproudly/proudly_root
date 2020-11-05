@@ -1,2 +1,11 @@
 settings.php
-mycms/settings.php
+/mycms/settings.php
+.*
+error.log
+sitemap.xml
+robots.txt
+*.sql
+/node_modules
+package.json
+package-lock.json
+gulpfile.js

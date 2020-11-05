@@ -20,22 +20,7 @@
 	<meta property="og:title" content="<%PAGE_TITLE%>"/>
 	<meta property="og:description" name="description" content="<%META_DESCRIPTION%>"/>
 	<meta property="og:image" content="<%META_IMAGE%>"/>
-    <link type="text/css" rel="stylesheet" href="assets/css/style.css?2"/>
-    <link type="text/css" rel="stylesheet" href="assets/css/animate.css"/>
-	<script type="text/javascript" src="assets/js/jquery-3.1.1.min.js"></script>
-	<script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="assets/js/jquery.touchSwipe.min.js"></script>
-	<script type="text/javascript" src="assets/js/slick.min.js"></script>	
-	<script type="text/javascript" src="assets/js/jquery.mousewheel.min.js"></script>
-	<script type="text/javascript" src="assets/js/wow.min.js"></script>
-	<script type="text/javascript" src="assets/js/scripts.js?1"></script>
-	<!--[if (gte IE 6)&(lte IE 8)]>
-	<script type="text/javascript" src="assets/js/html5.js"></script> 
-	<script type="text/javascript">
-		var E=('article:aside:audio:canvas:figure:footer:header:hgroup:nav:section:video:output:details:keygen:meter:progress:figcaption:main:mark:summary:time:wbr').split(':');
-		for(var c=0;c<E.length;c++){document.createElement(E[c]);} 
-	</script>
-	<![endif]-->
+    <link type="text/css" rel="stylesheet" href="assets/css/style.css<%VERSION%>"/>
 	<%ANALYTICS%>
 </head>
 
@@ -111,7 +96,7 @@
 			<div class="holder">
 				<h2>Наши услуги</h2>
 				<div class="text">
-					<p>Наша основная экспертиза — рарзработка сайта под ключ. <br>Однако, любую услугу из цикла разработки проекта мы можем предоставить отдельно. </p>
+					<p>Наша основная экспертиза — разработка сайта под ключ. <br>Однако, любую услугу из цикла разработки проекта мы можем предоставить отдельно. </p>
 				</div>
 
 				<ul>
@@ -330,5 +315,7 @@
 	</div>
 
 	<%CONSULTANT%>
+
+	<script type="text/javascript" src="assets/js/scripts.js<%VERSION%>"></script>
 </body>
 </html>

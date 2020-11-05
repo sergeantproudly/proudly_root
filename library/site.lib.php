@@ -43,6 +43,7 @@
 		    	'<%CONSULTANT%>'			=> stGetSetting('ConsultantCode'),
 		    	'<%ANALYTICS%>'				=> stGetSetting('AnalyticsCode'),
 		    	'<%BL_SOCIAL%>'				=> $Blocks->BlockSocial(),
+		    	'<%VERSION%>'				=> stGetSetting('AssetsVersion') ? '?v1.' . stGetSetting('AssetsVersion') : '',
 			));
 			return $this->SetLinks($result);
 		}	

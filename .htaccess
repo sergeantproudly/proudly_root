@@ -55,5 +55,3 @@ php_value max_execution_time 0
 php_value magic_quotes_gpc 0
 php_value magic_quotes_runtime 0
 php_value register_globals 0
-php_flag log_errors on
-php_value error_log /home/osagom/osago.market/docs/error.log
