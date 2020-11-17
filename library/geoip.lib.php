@@ -71,6 +71,7 @@
 
 		public function DetermineClientRegion() {
 			$city = $this->DetermineClientCity();
+			var_dump($city);
 			return $this->GetRegionByCityId($city['Id']);
 		}
 		
