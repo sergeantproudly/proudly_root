@@ -21,7 +21,7 @@
 
 		 	$Site = new Site();
 		 	
-		 	if ($_SESSION['ClientUser']['Region']) {
+		 	if ($_SESSION['ClientUser']['Region'] || true) {
 		 		krnLoadLib('geoip');
 			    $geo = new GeoIP();
 			    $_SESSION['ClientUser']['Region'] = $geo->DetermineClientRegion();
