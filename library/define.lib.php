@@ -6,4 +6,6 @@ define('HOUR_IN_SEC',3600);
 define('DAY_IN_SEC',86400);
 define('WEEK_IN_SEC',604800);
 
+define('CITY_KAZAN_ID', 2055);
+
 ?>

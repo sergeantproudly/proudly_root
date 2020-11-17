@@ -1,6 +1,16 @@
 <?php
     
-    class Site{	
+    class Site {	
+
+    	protected $db;
+		protected $settings;
+
+		public function __construct() {
+			global $Params;
+			global $Settings;
+			$this->db = $Params['Db']['Link'];
+			$this->settings = $Settings;
+		}
 
 		function GetCurrentPage(){
 			$page=false;
@@ -22,11 +32,16 @@
 			));
 		}
 
+		function GetContactData() {
+			return $this->db->getRow('SELECT * FROM contacts WHERE RegionId = ?i OR RegionId = 0 ORDER BY RegionId DESC', $_SESSION['ClientUser']['Region']['Id']);
+		}
+
 		function GetPage(){
 			krnLoadLib('settings');
 			global $krnModule;
 			$Blocks=krnLoadModuleByName('blocks');
 			$Main=krnLoadModuleByName('main');
+
 			$result=strtr($krnModule->GetResult(),array(
 		    	'<%META_KEYWORDS%>'			=> $Config['Site']['Keywords'],
 		    	'<%META_DESCRIPTION%>'		=> $Config['Site']['Description'],
@@ -45,11 +60,18 @@
 		    	'<%BL_SOCIAL%>'				=> $Blocks->BlockSocial(),
 		    	'<%VERSION%>'				=> stGetSetting('AssetsVersion') ? '?v1.' . stGetSetting('AssetsVersion') : '',
 			));
+
+			$contacts = $this->GetContactData();
+			$result = strtr($result, array(
+				'<%TEL%>'		=> $contacts['Tel'],
+				'<%TELLINK%>'	=> preg_replace('/[^\d\+]/', '', $contacts['Tel']),
+				'<%ADDRESS%>'	=> $contacts['Address'],
+				'<%EMAIL%>'		=> $contacts['Email'] ?: stGetSetting('SiteEmail',$Config['Site']['Email'])
+			));
+
 			return $this->SetLinks($result);
 		}	
 
 	}
-
-	$Site=new Site();
 	
 ?>

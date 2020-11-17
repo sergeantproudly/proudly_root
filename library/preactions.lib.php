@@ -9,22 +9,23 @@
 		private function DoActions(){
 			global $Params;
 			global $Config;
+			global $Site;
 			
-			$Params['Db']['Link']=new SafeMySQL(array(
+			$Params['Db']['Link'] = new SafeMySQL(array(
 		   		'host'		=> $Config['Db']['Host'],
 		   		'user'		=> $Config['Db']['Login'],
 		   		'pass'		=> $Config['Db']['Pswd'],
 		   		'db'		=> $Config['Db']['DbName'],
 		   		'charset'	=> 'utf8'
 		 	));
+
+		 	$Site = new Site();
 		 	
-		 	/*
-		 	if(!$_SESSION['ClientUser']['City']){
+		 	if ($_SESSION['ClientUser']['Region']) {
 		 		krnLoadLib('geoip');
-			    $geo=new GeoIP();
-			    $_SESSION['ClientUser']['City']=$geo->DetermineClientCity();
+			    $geo = new GeoIP();
+			    $_SESSION['ClientUser']['Region'] = $geo->DetermineClientRegion();
 		 	}
-		 	*/
 		} 
 		
 	}

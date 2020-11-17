@@ -29,14 +29,14 @@
 	<div id="layout">
 		<header>
 			<div class="holder wide">
-				<a href="#" id="logo"><img src="images/logo.svg" alt="Proudly" title="Proudly"></a>
+				<a href="<%SITE_URL%>" id="logo"><img src="images/logo.svg" alt="Proudly" title="Proudly"></a>
 
 				<%MN_MAIN%>
 
 				<%BL_CITY%>
 
-				<a href="mailto:<%SITE_EMAIL%>" class="email"><%SITE_EMAIL%></a>
-				<a href="tel:+89661933876" class="phone">+7 966 193 38 76</a>
+				<a href="mailto:<%EMAIL%>" class="email"><%EMAIL%></a>
+				<a href="tel:<%TELLINK%>" class="phone"><%TEL%></a>
 
 				<button class="btn" data-modal="modal-feedback">Рассказать о задаче</button>
 			</div>
@@ -218,9 +218,9 @@
 
 		<footer id="footer">
 			<div class="holder">
-				<a href="tel:89661933876" class="phone">+7 966 193 38 76</a>
-				<a href="mailto:<%SITE_EMAIL%>" class="email"><%SITE_EMAIL%></a>
-				<address>г. Москва, м. Дмитровская, ул. Бутырская, 62, 7 этаж</address>
+				<a href="tel:<%TELLINK%>" class="phone"><%TEL%></a>
+				<a href="mailto:<%EMAIL%>" class="email"><%EMAIL%></a>
+				<address><%ADDRESS%></address>
 			</div>
 		</footer>
 	</div>
