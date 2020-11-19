@@ -894,6 +894,8 @@ function checkElements(elements,patterns,mode){
 		$('#feedback form').on('submit', function(e) {
 			e.preventDefault();
 
+            ym(31289493, 'reachGoal', 'sendFeedbackFormBottom');
+
 			var form = this;
 			msgUnset(form);
 			checkResetStatus(form,0);
@@ -925,6 +927,8 @@ function checkElements(elements,patterns,mode){
 
 		$('#modal-feedback form').on('submit', function(e) {
 			e.preventDefault();
+
+            ym(31289493, 'reachGoal', 'sendFeedbackForm');
 			
 			var form = this;
 			msgUnset(form);
@@ -957,6 +961,8 @@ function checkElements(elements,patterns,mode){
 
 		$('#modal-question form').on('submit', function(e) {
 			e.preventDefault();
+
+            ym(31289493, 'reachGoal', 'sendQuestionForm');
 			
 			var form = this;
 			msgUnset(form);
@@ -986,5 +992,13 @@ function checkElements(elements,patterns,mode){
 				msgSetError(form, 'Пожалуйста, заполните все поля');
 			}
 		});
+
+        $('header .btn').click(function() {
+                ym(31289493, 'reachGoal', 'clickFeedbackButton');
+        });
+
+        $('#services ul>li>.desc>.btn-line>.btn').click(function() {
+                ym(31289493, 'reachGoal', 'clickQuestionButton');
+        });
 	})
 })(jQuery)
