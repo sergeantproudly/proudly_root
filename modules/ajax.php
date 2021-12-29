@@ -83,6 +83,28 @@ class ajax extends krn_abstract{
 		return json_encode($json);
 	}
 
+	function MassEmail(){
+		$subscribersList = array(
+			'roman@proudly.ru'
+		);
+
+		$emailTemplate = LoadTemplate('email/email_ny_2022');
+		if ($emailTemplate) {
+			$mail = new Mail();
+
+			foreach ($subscribersList as $email) {
+				$mail->SendMailFromSite('roman@proudly.ru', 'Proudly — С Наступающим 2022! 🎉', $emailTemplate);
+				sleep(5);
+			}
+
+			$status = 'SUCCESS: E-mail has sended';
+		} else {
+			$status = 'ERROR: Template not found';
+		}			
+
+		return $status;
+	}
+
 }
 
 ?>
