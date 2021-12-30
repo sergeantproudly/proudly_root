@@ -116,7 +116,8 @@ class ajax extends krn_abstract{
 		$contactId = $_GET['c2'];
 		$this->db->query('UPDATE rel_campaign_contacts SET Seen = 1 WHERE CampaignId = ?i AND ContactId = ?i', $campaignId, $contactId);
 
-		return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+		header('Content-Type: image/png');
+		return LoadFile(IMAGE_DIR . 'mailservice.png');
 	}
 
 	function EmailRedirect() {
