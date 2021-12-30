@@ -51,7 +51,7 @@ class records extends krn_abstract{
 		
 		if($this->mode=='BrowseDocuments'){
 			$main=krnLoadModuleByName('main');
-			//$result=$main->GetStatistics().$result;
+			$result=$main->GetStatistics().$result;
 		}
 		
 		return $result;
