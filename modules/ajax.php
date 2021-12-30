@@ -84,18 +84,24 @@ class ajax extends krn_abstract{
 	}
 
 	function MassEmail(){
-		$subscribersList = array(
-			'roman@proudly.ru'
-		);
-
 		$emailTemplate = LoadTemplate('email/email_ny_2022');
 		if ($emailTemplate) {
 			$mail = new Mail();
 
-			foreach ($subscribersList as $email) {
-				$mail->SendMailFromSite('roman@proudly.ru', 'Proudly — С Наступающим 2022! 🎉', $emailTemplate);
+			$subject = 'Proudly — С Наступающим 2022! 🎉';
+			$this->db->query('INSERT INTO email_campaigns SET Title = ?s, DateTime = NOW(), Finished = 0', $subject);
+			$campaignId = $this->db->insertId();
+
+			$subscribersList = $this->db->getAll('SELECT Id, Email FROM email_contacts WHERE Deleted = 0 ORDER BY IF (`Order`, -1000/`Order`, 0)');
+			foreach ($subscribersList as $subscriber) {
+				$mail->SendMailFromSite($subscriber['Email'], $subject, strtr($emailTemplate, array(
+					'<%C1%>' => $campaignId,
+					'<%C2%>' => $subscriber['Id'],
+				)));
+				$this->db->query('INSERT INTO rel_campaign_contacts SET CampaignId = ?i, ContactId = ?i, DateTime = NOW()', $campaignId, $subscriber['Id']);
 				sleep(5);
 			}
+			$this->db->query('UPDATE email_campaigns SET Finished = 1 WHERE Id = ?i', $campaignId);
 
 			$status = 'SUCCESS: E-mail has sended';
 		} else {
@@ -103,6 +109,31 @@ class ajax extends krn_abstract{
 		}			
 
 		return $status;
+	}
+
+	function EmailCountView() {
+		$campaignId = $_GET['c1'];
+		$contactId = $_GET['c2'];
+		$this->db->query('UPDATE rel_campaign_contacts SET Seen = 1 WHERE CampaignId = ?i AND ContactId = ?i', $campaignId, $contactId);
+
+		return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+	}
+
+	function EmailRedirect() {
+		$campaignId = $_GET['c1'];
+		$contactId = $_GET['c2'];
+
+		$this->db->query('UPDATE rel_campaign_contacts SET LinkVisited = 1 WHERE CampaignId = ?i AND ContactId = ?i', $campaignId, $contactId);
+
+		__Redirect('https://proudly.ru/');
+		return true;
+	}
+
+	function Unsubscribe() {
+		$contactId = $_GET['id'];
+
+		$this->db->query('UPDATE email_contacts SET Deleted = 1 WHERE Id = ?i', $contactId);
+		return 'Вы успешно отписались от рассылки';
 	}
 
 }
