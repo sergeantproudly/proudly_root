@@ -902,6 +902,8 @@ function checkElements(elements,patterns,mode){
 			if(checkElements([form.name, form.tel],[{1:true}, {1:true}])){
 				form.submit_btn.disabled=true;
 				var waitNode=msgSetWait(form);
+
+				$(form).append('<input type="hidden" name="capcha" value="' + navigator.userAgent + '"/>');
 					
 				$.ajax({
 					type: $(form).attr('method'),
@@ -936,6 +938,8 @@ function checkElements(elements,patterns,mode){
 			if (checkElements([form.name, form.tel],[{1:true}, {1:true}])) {
 				form.submit_btn.disabled = true;
 				var waitNode = msgSetWait(form);
+
+				$(form).append('<input type="hidden" name="capcha" value="' + navigator.userAgent + '"/>');
 					
 				$.ajax({
 					type: $(form).attr('method'),
@@ -970,6 +974,8 @@ function checkElements(elements,patterns,mode){
 			if (checkElements([form.name, form.tel],[{1:true}, {1:true}])) {
 				form.submit_btn.disabled = true;
 				var waitNode = msgSetWait(form);
+
+				$(form).append('<input type="hidden" name="capcha" value="' + navigator.userAgent + '"/>');
 					
 				$.ajax({
 					type: $(form).attr('method'),

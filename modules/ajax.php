@@ -42,41 +42,52 @@ class ajax extends krn_abstract{
 		$text = $_POST['text'];
 		$code = $_POST['code'];
 
-		if ($name && $tel) {				
-			$form = $this->db->getRow('SELECT Title, Success FROM forms WHERE Code=?s', $code);				
-			$request = '';
-			if ($name) $request .= "Имя: $name\r\n";
-			if ($email) $request .= "E-mail: $email\r\n";
-			if ($tel) $request .= "Телефон: $tel\r\n";
-			$request .= 'Текст:'."\r\n$text\r\n";
-			$this->db->query('INSERT INTO requests SET DateTime=NOW(), Name=?s, Phone=?s, Text=?s, RefererPage=?s, IsSet=0',
-			 	$name,
-			 	$tel,
-				str_replace('"','\"',$request),
-				$_SERVER['HTTP_REFERER']
-			);
-				
-			global $Config;
-			$siteTitle = strtr(stGetSetting('SiteEmailTitle', $Config['Site']['Title']), array('«'=>'"','»'=>'"','—'=>'-'));
-			$siteEmail = stGetSetting('SiteEmail', $Config['Site']['Email']);
-			$adminTitle = 'Администратор';
-			$adminEmail = stGetSetting('AdminEmail', $siteEmail);
-				
-			$letter['subject'] = $form['Title'].' с сайта "'.$siteTitle.'"';
-			$letter['html'] = '<b>'.$form['Title'].'</b><br/><br/>';
-			$letter['html'] .= str_replace("\r\n",'<br/>',$request);
-			$mail=new Mail();
-			$mail->SendMailFromSite($adminEmail, $letter['subject'], $letter['html']);
-										
-			$json = array(
-				'status' => true,
-				'message' => $form['Success']
-			);
+		$capcha = $_POST['capcha'];
 
-		}else{
+		// проверка на спамбота
+		// основывается на сверке user agent-ов
+		if ($capcha == $_SERVER['HTTP_USER_AGENT']) {
+			if ($name && $tel) {				
+				$form = $this->db->getRow('SELECT Title, Success FROM forms WHERE Code=?s', $code);				
+				$request = '';
+				if ($name) $request .= "Имя: $name\r\n";
+				if ($email) $request .= "E-mail: $email\r\n";
+				if ($tel) $request .= "Телефон: $tel\r\n";
+				$request .= 'Текст:'."\r\n$text\r\n";
+				$this->db->query('INSERT INTO requests SET DateTime=NOW(), Name=?s, Phone=?s, Text=?s, RefererPage=?s, IsSet=0',
+				 	$name,
+				 	$tel,
+					str_replace('"','\"',$request),
+					$_SERVER['HTTP_REFERER']
+				);
+					
+				global $Config;
+				$siteTitle = strtr(stGetSetting('SiteEmailTitle', $Config['Site']['Title']), array('«'=>'"','»'=>'"','—'=>'-'));
+				$siteEmail = stGetSetting('SiteEmail', $Config['Site']['Email']);
+				$adminTitle = 'Администратор';
+				$adminEmail = stGetSetting('AdminEmail', $siteEmail);
+					
+				$letter['subject'] = $form['Title'].' с сайта "'.$siteTitle.'"';
+				$letter['html'] = '<b>'.$form['Title'].'</b><br/><br/>';
+				$letter['html'] .= str_replace("\r\n",'<br/>',$request);
+				$mail=new Mail();
+				$mail->SendMailFromSite($adminEmail, $letter['subject'], $letter['html']);
+											
+				$json = array(
+					'status' => true,
+					'message' => $form['Success']
+				);
+
+			}else{
+				$json = array(
+					'status' => false,
+					'message' => 'Серверная ошибка. При повторном возникновении, пожалуйста, обратитесь к администратору.'
+				);
+			}
+		} else {
 			$json = array(
 				'status' => false,
-				'message' => 'Серверная ошибка. При повторном возникновении, пожалуйста, обратитесь к администратору.'
+				'message' => 'Сработал антиспам. При повторном возникновении, пожалуйста, обратитесь к администратору.'
 			);
 		}
 
