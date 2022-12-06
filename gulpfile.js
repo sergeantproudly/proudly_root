@@ -73,7 +73,7 @@ function copy() {
 
 function watch() {
 	browserSync.init({
-        proxy: 'smart.local'
+        proxy: 'proudly.local:8080'
     });
 
 	gulp.watch('./src/css/**/*.scss', styles);

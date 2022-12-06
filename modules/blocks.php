@@ -25,7 +25,7 @@ class blocks extends krn_abstract{
 	public function GetResult(){}
 	
 	/** Меню - Главное меню */
-	function MenuMain(){
+	public function MenuMain(){
 		$element=LoadTemplate('mn_main_el');
 		$content='';
 		
@@ -56,7 +56,7 @@ class blocks extends krn_abstract{
 	}
 	
 	/** Блок - Социальные ссылки */
-	function BlockSocial(){
+	public function BlockSocial(){
 		$element=LoadTemplate('bl_social_el');
 		$content='';
 		
@@ -71,7 +71,7 @@ class blocks extends krn_abstract{
 	}
 	
 	/** Блок - Форма */
-	function BlockForm($code){
+	public function BlockForm($code){
 		$result=LoadTemplate($code);
 		$result=strtr($result,array(
 			'<%TITLE%>'	=> $this->forms_info[$code]['Title'],
@@ -82,7 +82,7 @@ class blocks extends krn_abstract{
 	}
 	
 	/** Блок - Текстовый */
-	function BlockText($code){
+	public function BlockText($code){
 		$result=LoadTemplate($code?$code:'bl_text');
 		$result=strtr($result,array(
 			'<%HEADER%>'=> '<h2>'.$this->blocks_info[$code]['Header'].'</h2>',
@@ -93,13 +93,19 @@ class blocks extends krn_abstract{
 	}
 	
 	/** Блок - Город */
-	function BlockCity(){	
-		return ''	;
+	public function BlockCity(){	
+		//return '';
 		
 		$result=LoadTemplate('bl_city');
 		$result=strtr($result,array(
 			'<%NAME%>'	=> $_SESSION['ClientUser']['City']['Name']
 		));
+		return $result;
+	}
+
+	/** Блок - Баннер */
+	public function BlockBanner() {
+		$result = LoadTemplate('bl_banner');
 		return $result;
 	}
 

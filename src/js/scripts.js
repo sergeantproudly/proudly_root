@@ -999,6 +999,42 @@ function checkElements(elements,patterns,mode){
 			}
 		});
 
+		$('#modal-request form').on('submit', function(e) {
+			e.preventDefault();
+
+            ym(31289493, 'reachGoal', 'sendFeedbackForm');
+			
+			var form = this;
+			msgUnset(form);
+			checkResetStatus(form, 0);
+			if (checkElements([form.name, form.tel],[{1:true}, {1:true}])) {
+				form.submit_btn.disabled = true;
+				var waitNode = msgSetWait(form);
+
+				$(form).append('<input type="hidden" name="capcha" value="' + navigator.userAgent + '"/>');
+					
+				$.ajax({
+					type: $(form).attr('method'),
+					url: $(form).attr('action'),
+					data: $(form).serialize(),
+					dataType: 'json',
+					success: function(response){									
+						if(response.status == true){
+							showModal('modal-done');
+							form.reset();
+								
+						}else{
+							msgSetError(form,response.error);
+						}
+						$(waitNode).remove();
+						form.submit_btn.disabled = false;
+					}
+				});
+			}else{
+				msgSetError(form, 'Пожалуйста, заполните все поля');
+			}
+		});
+
         $('header .btn').click(function() {
                 ym(31289493, 'reachGoal', 'clickFeedbackButton');
         });

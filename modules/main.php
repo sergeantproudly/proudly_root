@@ -19,7 +19,8 @@ class main extends krn_abstract{
 		$result=strtr($result,array(
 			'<%META_KEYWORDS%>'		=> $this->folder['Keywords']?$this->folder['Keywords']:$Config['Site']['Keywords'],
 			'<%META_DESCRIPTION%>'	=> $this->folder['Description']?$this->folder['Description']:$Config['Site']['Description'],
-			'<%PAGE_TITLE%>'		=> $this->pageTitle
+			'<%PAGE_TITLE%>'		=> $this->pageTitle,
+			'<%BL_BANNER%>'	=> $Blocks->BlockBanner(),
 		));
 		return $result;
 	}

@@ -51,6 +51,8 @@
 			</div>
 		</section>
 
+		<%BL_BANNER%>
+
 		<section id="portfolio">
 			<ul>
 				<li style="background: rgb(6,29,129);background: linear-gradient(90deg, rgba(6,29,129,1) 0%, rgba(6,55,139,1) 50%, rgba(6,62,157,1) 100%);">
@@ -277,7 +279,7 @@
 							<i>Задача</i>
 						</div>
 
-						<div class="agree"><input type="checkbox" name="agree" id="agree-feedback-modal" required><label for="agree-feedback-modal">Я согласен на обработку своих данных</label></div>
+						<div class="agree"><input type="checkbox" name="agree" checked id="agree-feedback-modal" required><label for="agree-feedback-modal">Я согласен на обработку своих данных</label></div>
 
 						<div class="btn-line">
 							<button class="btn type2" name="submit_btn">Отправить</button>
@@ -311,11 +313,41 @@
 							<i>Вопрос</i>
 						</div>
 
-						<div class="agree"><input type="checkbox" name="agree" id="agree-question-modal" required><label for="agree-question-modal">Я согласен на обработку своих данных</label></div>
+						<div class="agree"><input type="checkbox" name="agree" checked id="agree-question-modal" required><label for="agree-question-modal">Я согласен на обработку своих данных</label></div>
 
 						<div class="btn-line">
 							<button class="btn type2" name="submit_btn">Отправить</button>
 							<input type="hidden" name="code" value="question"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal-wrapper" id="modal-request">
+		<div class="modal">
+			<div class="contents">
+				<div class="modal-close" title="Закрыть"></div>
+
+				<div class="h1">Мы перезвоним!</div>
+
+				<form action="/ajax-act-Feedback/" method="post">
+					<div class="form">
+						<div class="fld-holder">
+							<input type="text" name="name" placeholder="Имя" maxlength="255" required>
+							<i>Имя</i>
+						</div>
+						<div class="fld-holder">
+							<input type="tel" name="tel" placeholder="Телефон" maxlength="255" required>
+							<i>Телефон</i>
+						</div>
+
+						<div class="agree"><input type="checkbox" name="agree" checked id="agree-request-modal" required><label for="agree-request-modal">Я согласен на обработку своих данных</label></div>
+
+						<div class="btn-line">
+							<button class="btn type2" name="submit_btn">Отправить</button>
+							<input type="hidden" name="code" value="request"/>
 						</div>
 					</div>
 				</form>
