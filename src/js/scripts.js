@@ -121,6 +121,12 @@ function initElements(element) {
 	});
 
 	$element.find('input[type="checkbox"], input[type="radio"]').checkboxradio(); 
+	$element.find('input[data-mask]').each(function(index,input){
+		$(input).inputmask($(this).attr('data-mask'),{
+			'clearMaskOnLostFocus': true
+		});
+	});
+	$('input[type="tel"]').inputmask( { 'mask': '+7 (999) 999-99-99' } );
 
 	$element.find('.modal-close, .js-close, .modal .js-cancel').click(function(e) {
 		e.preventDefault();
