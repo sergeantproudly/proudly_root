@@ -875,6 +875,10 @@ function checkElements(elements,patterns,mode){
 					e.preventDefault();
 				}
 				showModal($(this).attr('data-modal'));
+				var $modal = $('#' + $(this).attr('data-modal'));
+				if ($modal.find('form input').filter('[type="text"], [type="tel"], [type="email"]').length) {
+					$modal.find('form input').filter('[type="text"], [type="tel"], [type="email"]').get(0).focus();
+				}
 			});
 		});
 
@@ -1048,5 +1052,11 @@ function checkElements(elements,patterns,mode){
         $('#services ul>li>.desc>.btn-line>.btn').click(function() {
                 ym(31289493, 'reachGoal', 'clickQuestionButton');
         });
+
+        if ($('#bl-banner').length) {
+        	setTimeout(function() {
+        		$('#bl-banner .price').addClass('pulse-size-fast');
+        	}, 2000);
+        }
 	})
 })(jQuery)

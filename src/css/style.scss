@@ -1579,6 +1579,7 @@ footer {
 			width: 34px;
 			height: 33px;
 			@extend .rotate-180-start;
+			@extend %select-deny;
 
 			&:hover {
 				@extend .rotate-180-end;
@@ -1880,7 +1881,7 @@ footer {
 				@media (max-width: $adaptive-width-mobile) {
 					font-size: 16px;
 					padding: 23px 32px;
-					margin: 0 0 16px;
+					margin: 0 0 25px;
 				}
 
 				&:hover {
@@ -1895,6 +1896,7 @@ footer {
 			}
 
 			.link {
+				position: relative;
 				display: inline-block;
 				vertical-align: middle;
 				font-size: 18px;
@@ -1909,22 +1911,54 @@ footer {
 				@media (max-width: $adaptive-width-mobile) {
 					width: 100%;
 					font-size: 15px;
-					margin: 0 0 16px 8px;
+					margin: 0 0 16px;
+				}
+
+				&:before {
+					content: '';
+					display: block;
+					width: 100%;
+					height: 1px;
+					background-color: #fff;
+					position: absolute;
+					bottom: -2px;
+					left: 0;
+					opacity: 0;
+					@extend .transition-opacity;
 				}
 
 				&:after {
 					content: '';
-					display: inline-block;
-					vertical-align: middle;
+					position: absolute;
+					top: 0;
+					right: -40px;
 					width: 28px;
 					height: 28px;
 					background: url('../../images/ico_arrow.svg') no-repeat;
 					background-size: contain;
-					margin-left: 12px;
 
 					@media (max-width: $adaptive-width-mobile) {
+						position: staitc;
+						top: auto;
+						right: auto;
 						width: 24px;
 						height: 24px;
+						margin-left: 12px;
+					}
+				}
+
+				&:hover {
+					&:before {
+						opacity: .4;
+						@extend .transition-opacity;
+
+						@media (max-width: $adaptive-width-mobile) {
+							display: none;
+						}
+					}
+
+					&:after {
+						@extend .totop;
 					}
 				}
 			}
@@ -1939,5 +1973,40 @@ footer {
 		height: 100%;
 		background: url('../../images/banner_bg.jpg') no-repeat center;
 		background-size: cover;
+		@extend .pulse-size;
 	}
 }
+.pulse-size-fast {
+    animation: pulse-size-fast 3s infinite forwards ease-in-out; 
+    -webkit-backface-visibility: ease-in-out;
+    transform: translate3d(0,0,0);
+}
+@keyframes pulse-size-fast { 
+	0% { transform: scale(100%); }
+	50% { transform: scale(102%); }
+	100% { transform: scale(100%); }
+}
+.pulse-size {
+    animation: pulse-size 15s infinite forwards ease-in-out; 
+    -webkit-backface-visibility: ease-in-out;
+    transform: translate3d(0,0,0);
+}
+@keyframes pulse-size { 
+	0% { transform: scale(100%); }
+	50% { transform: scale(120%); }
+	100% { transform: scale(100%); }
+}
+.totop {
+	-webkit-animation: totop 200ms forwards ease-in-out;
+    -moz-animation: totop 200ms forwards ease-in-out;
+    -ms-animation: totop 200ms forwards ease-in-out;
+    -o-animation: totop 200ms forwards ease-in-out;
+    animation: totop 200ms forwards ease-in-out; 
+    -webkit-backface-visibility: ease-in-out;
+    transform: translate3d(0,0,0);
+}
+@-webkit-keyframes totop { to { -webkit-transform: translate(8%, -8%); }}
+@-moz-keyframes totop { to { -moz-transform: translate(8%, -8%); }}
+@-ms-keyframes totop { to { -ms-transform: translate(8%, -8%); }}
+@-o-keyframes totop { to { -o-transform: translate(8%, -8%); }}
+@keyframes totop { to { transform: translate(8%, -8%); }}
