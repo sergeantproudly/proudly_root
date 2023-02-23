@@ -337,9 +337,6 @@
 		}
 		
 		public static function PrintInfo() {
-			stSetSetting('asdasd', '!', true);
-			die();
-
 			if (self::ReadyToWork('PrintInfo')) {
 				$result = '<h1>Техническая информация</h1>';
 				$result .= '<a href="' . self::$usersLink . '" target="_blank">Список пользователей</a><br>';
