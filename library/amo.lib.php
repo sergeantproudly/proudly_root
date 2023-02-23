@@ -344,6 +344,8 @@
 				$result .= '<a href="' . self::$leadsCustomFieldsLink . '" target="_blank">Список utm меток</a><br>';
 				$result .= '<br><br>';
 				$result .= '<a href="https://www.amocrm.ru/developers/content/crm_platform/custom-fields target="_blank">Документация</a>';
+				
+				echo $result;
 			}
 		}
 	}
