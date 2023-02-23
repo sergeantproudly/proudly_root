@@ -54,7 +54,7 @@
 		
 		protected static function GetTokenData() {
 			$tokenData = stGetSetting('amoToken');
-			self::$tokenData = $tokenData ? json_decode($tokenData) : false;
+			self::$tokenData = $tokenData ? json_decode($tokenData, true) : false;
 			return self::$tokenData;
 		}
 
