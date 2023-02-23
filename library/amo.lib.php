@@ -3,10 +3,10 @@
 	krnLoadLib('settings');
 
 	class AmoApi {
-		protected static $subdomain = 'romanproudlyru';
-		protected static $clientId = '';
-		protected static $clientSecret = '';
-		protected static $authCode = '';
+		protected static $subdomain = 'romanproudlyru'; // поддомен AmoCRM
+		protected static $clientId = 'c9602e66-f38a-4251-9d71-ca29a9e985cb'; // ИД интеграции
+		protected static $clientSecret = 'ArF8K25BnyiSF4ImnAiDk6H2kfeOCqyypveRcfNfk9H6bdqKOzRZGTM9NlnBuP1f'; // Секретный ключ
+		protected static $authCode = 'def50200afe2c2228fa48abb15af59edccf13bcb33474d343bcdbdc4d23e5b5d0130d18e05509599a4bdf04b783e8aea3d60022ea958f286e0a0845143ca460ad38cce386a0634a670a6c3ee726eb765f3c1c9407a9a40e1014754eb9eacc13bffcec9a5e1d35506b9cddecbdef971211489b00ceea714ebe066cc2b4509bc63b549bbafde6728f01f7c7890cfb894241d5eef2c917014796c3c498b68cd7108066d5501ae335344f823b2c882c6444a72bee4dd667a41cf9b9ef3a23d9dd06f00c6fbbbc0b7fb0851e82001daa9588f8def211c645731b0663a7803b4a29ef9c9afbca3ca880b10c043fd875fddec92fbe66e96e5aa53cee0bb8e976a883fa69c0b9704da838719a945d41088c1289f1a8970ce34e82ab8ef2358d9bc71b338e9589f60768eee94685a63fcf8ea4e36756c106b715b7f77b9c920726bc6e125ce97cb575add4bad2db01468059fac7b9050c5070f4255170476f2a76aa9a1c1f621659cdf7625e13a4fcb3605ec7d6579948f2b7485b565789f479874c1eb0333a91adb136ae86cfcc54657d99fb1085e2aafed02193bef62417b5782d21f0aa9aea7c7943e3a23b9f84ab08edd659f3cbe14ce114d6d427c294eeb6b78fa390fda114c1ad7e4f0259e96c59868be00248777950d87e97b'; // Код авторизации
 		protected static $pipelineId = 0;
 		protected static $amoUserId = 0;
 
