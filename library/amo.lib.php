@@ -4,9 +4,9 @@
 
 	class AmoApi {
 		protected static $subdomain = 'romanproudlyru'; // поддомен AmoCRM
-		protected static $clientId = 'c9602e66-f38a-4251-9d71-ca29a9e985cb'; // ИД интеграции
 		protected static $clientSecret = 'twGeYuKEbFTXofHkoHKW5Tk7N79lugDc6YaboUQjoGlGHCQA8P78YbP0lU8r8GuB'; // Секретный ключ
-		protected static $authCode = 'def50200dbd6a031701b882f5f616f23fa98847cfbccd4c75cfdffbc9093abfebe3b8cc39804f6d7ea389c9bf6f313ca3bd2a011bb688e337ccf9bcb67f96bda323ef8e038e9310d18ec5c8c8244f330b58eb05ee715c301b5602307adb719ba4ff37b22eef99358f889dc984fd525635e8caf6ccac9342cee1d06e4db539c4b41f91ec99d53f8114397b1972a51d1c45a44f05bc66291e1a7853854a892e0a229396795aae2d64724009a31fdf5e4e046c807610ab31d74c0c044c4b4246acb0693f35ccce0f43bce7e5d3395bf228aafc7d25f4e0e1e4556c893641c85ffbff8bdd21b701f71bc8b8631dac6df904e283d06af51b5ede724fee0416347ed0ff9cbbe3febeeaf90d8854e109f2475755b6663231c485f9dcb21a17d8f90b2420caa398296f99d4e6cc0ef23478d9ba5de48dd86475f3390fd2893aa251c5bbea3163cff1c44faa69af8f7442c12f90ad66b1b80e791000240e9408d47071f9dff7a2c282ddc6680b8dfde2a78527f74c196610a6a8199c6672cf9a4d2d18b7d1affe615e0c4f7bd8f4d6412f2920e992dcd9096a567e291b22a7d2b29d4ea40ed885197870234afbb19bedc4db2571dc0a69d83c6fbe45aad82b1939cd45d8f3e4d6223e95cc1279c194493cb68019415a1c4744a64905e'; // Код авторизации
+		protected static $clientId = 'c9602e66-f38a-4251-9d71-ca29a9e985cb'; // ИД интеграции
+		protected static $authCode = 'def50200248dd174c0476abca1ddd9a4021734b80cafd8faf82c1c8b7ef2b2de4c474456b97ec5eb7920fc50cc4badcee8b5bf89c71456b055652582fe6d1435bae4e62dcbff20d3587a452d8f474cfe517033bf27f19bfb924b28052b252dd0ef930342ebaab3e43469c557447fac334d41fe608337599bfc328b0459677b4b1ae0b546837f47fa5e7a48aa9a633083403fe4c0768d5974bd1264747c14a62befc16620a8004491aaafe69daf95be3c83e8a1295f9a89948a7401b0b18dc290fcf2ec338c38532f13da14bd70506eea8419423d7e1aab725ca499ef29f862fd5c05c10f715656549a7937a2258c0513acc14afc1923100e89ebdaa2d41725748a7e42cb4e30bb70760df913ef3db7a4a02d4d591485fd324bf612263db9c44489cb9220c1b92690c3c549d142248fe2a5201cec1276126d261cffc776268ca1968bc82c1d640b4800b5867be4b1248583312c1f1a21f1b2f7270cd0b615427e41ef3b8b0b05994ac678d0ec1417608cf104b6bfc0fd3b58d848998ba1755b13f3e1c38c6a1bd228c9e0b2972117ef51c59678aae8b4259ea790f6bc8282c1612890b5d548f1e9cf50536fc55c5231425ec344d92222109d30fe050f744cf0a3a01df235715330945f972376d3b416d6feb6ba559e78f309dd07'; // Код авторизации
 		protected static $pipelineId = 0;
 		protected static $amoUserId = 0;
 
@@ -74,7 +74,7 @@
 			  	'redirect_uri'  => self::$redirectLink,
 			];
 
-			var_dump($amoData);
+			//var_dump($amoData);
 
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -91,7 +91,7 @@
 			curl_close($curl);
 			$httpCode = (int) $httpCode;
 
-			var_dump($out);
+			//var_dump($out);
 
 			if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
