@@ -52,9 +52,9 @@ function stGetSetting($code,$default=''){
 	global $Settings;
 	return $Settings->GetSetting($code,$default);
 }
-function stSetSetting($code,$value){
+function stSetSetting($code, $value, $force_create = false){
 	global $Settings;
-	return $Settings->SetSetting($code,$value);
+	return $Settings->SetSetting($code, $value, $force_create);
 }
 
 ?>
