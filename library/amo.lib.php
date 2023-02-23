@@ -74,6 +74,8 @@
 			  	'redirect_uri'  => self::$redirectLink,
 			];
 
+			var_dump($amoData);
+
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLOPT_USERAGENT,'amoCRM-oAuth-client/1.0');
