@@ -89,6 +89,8 @@
 			curl_close($curl);
 			$httpCode = (int) $httpCode;
 
+			var_dump($out);
+
 			if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
 			$response = json_decode($out, true);
