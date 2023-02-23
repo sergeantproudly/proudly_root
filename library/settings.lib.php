@@ -27,13 +27,19 @@ class Settings{
 		return $default;
 	}
 	
-	public function SetSetting($code,$value){
+	public function SetSetting($code, $value, $force_create = false){
 		if(!$this->all_settings_arr)$this->LoadAllSettings();
-		$this->db->query('UPDATE `settings` SET `Value`="'.$value.'" WHERE `Code`="'.$code.'"');
-		foreach($this->all_settings_arr as $c=>$v){
-			if($c==$code){
-				$this->all_settings_arr[$c]=$value;
-				return true;
+		if (!in_array($code, array_keys($this->all_settings_arr)) && $force_create) {
+			$this->db->query('INSERT INTO `settings` SET `Value`="'.$value.'", `Code`="'.$code.'"');
+			$this->all_settings_arr[$code] = $value;
+			
+		} else {
+			$this->db->query('UPDATE `settings` SET `Value`="'.$value.'" WHERE `Code`="'.$code.'"');
+			foreach($this->all_settings_arr as $c=>$v){
+				if($c==$code){
+					$this->all_settings_arr[$c]=$value;
+					return true;
+				}
 			}
 		}
 		return false;

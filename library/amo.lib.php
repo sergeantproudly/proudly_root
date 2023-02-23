@@ -60,7 +60,7 @@
 
 		protected static function SetTokenData($tokenData) {
 			self::$tokenData = $tokenData;
-			stSetSetting('amoToken', json_encode($tokenData));
+			stSetSetting('amoToken', json_encode($tokenData), true);
 		}
 
 		protected static function Authorise($callback = false) {
