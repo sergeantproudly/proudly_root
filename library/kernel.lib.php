@@ -26,13 +26,13 @@
     
     // код страницы
     function krnGetPageCode(){
-		return $_GET['p_code']?$_GET['p_code']:'main';
+		return $_GET['p_code'] && $_GET['p_code'] !== 'proudly_root' ? $_GET['p_code'] : 'main';
 	}
 	
 	// модуль страницы
 	function krnGetPageModule(){
 		global $Params;
-		return ($Params['Site']['Page']['Code'] && $Params['Site']['Page']['Code'] !== 'proudly_root') ? $Params['Site']['Page']['Code'] : false;
+		return $Params['Site']['Page']['Code']?$Params['Site']['Page']['Code']:false;
 	}
 	
 	// загрузка модуля
