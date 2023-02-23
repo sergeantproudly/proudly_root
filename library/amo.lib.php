@@ -337,7 +337,7 @@
 		}
 		
 		public static function PrintInfo() {
-			stSetSetting('asdasd', '!');
+			stSetSetting('asdasd', '!', true);
 			die();
 
 			if (self::ReadyToWork('PrintInfo')) {
