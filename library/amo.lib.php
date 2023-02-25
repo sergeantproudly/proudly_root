@@ -213,9 +213,9 @@
 				if (self::$postData['form_name']) $preparedData['_embedded']['metadata']['form_name'] = self::$postData['form_name'];
 				if (self::$postData['page_name']) $preparedData['_embedded']['metadata']['form_page'] = self::$postData['page_name'];
 				if (self::$postData['name']) {
-					$preparedData['_embedded']['contacts']['first_name'] = self::$postData['name'];
+					$contacts['first_name'] = self::$postData['name'];
 					if (self::$postData['email']) {
-						$preparedData['_embedded']['contacts']['custom_fields_values'][] = [
+						$contacts['custom_fields_values'][] = [
 							'field_code' => 'EMAIL',
 			                'values' => [
 			                    [
@@ -226,7 +226,7 @@
 						];
 					}
 					if (self::$postData['phone']) {
-						$preparedData['_embedded']['contacts']['custom_fields_values'][] = [
+						$contacts['custom_fields_values'][] = [
 							'field_code' => 'PHONE',
 			                'values' => [
 			                    [
@@ -236,6 +236,7 @@
 			                ]
 						];
 					}
+					$preparedData['_embedded']['contacts'][] = $contacts;
 				}
 				if (self::$postData['utm']) {
 					if (self::$postData['utm']['source']) {
