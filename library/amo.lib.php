@@ -91,7 +91,7 @@
 			curl_close($curl);
 			$httpCode = (int) $httpCode;
 
-			//var_dump($out);
+			var_dump('Authorise: ' . $out);
 
 			if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
@@ -137,6 +137,8 @@
 			$httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 			curl_close($curl);
 			$httpCode = (int) $httpCode;
+
+			var_dump('Authorise: ' . $out);
 
 			if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
