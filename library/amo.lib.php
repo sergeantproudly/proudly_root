@@ -207,8 +207,8 @@
 					'category' => 'forms',
 			        'form_sent_at' => time(),
 			        'ip' => $ip,
-			        'referer' => $_SERVER['HTTP_REFERER'],
 				];
+				if (!empty($_SERVER['HTTP_REFERER'])) $preparedData['_embedded']['metadata']['referer'] = $_SERVER['HTTP_REFERER'];
 				if (self::$postData['form_id']) $preparedData['_embedded']['metadata']['form_id'] = self::$postData['form_id'];
 				if (self::$postData['form_name']) $preparedData['_embedded']['metadata']['form_name'] = self::$postData['form_name'];
 				if (self::$postData['page_name']) $preparedData['_embedded']['metadata']['form_page'] = self::$postData['page_name'];
