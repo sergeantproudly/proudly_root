@@ -316,6 +316,9 @@
 				    'Authorization: Bearer ' . self::$tokenData['access_token'],
 				];
 
+				echo 'SendData post: ';
+				var_dump($postData);
+
 				$curl = curl_init();
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($curl, CURLOPT_USERAGENT, 'amoCRM-API-client/1.0');
@@ -332,7 +335,7 @@
 				$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 				$code = (int) $code;
 
-				var_dump('SendData: ' . $out);
+				var_dump('SendData out: ' . $out);
 
 				if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
