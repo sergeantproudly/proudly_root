@@ -138,7 +138,7 @@
 			curl_close($curl);
 			$httpCode = (int) $httpCode;
 
-			var_dump('Authorise: ' . $out);
+			var_dump('Refresh: ' . $out);
 
 			if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
@@ -330,6 +330,8 @@
 				$out = curl_exec($curl);
 				$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 				$code = (int) $code;
+
+				var_dump('SendData: ' . $out);
 
 				if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
