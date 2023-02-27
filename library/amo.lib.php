@@ -88,7 +88,8 @@
 		}
 
 		protected static function DebugHttpCode($code) {
-			if ($code < 200 || $code > 204) self::DebugDump('Error ' . (int) $code, (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error'), self::LOGLEVELMIN);
+			if ($code < 200 || $code > 204) return self::DebugDump('Error ' . (int) $code, (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error'), self::LOGLEVELMIN);
+			else return self::DebugDump('Http status', $code, self::LOGLEVELMIN);
 		}
 		
 		protected static function GetTokenData() {
