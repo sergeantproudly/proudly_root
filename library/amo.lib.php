@@ -71,7 +71,10 @@
 			if (self::CheckLogLevel($level)) {
 				if (!self::$logFile) {
 					echo $varname . ($var !== false ? ': ' : '<br>');
-					if ($var !== false) var_dump($var);
+					if ($var !== false) {
+						var_dump($var);
+						echo '<br>';
+					}
 					return true;
 
 				} else {
