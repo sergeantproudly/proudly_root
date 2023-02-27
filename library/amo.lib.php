@@ -206,6 +206,12 @@
 		protected static function ReadyToWork($callback) {
 			self::CheckInited();
 
+			if (self::$debug) {
+				self::DebugDump('ReadyToWork', false, self::LOGLEVELMAX);
+				self::DebugDump('Is tokenData exists', self::$tokenData, self::LOGLEVELMAX);
+				if (self::$tokenData) self::DebugDump('Check expires time', self::$tokenData['expires_time'] - 60 < time(), self::LOGLEVELMAX);
+			}
+
 			self::$tokenData = self::GetTokenData();
 			// если нет токен-данных, нужна первичная авторизация
 			if (!self::$tokenData) {
