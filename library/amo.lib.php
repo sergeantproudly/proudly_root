@@ -163,7 +163,7 @@
 			curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
 			curl_setopt($curl, CURLOPT_HEADER, false);
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($amoData));
 			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 1);
 			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
 			$out = curl_exec($curl);
