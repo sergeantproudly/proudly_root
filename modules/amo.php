@@ -9,7 +9,6 @@ class amo extends krn_abstract {
 	}
 
 	public function GetResult() {
-		var_dump(AmoApi::LOGLEVELMAX);
 		AmoApi::SetLogLevel(AmoApi::LOGLEVELMAX);
 		//AmoApi::PrintInfo();
 		AmoApi::SendData([

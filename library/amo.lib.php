@@ -64,6 +64,7 @@
 		}
 
 		protected static function CheckLogLevel($level) {
+			var_dump(self::$logLevel >= (int) $level);
 			return (self::$logLevel >= (int) $level);
 		}
 
