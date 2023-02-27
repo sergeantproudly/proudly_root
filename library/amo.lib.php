@@ -240,6 +240,8 @@
 				'pipeline_id' => (int) self::$pipelineId,
 			];
 
+			var_dump(self::$postData);
+
 			if (self::$postData) {
 				$preparedData['name'] = self::$postData['name'] ?: self::$postData['phone'] ?: $ip;
 				$preparedData['price'] = self::$postData['price'] ?: 0;
