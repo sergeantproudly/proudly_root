@@ -73,7 +73,8 @@
 				if (!self::$logFile) {
 					echo $varname . ($var !== false ? ': ' : '<br>');
 					if ($var !== false) {
-						var_dump($var);
+						//var_dump($var);
+						echo nl2br(var_export($var, true));
 						echo '<br>';
 					}
 					return true;
