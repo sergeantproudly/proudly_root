@@ -223,7 +223,7 @@
 				return false;
 
 			// если данные есть, но их срок истек, нужен рефреш токена
-			} elseif (self::$tokenData['expires_time'] - 60 < time()) {
+			} elseif (self::$tokenData['expires_time'] - 60 < time() || true) {
 				self::Refresh($callback);
 				return false;
 
@@ -239,8 +239,6 @@
 				'responsible_user_id' => (int) self::$amoUserId,
 				'pipeline_id' => (int) self::$pipelineId,
 			];
-
-			var_dump(self::$postData);
 
 			if (self::$postData) {
 				$preparedData['name'] = self::$postData['name'] ?: self::$postData['phone'] ?: $ip;
