@@ -70,12 +70,12 @@
 		protected static function DebugDump($varname, $var, $level) {
 			if (self::CheckLogLevel($level)) {
 				if (!self::$logFile) {
-					echo $varname . ': ';
+					echo $varname . ($var !== false ? ': ' : '<br>');
 					if ($var !== false) var_dump($var);
 					return true;
 
 				} else {
-					$str = $varname . ': ' . PHP_EOL;
+					$str = $varname . ($var !== false ? ': ' : '') . PHP_EOL;
 					if ($var !== false) $str .= var_export($var, true);
 					return file_put_contents(self::$logFile, $str, FILE_APPEND) ? true : false;
 				}
