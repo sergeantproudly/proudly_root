@@ -316,8 +316,8 @@
 				    'Authorization: Bearer ' . self::$tokenData['access_token'],
 				];
 
-				echo 'SendData post: ';
-				var_dump($postData);
+				//echo 'SendData post: ';
+				//var_dump($postData);
 
 				$curl = curl_init();
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
