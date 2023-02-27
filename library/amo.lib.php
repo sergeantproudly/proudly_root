@@ -232,14 +232,20 @@
 			// если нет токен-данных, нужна первичная авторизация
 			if (!self::$tokenData) {
 				self::$attemptsCount++;
-				if (self::$attemptsCount > self::$attemptsLimit) return false;
+				if (self::$attemptsCount > self::$attemptsLimit) {
+					self::DebugDump('Authorisation attempts count exceeded', self::$attemptsLimit, self::LOGLEVELMIN);
+					return false;
+				}
 				self::Authorise($callback);
 				return false;
 
 			// если данные есть, но их срок истек, нужен рефреш токена
 			} elseif (self::$tokenData['expires_ts'] - 60 < time()) {
 				self::$attemptsCount++;
-				if (self::$attemptsCount > self::$attemptsLimit) return false;
+				if (self::$attemptsCount > self::$attemptsLimit) {
+					self::DebugDump('Refresh attempts count exceeded', self::$attemptsLimit, self::LOGLEVELMIN);
+					return false;
+				}
 				self::Refresh($callback);
 				return false;
 
