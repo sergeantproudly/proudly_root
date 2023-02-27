@@ -159,7 +159,7 @@
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLOPT_USERAGENT, 'amoCRM-oAuth-client/1.0');
-			curl_setopt($curl, CURLOPT_URL, $link);
+			curl_setopt($curl, CURLOPT_URL, self::$authLink);
 			curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
 			curl_setopt($curl, CURLOPT_HEADER, false);
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
@@ -214,7 +214,7 @@
 			if (self::$debug) {
 				self::DebugDump('ReadyToWork', false, self::LOGLEVELMAX);
 				self::DebugDump('Is tokenData exists', self::$tokenData, self::LOGLEVELMAX);
-				if (self::$tokenData) self::DebugDump('Check expires time', self::$tokenData['expires_time'] - 60 < time(), self::LOGLEVELMAX);
+				if (self::$tokenData) self::DebugDump('Is token expired', self::$tokenData['expires_time'] - 60 < time(), self::LOGLEVELMAX);
 			}
 
 			// если нет токен-данных, нужна первичная авторизация
