@@ -135,7 +135,7 @@
 				'token_type'    => $response['token_type'],
 				'expires_in'    => $response['expires_in'],
 				'expires_ts'  	=> $response['expires_in'] + time(),
-				'expires_time'  => date($response['expires_in'] + time(), 'd.m.Y H:i'),
+				'expires_time'  => date('d.m.Y H:i', $response['expires_in'] + time()),
 			];
 
 			self::SetTokenData($responseData);
@@ -184,7 +184,7 @@
 				'token_type'    => $response['token_type'],
 				'expires_in'    => $response['expires_in'],
 				'expires_ts'  	=> $response['expires_in'] + time(),
-				'expires_time'  => date($response['expires_in'] + time(), 'd.m.Y H:i'),
+				'expires_time'  => date('d.m.Y H:i', $response['expires_in'] + time()),
 			];
 
 			self::SetTokenData($responseData);
