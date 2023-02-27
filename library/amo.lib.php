@@ -15,7 +15,7 @@
 		protected static $statusId = 55025766;
 
 		protected static $debug = true;
-		protected static $logFile = '';
+		protected static $logFile = './amo.log';
 		protected static $logLevel = self::LOGLEVELMIN;
 
 		protected static $authLink = '';
