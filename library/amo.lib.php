@@ -134,7 +134,8 @@
 				'refresh_token' => $response['refresh_token'],
 				'token_type'    => $response['token_type'],
 				'expires_in'    => $response['expires_in'],
-				'expires_time'  => $response['expires_in'] + time(),
+				'expires_ts'  	=> $response['expires_in'] + time(),
+				'expires_time'  => date($response['expires_in'] + time(), 'd.m.Y H:i'),
 			];
 
 			self::SetTokenData($responseData);
@@ -182,7 +183,8 @@
 				'refresh_token' => $response['refresh_token'],
 				'token_type'    => $response['token_type'],
 				'expires_in'    => $response['expires_in'],
-				'expires_time'  => $response['expires_in'] + time(),
+				'expires_ts'  	=> $response['expires_in'] + time(),
+				'expires_time'  => date($response['expires_in'] + time(), 'd.m.Y H:i'),
 			];
 
 			self::SetTokenData($responseData);
@@ -214,7 +216,7 @@
 			if (self::$debug) {
 				self::DebugDump('ReadyToWork', false, self::LOGLEVELMAX);
 				self::DebugDump('Is tokenData exists', self::$tokenData, self::LOGLEVELMAX);
-				if (self::$tokenData) self::DebugDump('Is token expired', self::$tokenData['expires_time'] - 60 < time(), self::LOGLEVELMAX);
+				if (self::$tokenData) self::DebugDump('Is token expired', self::$tokenData['expires_ts'] - 60 < time(), self::LOGLEVELMAX);
 			}
 
 			// если нет токен-данных, нужна первичная авторизация
@@ -223,7 +225,7 @@
 				return false;
 
 			// если данные есть, но их срок истек, нужен рефреш токена
-			} elseif (self::$tokenData['expires_time'] - 60 < time()) {
+			} elseif (self::$tokenData['expires_ts'] - 60 < time()) {
 				self::Refresh($callback);
 				return false;
 
