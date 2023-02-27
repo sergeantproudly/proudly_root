@@ -68,6 +68,10 @@
 			return (self::$logLevel >= (int) $level);
 		}
 
+		protected static function LogToDebugFile($str) {
+			return file_put_contents(self::$logFile, '[' . date('d.m.Y H:i:s') . '] ' . $str . PHP_EOL, FILE_APPEND) ? true : false;
+		}
+
 		protected static function DebugDump($varname, $var, $level) {
 			if (self::CheckLogLevel($level)) {
 				if (!self::$logFile) {
@@ -80,9 +84,8 @@
 					return true;
 
 				} else {
-					$str = $varname . ($var !== false ? ': ' : '') . PHP_EOL;
-					if ($var !== false) $str .= var_export($var, true) . PHP_EOL;
-					return file_put_contents(self::$logFile, $str, FILE_APPEND) ? true : false;
+					self::LogToDebugFile($varname . ($var !== false ? ': ' : ''));
+					if ($var !== false) self::LogToDebugFile(var_export($var, true));
 				}
 			}
 		}

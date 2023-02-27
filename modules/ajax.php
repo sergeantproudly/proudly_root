@@ -80,6 +80,7 @@ class ajax extends krn_abstract{
 				$data['form_id'] = $form['Id'];
 				$data['form_name'] = $form['Title'];
 				$data['page_name'] = 'Главая страница';
+				AmoApi::SetLogLevel(AmoApi::LOGLEVELMAX);
 				AmoApi::SendData($data);
 											
 				$json = array(
