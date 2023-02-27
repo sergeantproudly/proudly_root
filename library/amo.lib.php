@@ -223,7 +223,7 @@
 				return false;
 
 			// если данные есть, но их срок истек, нужен рефреш токена
-			} elseif (self::$tokenData['expires_time'] - 60 < time() || true) {
+			} elseif (self::$tokenData['expires_time'] - 60 < time()) {
 				self::Refresh($callback);
 				return false;
 
