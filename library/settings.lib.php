@@ -27,10 +27,10 @@ class Settings{
 		return $default;
 	}
 	
-	public function SetSetting($code, $value, $force_create = false){
+	public function SetSetting($code, $value, $force_create = false, $title = false){
 		if(!$this->all_settings_arr)$this->LoadAllSettings();
 		if (!in_array($code, array_keys($this->all_settings_arr)) && $force_create) {
-			$this->db->query('INSERT INTO `settings` SET `Value`=?s, `Code`=?s', $value, $code);
+			$this->db->query('INSERT INTO `settings` SET `Value` = ?s, `Code` = ?s' . ($title ? ', `Title` = ?s' : ''), $value, $code);
 			$this->all_settings_arr[$code] = $value;
 			
 		} else {
@@ -52,9 +52,9 @@ function stGetSetting($code,$default=''){
 	global $Settings;
 	return $Settings->GetSetting($code,$default);
 }
-function stSetSetting($code, $value, $force_create = false){
+function stSetSetting($code, $value, $force_create = false, $title = false){
 	global $Settings;
-	return $Settings->SetSetting($code, $value, $force_create);
+	return $Settings->SetSetting($code, $value, $force_create, $title);
 }
 
 ?>
