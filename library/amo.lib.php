@@ -10,6 +10,9 @@
 		protected static $pipelineId = 6439062;
 		protected static $amoUserId = 9230734;
 
+		protected static $debug = true;
+		protected static $logFile = '/amo.log';
+
 		protected static $authLink = '';
 		protected static $redirectLink = '';
 		protected static $postLink = '';
@@ -51,6 +54,18 @@
 		protected static function CheckInited() {
 			if (!self::$inited) self::Init();
 		}
+
+		protected static function DebugDump($varname, $var) {
+			if (!self::$logFile) {
+				echo $varname . ': ';
+				var_dump($var);
+				return true;
+
+			} else {
+				$str = $varname . ': ' . PHP_EOL . var_export($var, true);
+				return file_put_contents(self::$logFile, $str, FILE_APPEND) ? true : false;
+			}
+		}
 		
 		protected static function GetTokenData() {
 			$tokenData = stGetSetting('amoToken');
@@ -74,8 +89,6 @@
 			  	'redirect_uri'  => self::$redirectLink,
 			];
 
-			//var_dump($amoData);
-
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLOPT_USERAGENT,'amoCRM-oAuth-client/1.0');
@@ -91,7 +104,7 @@
 			curl_close($curl);
 			$httpCode = (int) $httpCode;
 
-			var_dump('Authorise: ' . $out);
+			if (self::$debug) self::DebugDump('Authorise', $out);
 
 			if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
@@ -138,7 +151,7 @@
 			curl_close($curl);
 			$httpCode = (int) $httpCode;
 
-			var_dump('Refresh: ' . $out);
+			if (self::$debug) self::DebugDump('Refresh', $out);
 
 			if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
@@ -177,9 +190,6 @@
 			self::CheckInited();
 
 			self::$tokenData = self::GetTokenData();
-			// var_dump('ReadyToWork?');
-			// var_dump(self::$tokenData);
-			// var_dump(time());
 			// если нет токен-данных, нужна первичная авторизация
 			if (!self::$tokenData) {
 				self::Authorise($callback);
@@ -319,8 +329,7 @@
 				    'Authorization: Bearer ' . self::$tokenData['access_token'],
 				];
 
-				echo 'SendData post: ';
-				var_dump($postData);
+				if (self::$debug) self::DebugDump('SendData post', $out);
 
 				$curl = curl_init();
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -338,12 +347,11 @@
 				$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 				$code = (int) $code;
 
-				var_dump('SendData out: ' . $out);
+				if (self::$debug) self::DebugDump('SendData out', $out);
 
 				if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
 				$response = json_decode($out, true);
-				var_dump($response);
 			}
 		}
 		
