@@ -348,10 +348,10 @@
 		}
 
 		public static function SendData($data = false) {
+			if ($data) self::$postData = $data;
+			
 			if (self::ReadyToWork('SendData')) {
 				if (self::$debug) self::DebugDump('SendData going', false, self::LOGLEVELMAX);
-
-				if ($data) self::$postData = $data;
 
 				$postData = self::PreparePostData();
 
