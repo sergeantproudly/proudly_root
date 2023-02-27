@@ -74,7 +74,7 @@
 					echo $varname . ($var !== false ? ': ' : '<br>');
 					if ($var !== false) {
 						//var_dump($var);
-						echo str_replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;', nl2br(var_export($var, true)));
+						echo str_replace(' ', '&nbsp;', nl2br(var_export($var, true)));
 						echo '<br>';
 					}
 					return true;
