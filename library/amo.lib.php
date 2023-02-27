@@ -103,7 +103,7 @@
 
 		protected static function SetTokenData($tokenData) {
 			self::$tokenData = $tokenData;
-			stSetSetting('amoToken', json_encode($tokenData), true);
+			stSetSetting('amoToken', json_encode($tokenData), true, 'Техническое - Хэш AmoCrm');
 		}
 
 		protected static function Authorise($callback = false) {
