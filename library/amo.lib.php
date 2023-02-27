@@ -86,6 +86,10 @@
 				}
 			}
 		}
+
+		protected static function DebugHttpCode($code) {
+			if ($code < 200 || $code > 204) self::DebugDump('Error ' . (int) $code, (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error'), self::LOGLEVELMIN);
+		}
 		
 		protected static function GetTokenData() {
 			$tokenData = stGetSetting('amoToken');
@@ -125,9 +129,8 @@
 			curl_close($curl);
 			$httpCode = (int) $httpCode;
 
+			if (self::$debug) self::DebugHttpCode($httpCode);
 			if (self::$debug) self::DebugDump('Authorise', $out, self::LOGLEVELMIN);
-
-			if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
 			$response = json_decode($out, true);
 
@@ -174,9 +177,8 @@
 			curl_close($curl);
 			$httpCode = (int) $httpCode;
 
+			if (self::$debug) self::DebugHttpCode($httpCode);
 			if (self::$debug) self::DebugDump('Refresh', $out, self::LOGLEVELMIN);
-
-			if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
 			$response = json_decode($out, true);
 
@@ -379,12 +381,12 @@
 				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 				curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
 				$out = curl_exec($curl);
-				$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-				$code = (int) $code;
+				$httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+				curl_close($curl);
+				$httpCode = (int) $httpCode;
 
+				if (self::$debug) self::DebugHttpCode($httpCode);
 				if (self::$debug) self::DebugDump('SendData out', $out, self::LOGLEVELMIN);
-
-				if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
 				$response = json_decode($out, true);
 			}
