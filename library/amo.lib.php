@@ -71,11 +71,12 @@
 			if (self::CheckLogLevel($level)) {
 				if (!self::$logFile) {
 					echo $varname . ': ';
-					var_dump($var);
+					if ($var !== false) var_dump($var);
 					return true;
 
 				} else {
-					$str = $varname . ': ' . PHP_EOL . var_export($var, true);
+					$str = $varname . ': ' . PHP_EOL;
+					if ($var !== false) $str .= var_export($var, true);
 					return file_put_contents(self::$logFile, $str, FILE_APPEND) ? true : false;
 				}
 			}
