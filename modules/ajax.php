@@ -2,6 +2,7 @@
 
 krnLoadLib('mail');
 krnLoadLib('settings');
+krnLoadLib('amo');
 
 class ajax extends krn_abstract{
 
@@ -48,7 +49,7 @@ class ajax extends krn_abstract{
 		// основывается на сверке user agent-ов
 		if ($capcha == $_SERVER['HTTP_USER_AGENT']) {
 			if ($name && $tel) {				
-				$form = $this->db->getRow('SELECT Title, Success FROM forms WHERE Code=?s', $code);				
+				$form = $this->db->getRow('SELECT Id, Title, Success FROM forms WHERE Code=?s', $code);				
 				$request = '';
 				if ($name) $request .= "Имя: $name\r\n";
 				if ($email) $request .= "E-mail: $email\r\n";
@@ -72,6 +73,14 @@ class ajax extends krn_abstract{
 				$letter['html'] .= str_replace("\r\n",'<br/>',$request);
 				$mail=new Mail();
 				$mail->SendMailFromSite($adminEmail, $letter['subject'], $letter['html']);
+
+				if ($name) $data['name'] = $name;
+				if ($tel) $data['phone'] = $tel;
+				if ($email) $data['email'] = $email;
+				$data['form_id'] = $form['Id'];
+				$data['form_name'] = $form['Title'];
+				$data['page_name'] = 'Главая страница';
+				AmoApi::SendData($data);
 											
 				$json = array(
 					'status' => true,
