@@ -3,6 +3,9 @@
 	krnLoadLib('settings');
 
 	class AmoApi {
+		const LOGLEVELMIN = 0;
+		const LOGLEVELMAX = 3;
+
 		protected static $subdomain = 'romanproudlyru'; // поддомен AmoCRM
 		protected static $clientSecret = 'NAydfNPW1q0Ht76tIFrQ6MPbTnNdOeU5OFuCUbSZncCI4QJjo3qZddW0CrlT5vVN'; // Секретный ключ
 		protected static $clientId = 'c9602e66-f38a-4251-9d71-ca29a9e985cb'; // ИД интеграции
@@ -12,6 +15,7 @@
 
 		protected static $debug = true;
 		protected static $logFile = '/amo.log';
+		protected static $logLevel = self::LOGLEVELMIN;
 
 		protected static $authLink = '';
 		protected static $redirectLink = '';
@@ -55,15 +59,25 @@
 			if (!self::$inited) self::Init();
 		}
 
-		protected static function DebugDump($varname, $var) {
-			if (!self::$logFile) {
-				echo $varname . ': ';
-				var_dump($var);
-				return true;
+		public static function SetLogLevel($level) {
+			self::$logLevel = $level;
+		}
 
-			} else {
-				$str = $varname . ': ' . PHP_EOL . var_export($var, true);
-				return file_put_contents(self::$logFile, $str, FILE_APPEND) ? true : false;
+		protected static function CheckLogLevel($level) {
+			return (self::$logLevel >= (int) $level);
+		}
+
+		protected static function DebugDump($varname, $var, $level) {
+			if (self::CheckLogLevel($level)) {
+				if (!self::$logFile) {
+					echo $varname . ': ';
+					var_dump($var);
+					return true;
+
+				} else {
+					$str = $varname . ': ' . PHP_EOL . var_export($var, true);
+					return file_put_contents(self::$logFile, $str, FILE_APPEND) ? true : false;
+				}
 			}
 		}
 		
@@ -80,6 +94,7 @@
 
 		protected static function Authorise($callback = false) {
 			//self::CheckInited();
+			if (self::$debug) self::DebugDump('Authorisation going', false, self::LOGLEVELMAX);
 
 			$amoData = [
 				'client_id'     => self::$clientId,
@@ -104,7 +119,7 @@
 			curl_close($curl);
 			$httpCode = (int) $httpCode;
 
-			if (self::$debug) self::DebugDump('Authorise', $out);
+			if (self::$debug) self::DebugDump('Authorise', $out, self::LOGLEVELMIN);
 
 			if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
@@ -125,6 +140,7 @@
 
 		protected static function Refresh($callback = false) {
 			//self::CheckInited();
+			if (self::$debug) self::DebugDump('Refresh going', false, self::LOGLEVELMAX);
 
 			$tokenData = self::GetTokenData();
 
@@ -151,7 +167,7 @@
 			curl_close($curl);
 			$httpCode = (int) $httpCode;
 
-			if (self::$debug) self::DebugDump('Refresh', $out);
+			if (self::$debug) self::DebugDump('Refresh', $out, self::LOGLEVELMIN);
 
 			if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 
@@ -320,6 +336,8 @@
 
 		public static function SendData($data = false) {
 			if (self::ReadyToWork('SendData')) {
+				if (self::$debug) self::DebugDump('SendData going', false, self::LOGLEVELMAX);
+
 				if ($data) self::$postData = $data;
 
 				$postData = self::PreparePostData();
@@ -329,7 +347,7 @@
 				    'Authorization: Bearer ' . self::$tokenData['access_token'],
 				];
 
-				if (self::$debug) self::DebugDump('SendData post', $out);
+				if (self::$debug) self::DebugDump('SendData post', $postData, self::LOGLEVELMIN);
 
 				$curl = curl_init();
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -347,7 +365,7 @@
 				$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 				$code = (int) $code;
 
-				if (self::$debug) self::DebugDump('SendData out', $out);
+				if (self::$debug) self::DebugDump('SendData out', $out, self::LOGLEVELMIN);
 
 				if ($httpCode < 200 || $httpCode > 204) die( "Error $httpCode. " . (isset(self::$errors[$httpCode]) ? self::$errors[$httpCode] : 'Undefined error') );
 

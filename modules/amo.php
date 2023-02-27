@@ -9,6 +9,7 @@ class amo extends krn_abstract {
 	}
 
 	public function GetResult() {
+		AmoApi::SetLogLevel(AmoApi::LOGLEVELMAX);
 		//AmoApi::PrintInfo();
 		AmoApi::SendData([
 			'name' => 'Роман',
@@ -18,12 +19,6 @@ class amo extends krn_abstract {
 			'form_name' => 'Форма заяки',
 			'page_name' => 'Главная',
 		]);
-	}
-
-	
-
-	public function Authorize() {
-
 	}
 
 }
