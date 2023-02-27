@@ -12,12 +12,12 @@ class amo extends krn_abstract {
 		AmoApi::SetLogLevel(AmoApi::LOGLEVELMAX);
 		//AmoApi::PrintInfo();
 		AmoApi::SendData([
-			'name' => 'Роман',
+			'name' => 'Новая заявка: Роман',
 			'phone' => '+79872608688',
 			'email' => 'sgtpepper2000@yandex.ru',
-			//'form_id' => 1,
-			//'form_name' => 'Форма заяки',
-			//'page_name' => 'Главная',
+			'form_id' => 1,
+			'form_name' => 'Форма заяки',
+			'page_name' => 'Главная',
 		]);
 	}
 
