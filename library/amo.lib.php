@@ -7,9 +7,9 @@
 		const LOGLEVELMAX = 3;
 
 		protected static $subdomain = 'romanproudlyru'; // поддомен AmoCRM
-		protected static $clientSecret = 'ezlw0G4rdOuUPth2VLKUhig614Dn7OBTNcVcWxUCW1Tc0vt9az9L7lDickDM6YzX'; // Секретный ключ
+		protected static $clientSecret = 'z8n1ByYJ9ShS3d7NRpMOUzQZELzxEAEzaXYaGhyJyRvHPM5FV8p49POhRc20c3Is'; // Секретный ключ
 		protected static $clientId = 'c9602e66-f38a-4251-9d71-ca29a9e985cb'; // ИД интеграции
-		protected static $authCode = 'def502008fce7bbab4ca8d612c5a195011058f1d7317cbe43531a924bd3d1b383327b3b56544b7e89ba0ac0fb898b5e3490ab3c277f3639ab4415f483246c7f6e0aeb814544862a6ae95b254636c20de70112486246698ab91518ac05babbd113bc9a7e449f73a1a09e67d1ed1aaf3cb7431d495472500ab62b113905c616058877126ee63f8be72ccdd09bde6425736988fdd69ec2872a751a7ed785cf56b9c517ae53e97aed98b7e0d53ea3795124140f175b4ab6cb7313220ca1eca7d41de34fbe9d4e8ebb2eb110bc67d74079fe4f2a2c903f16cbbe219b79ab59ab2c0a70b8ea443ef71c4b79eb95024edfdeca89dcab6cddcf758f04564542a97eaed5acd28478897dbababe79a8a29e7382b4fc9650a46627a411516fb553fb0f13a3a5ce7f80eebb1bdc31588f4f80ca1a273426e04cc8842468b6f37d3325252653e8949ef85d9fab037094d9f3baff9ffd9496c6de1caf27ccab7cc469767fe584d14af409096d65f69e9319e6eb171fca1a133e9be751c9bd91fb1521fb42ff0ba37a6e27ca21813449fcc228891a83703b758dc6b3e6ae64ee1c0225f8d4050b8303599ab75431602143fb2ffacd7b68790aa4c55a06b7f40540f746601de06423fe540990136932636903f3afa44440723e084df959e7e9f3953'; // Код авторизации
+		protected static $authCode = 'def50200cbaad842166c935b469d12d622369971a381134da4a38b09315b1ec3c93d9ed4772fd4be6fd211a5bce9c7d248f5482591e199b3599d870753b04cc52d9efd221dfb61897a6544dc6100db0450e6a49309df44390319c398d7a4235ef974256ea3aa757516e5294e976022fe992608a39ad9702e3db4013b7aa3f7e38b868b1c4362ab2a3ebf3229b9d4ce6bf3c7fcf282fddcb35b94466923486711e4a0a6c8eebb235b6eb5142c9e3b6758700e749a747929f46b9c8c2e3fbf8a6b86d1c16cebe7f9aed3105c0cd3e98c4d120a488f198d5a4504524984e2f6998a4b86c8f8162e48c46f4415400947a19029760685f4ae572b5652f983b7d4fd186b6d91ffbf62d03dd1383abdd17a7eab342bcd64fea96da2eab8b1d8cf81e541d2de6aa931653c47aadc1face7bd1bff95912dc36551761ed9870706a22c06f199f9a022e46870c11b98911a9f62643d413e83ae7f41d54ce0f87c74d208969b98f6b1c64948d368b3a4ca5ec9dc9ac71118bcea6ba32d723aee8379f6cfeb2096e7b340ce1ed43e4ccbfef9d7204cb902a2ac0a9f036b24aa28b8b134e667615620fdf969e5e9a78ae68f8725478afc09cba8a608f958931f76c63183a2499f209d032d0c3202f1fe909ce54f9e71fb144d9fe8eb271224850d'; // Код авторизации
 		protected static $pipelineId = 6439062;
 		protected static $amoUserId = 9230734;
 		protected static $statusId = 55025766;
@@ -38,6 +38,8 @@
 		protected static $inited = false;
 		protected static $tokenData;
 		protected static $postData;
+		protected static $attemptsCount = 0;
+		protected static $attemptsLimit = 1;
 		
 		public function __construct() {
 		}
@@ -229,11 +231,15 @@
 
 			// если нет токен-данных, нужна первичная авторизация
 			if (!self::$tokenData) {
+				self::$attemptsCount++;
+				if (self::$attemptsCount > self::$attemptsLimit) return false;
 				self::Authorise($callback);
 				return false;
 
 			// если данные есть, но их срок истек, нужен рефреш токена
 			} elseif (self::$tokenData['expires_ts'] - 60 < time()) {
+				self::$attemptsCount++;
+				if (self::$attemptsCount > self::$attemptsLimit) return false;
 				self::Refresh($callback);
 				return false;
 
