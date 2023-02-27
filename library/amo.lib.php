@@ -177,6 +177,9 @@
 			self::CheckInited();
 
 			self::$tokenData = self::GetTokenData();
+			// var_dump('ReadyToWork?');
+			// var_dump(self::$tokenData);
+			// var_dump(time());
 			// если нет токен-данных, нужна первичная авторизация
 			if (!self::$tokenData) {
 				self::Authorise($callback);
@@ -316,8 +319,8 @@
 				    'Authorization: Bearer ' . self::$tokenData['access_token'],
 				];
 
-				//echo 'SendData post: ';
-				//var_dump($postData);
+				echo 'SendData post: ';
+				var_dump($postData);
 
 				$curl = curl_init();
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -351,7 +354,7 @@
 				$result .= '<a href="' . self::$contactsCustomFieldsLink . '" target="_blank">Список полей контакта</a><br>';
 				$result .= '<a href="' . self::$leadsCustomFieldsLink . '" target="_blank">Список utm меток</a><br>';
 				$result .= '<br><br>';
-				$result .= '<a href="https://www.amocrm.ru/developers/content/crm_platform/custom-fields target="_blank">Документация</a>';
+				$result .= '<a href="https://www.amocrm.ru/developers/content/crm_platform/custom-fields" target="_blank">Документация</a>';
 
 				echo $result;
 			}
