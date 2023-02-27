@@ -14,7 +14,7 @@
 		protected static $amoUserId = 9230734;
 
 		protected static $debug = true;
-		protected static $logFile = '/amo.log';
+		protected static $logFile = '';
 		protected static $logLevel = self::LOGLEVELMIN;
 
 		protected static $authLink = '';
@@ -64,7 +64,6 @@
 		}
 
 		protected static function CheckLogLevel($level) {
-			var_dump(self::$logLevel >= (int) $level);
 			return (self::$logLevel >= (int) $level);
 		}
 
