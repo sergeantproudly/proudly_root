@@ -304,7 +304,12 @@
 					if (self::$postData['text']) {
 						$contacts['custom_fields_values'][] = [
 							'field_id' => self::$messageCustomFieldId,
-							'value' => self::$postData['text'],
+							'values' => [
+			                    [
+			                        'enum_code' => 'WORK',
+			                        'value' => self::$postData['text'],
+			                    ]
+			                ]
 						];
 					}
 					$preparedData['_embedded']['contacts'][] = $contacts;
