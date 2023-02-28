@@ -15,6 +15,7 @@ class amo extends krn_abstract {
 			'name' => 'Новая заявка: Роман',
 			'phone' => '+79872608688',
 			'email' => 'sgtpepper2000@yandex.ru',
+			'text' => 'Текстовое сообщение',
 			'form_id' => 1,
 			'form_name' => 'Форма заяки',
 			'page_name' => 'Главная',

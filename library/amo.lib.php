@@ -13,6 +13,7 @@
 		protected static $pipelineId = 6439062;
 		protected static $amoUserId = 9230734;
 		protected static $statusId = 55025766;
+		protected static $messageCustomFieldId = 1018487;
 
 		protected static $debug = true;
 		protected static $logFile = './amo.log';
@@ -298,6 +299,12 @@
 			                        'value' => self::$postData['phone'],
 			                    ]
 			                ]
+						];
+					}
+					if (self::$postData['text']) {
+						$contacts['custom_fields_values'][] = [
+							'field_id' => self::$messageCustomFieldId,
+							'value' => self::$postData['text'],
 						];
 					}
 					$preparedData['_embedded']['contacts'][] = $contacts;
