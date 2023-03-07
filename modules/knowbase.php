@@ -70,10 +70,10 @@ class knowbase extends krn_abstract{
 		$code = $_GET['r_code'];
 
 		$rec = $this->db->getRow('SELECT Id, Title, Image AS ImageFull, Image600_600 AS Image, Video, Text FROM kb_things WHERE Code = ?s', $code);
-		$tags = $this->db->getAll('SELECT Title FROM kb_tags_to_things t2t LEFT JOIN kb_tags t ON t2t.TagId = t.Id WHERE ThingId = ?i', $rec['Id']);
+		$tags = $this->db->getAll('SELECT Title, Code FROM kb_tags_to_things t2t LEFT JOIN kb_tags t ON t2t.TagId = t.Id WHERE ThingId = ?i', $rec['Id']);
 		$rec['Tags'] = '';
 		foreach ($tags as $tag) {
-			$rec['Tags'] .= (!empty($rec['Tags']) ? ', ' : '') . '<a href="#">#' . $tag['Title'] . '</a>';
+			$rec['Tags'] .= (!empty($rec['Tags']) ? ', ' : '') . '<a href="/knowbase-keyword-' . $tag['Code'] . '/">#' . $tag['Title'] . '</a>';
 		}
 		$rec['Alt'] = htmlspecialchars($rec['Title'], ENT_QUOTES);
 		if ($rec['Video']) {
