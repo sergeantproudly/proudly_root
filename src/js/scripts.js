@@ -241,6 +241,14 @@ function parseUrl(url) {
 	return parser;
 } 
 
+function redirect(url) {
+  window.location = url;
+}
+
+function reload(forceGet) {
+  window.location.reload(forceGet);
+} 
+
 function showModal(modal_id, dontHideOthers) {
 	var $modal = $('#' + modal_id);
 
@@ -869,6 +877,46 @@ function checkElements(elements,patterns,mode){
 		});
 		*/
 
+		// LIGHTBOXES
+		var galleries = new Array();
+		$('.js-lightbox').each(function(i, a) {
+			if (!$(a).is('[data-gallery]')) {
+				$(a).magnificPopup({
+					type: 'image',
+					removalDelay: 300,
+					callbacks: {
+				        beforeOpen: function() {
+				            $(this.contentContainer).removeClass('fadeOutUpBig').addClass('animated fadeInDownBig');
+				        },
+				        beforeClose: function() {
+				        	$(this.contentContainer).removeClass('fadeInDownBig').addClass('fadeOutUpBig');
+				        }
+				    },
+					midClick: true
+				});
+			} else {
+				if (typeof(galleries[$(a).attr('data-gallery')]) == 'undefined') galleries.push($(a).attr('data-gallery'));
+			}
+		});
+		$.each(galleries, function(i, gallery) {
+			$('.js-lightbox[data-gallery="' + gallery + '"]').magnificPopup({
+				type: 'image',
+				removalDelay: 300,
+				callbacks: {
+			        beforeOpen: function() {
+			            $(this.contentContainer).removeClass('fadeOutUpBig').addClass('animated fadeInDownBig');
+			        },
+			        beforeClose: function() {
+			        	$(this.contentContainer).removeClass('fadeInDownBig').addClass('fadeOutUpBig');
+			        }
+			    },
+				gallery: {
+					enabled: true
+				},
+				midClick: true
+			});
+		});
+
 		$('[data-modal]').each(function(index, object) {
 			$(object).click(function(e) {
 				if (this.tagName.toLowerCase == 'a') {
@@ -1057,6 +1105,15 @@ function checkElements(elements,patterns,mode){
         	setTimeout(function() {
         		$('#bl-banner .price').addClass('pulse-size-fast');
         	}, 2000);
+        }
+
+        // KNOW BASE
+        if ($('.knowbase').length) {
+        	$('.knowbase .search form').on('submit', function(e) {
+        		e.preventDefault();
+        		var keyword = $(this).children('input[type="text"]').val();
+        		redirect(keyword ? ('/knowbase-keyword-' + keyword + '/') : '/knowbase/');
+        	});
         }
 	})
 })(jQuery)

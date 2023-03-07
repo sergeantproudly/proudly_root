@@ -1,0 +1,27 @@
+<div id="layout" class="knowbase">
+	<div class="holder">
+		<div class="search">
+			<form action="/knowbase/" method="get">		
+				<input type="text" name="keyword" placeholder="Введите ключевик" value="<%KEYWORD%>" autocomplete="off">
+				<input type="submit" name="_submit" value="" class="submit">
+			</form>
+		</div>
+
+		<div class="thing">
+			<h1><a href="/knowbase/" class="backlink">←</a><%TITLE%></h1>
+			<div class="cols">
+				<div class="colleft">
+					<%POSTER%>
+				</div>
+				<div class="colright">
+					<div class="tags"><%TAGS%></div>
+					<%TEXT%>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="copyright">&copy; Proudly, 2023</div>
+	</div>
+</div>

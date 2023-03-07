@@ -20,6 +20,7 @@ const jsFiles = [
 	'./src/js/jquery.mousewheel.min.js',
 	'./src/js/jquery.animateNumber.js',
 	'./src/js/jquery.inputmask.js',
+	'./src/js/jquery.magnific-popup.js',
 	'./src/js/slick.min.js',
 	'./src/js/wow.min.js',
 	'./src/js/scripts.js'
