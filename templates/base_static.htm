@@ -1,0 +1,92 @@
+<div id="layout">
+		<header>
+			<div class="holder wide">
+				<a href="<%SITE_URL%>" id="logo"><img src="images/logo.svg" alt="Proudly" title="Proudly"></a>
+
+				<%MN_MAIN%>
+
+				<%BL_CITY%>
+
+				<a href="mailto:<%EMAIL%>" class="email"><%EMAIL%></a>
+				<a href="tel:<%TELLINK%>" class="phone"><%TEL%></a>
+
+				<button class="btn" data-modal="modal-feedback">Рассказать о задаче</button>
+			</div>
+		</header>
+
+		<%BREAD_CRUMBS%>
+
+		<section id="static-page">
+			<div class="holder">
+				<h1><%TITLE%></h1>
+				<div class="text">
+					<%CONTENT%>
+				</div>
+			</div>
+		</section>
+
+		<footer id="footer">
+			<div class="holder">
+				<a href="tel:<%TELLINK%>" class="phone"><%TEL%></a>
+				<a href="mailto:<%EMAIL%>" class="email"><%EMAIL%></a>
+				<div class="footer-right">
+					<address><%ADDRESS%></address>
+					<a href="/privacy/" class="privacy-link" target="_blank">Политика обработки персональных данных</a>
+				</div>
+			</div>
+		</footer>
+	</div>
+
+	<div class="modal-fadeout"></div>
+
+	<div class="modal-wrapper" id="modal-feedback">
+		<div class="modal">
+			<div class="contents">
+				<div class="modal-close" title="Закрыть"></div>
+
+				<div class="h1">Расскажите о задаче</div>
+
+				<form action="/ajax-act-Feedback/" method="post">
+					<div class="form">
+						<div class="fld-holder">
+							<input type="text" name="name" placeholder="Имя" maxlength="255" required>
+							<i>Имя</i>
+						</div>
+						<div class="fld-holder">
+							<input type="tel" name="tel" placeholder="Телефон" maxlength="255" required>
+							<i>Телефон</i>
+						</div>
+						<div class="fld-holder">
+							<input type="text" name="text" placeholder="Задача" maxlength="255">
+							<i>Задача</i>
+						</div>
+
+						<div class="agree"><input type="checkbox" name="agree" id="agree-feedback-modal" required><label for="agree-feedback-modal">Я согласен на <a href="/privacy/" target="_blank">обработку своих данных</a></label></div>
+
+						<div class="btn-line">
+							<button class="btn type2" name="submit_btn">Отправить</button>
+							<input type="hidden" name="code" value="task"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal-wrapper" id="modal-done">
+		<div class="modal">
+			<div class="contents">
+				<div class="modal-close" title="Закрыть"></div>
+
+				<div class="h1">Спасибо!</div>
+
+				<div class="text">
+					<p>Мы уже получили заявку и скоро вам ответим.</p>
+				</div>
+
+				<div class="btn-line">
+					<button class="btn type2 js-close">Отлично</button>
+				</div>
+			</div>
+		</div>
+	</div>
