@@ -2285,3 +2285,47 @@ footer {
 		padding: 7vh 0 2vh;
 	}
 }
+
+.cookie-notice {
+	position: fixed;
+	left: 20px;
+	bottom: 20px;
+	z-index: 1000;
+	width: 320px;
+	max-width: calc(100% - 40px);
+	padding: 20px;
+	font-size: 13px;
+	line-height: 1.45;
+	color: $color-text;
+	background: #fff;
+	@include radius(12px);
+	box-shadow: 0 8px 30px rgba(0, 0, 0, .2);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(20px);
+	transition: opacity .5s, transform .5s, visibility .5s;
+
+	&.visible {
+		opacity: 0.8;
+		visibility: visible;
+		transform: none;
+	}
+
+	p {
+		margin: 0 0 15px;
+	}
+
+	a {
+		color: $color-text-links;
+		text-decoration: underline;
+	}
+
+	.btn {
+		display: block;
+		height: auto;
+		margin-left: auto;
+		margin-top: -5px;
+		padding: 9px 22px;
+		font-size: 13px;
+	}
+}

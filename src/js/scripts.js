@@ -1117,3 +1117,28 @@ function checkElements(elements,patterns,mode){
         }
 	})
 })(jQuery)
+
+
+// COOKIE NOTICE
+(function ($) {
+	var key = 'cookieNoticeAccepted';
+	try {
+		if (localStorage.getItem(key)) return;
+	} catch (e) {}
+
+	$(function () {
+		var $notice = $('#cookie-notice');
+		if (!$notice.length) return;
+
+		setTimeout(function () {
+			$notice.addClass('visible');
+		}, 2500);
+
+		$notice.find('.btn').click(function () {
+			try {
+				localStorage.setItem(key, '1');
+			} catch (e) {}
+			$notice.removeClass('visible');
+		});
+	});
+})(jQuery);
