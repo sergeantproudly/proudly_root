@@ -1,4 +1,4 @@
-<div id="layout">
+<div id="layout" class="home">
 		<header>
 			<div class="holder wide">
 				<a href="<%SITE_URL%>" id="logo"><img src="images/logo.svg" alt="Proudly" title="Proudly"></a>
@@ -10,231 +10,449 @@
 				<a href="mailto:<%EMAIL%>" class="email"><%EMAIL%></a>
 				<a href="tel:<%TELLINK%>" class="phone"><%TEL%></a>
 
-				<button class="btn" data-modal="modal-feedback">Рассказать о задаче</button>
+				<div class="messengers">
+					<a href="https://wa.me/79872608688" class="msg wa" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+					<a href="https://t.me/romanproudly" class="msg tg" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram"><svg viewBox="0 0 1024 1024" aria-hidden="true"><path transform="matrix(1 0 0 -1 0 960)" fill-rule="evenodd" d="M512 960Q406 960 313 920Q220 879 150.5 809.5Q81 740 40 647Q0 554 0 448Q0 342 40 249Q81 156 150.5 86.5Q220 17 313 -24Q406 -64 512 -64Q618 -64 711 -24Q804 17 873.5 86.5Q943 156 984 249Q1024 342 1024 448Q1024 554 984 647Q943 740 873.5 809.5Q804 879 711 920Q618 960 512 960ZM936 448A424 424 0 1 0 88 448A424 424 0 1 0 936 448ZM220 466 714 657Q731 663 743.0 652.5Q755 642 749 616L665 220Q660 199 648.0 194.0Q636 189 619 199L491 293Q491 293 489.0 294.5Q487 296 484 298Q455 319 453.5 353.0Q452 387 478 411L650 566Q657 572 650.5 575.0Q644 578 634 571L400 424Q372 406 338.5 401.5Q305 397 273 407L214 426Q193 432 193.5 444.0Q194 456 220 466Z"/></svg></a>
+				</div>
 			</div>
 		</header>
 
 		<section id="direction">
 			<div class="holder">
-				<h1 class="animated fadeInRight">Разрабатываем сайты, <br/>полезные бизнесу</h1>
+				<div class="orb" aria-hidden="true"><span class="ring"></span><span class="sphere"></span><span class="orbit"><i class="s1"></i><i class="s2"></i><i class="s3"></i></span></div>
+				<h1 class="animated fadeInRight"><span>Сайты, сервисы</span> <span>и&nbsp;ИИ-решения</span> <span>для бизнеса</span></h1>
 				<div class="text animated fadeInRight delay-01s">
-					<p>Хотите узнать стоимость и получить консультацию? <a href="#" data-modal="modal-feedback">Да,&nbsp;хочу</a></p>
+					<p>Дизайн, разработка и поддержка сайтов для компаний, которым важны заявки и&nbsp;продажи, а&nbsp;не&nbsp;просто красивая картинка.</p>
 				</div>
+				<div class="actions animated fadeInRight delay-02s">
+					<button class="btn type2" data-modal="modal-feedback">Обсудить проект</button>
+					<a href="#portfolio" class="ghost js-anchor"><span>Смотреть работы</span><i class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i></a>
+				</div>
+				<ul class="facts">
+					<li><b>50+</b><span>запущенных проектов</span></li>
+					<li><b>15 лет</b><span>разрабатываем решения для бизнеса</span></li>
+					<li><b>30+</b><span>довольных клиентов</span></li>
+				</ul>
 			</div>
 		</section>
 
 		<section id="portfolio">
-			<ul>
-				<li style="background: linear-gradient(180deg, #c2e23f 0%, #c2e23f 100%)">
-					<div class="inner">
-						<div class="title" style="color:#232c32;">Промвкладыш</div>
-						<p style="color:#232c32;">Сайт компании, занимающейся производством индукционных вкладышей и платинок для герметизации тары</p>
-						<a href="https://промвкладыш.рф" target="_blank"><button class="btn" style="border-color:#232c32;color:#232c32;">Перейти на сайт</button></a>
-					</div>
-				</li>
-				<li style="background: #361787;">
-					<div class="inner">
-						<div class="title">ПСК</div>
-						<p>Сайт для компании, которая производит комплексные поставки оборудования и материалов для сферы энергетики</p>
-						<a href="https://psk-si.ru" target="_blank"><button class="btn">Перейти на сайт</button></a>
-					</div>
-				</li>
-				<li style="background: linear-gradient(rgb(47, 203, 203) -0.57%, rgb(0, 107, 131) 100%)">
-					<div class="inner">
-						<div class="title">Tele Whale</div>
-						<p>Сайт глобального провайдера телекоммуникационных и IT&nbsp;услуг</p>
-						<a href="https://tele-whale.com" target="_blank"><button class="btn">Перейти на сайт</button></a>
-					</div>
-				</li>
-				<li style="background: rgb(6,29,129);background: linear-gradient(90deg, rgba(6,29,129,1) 0%, rgba(6,55,139,1) 50%, rgba(6,62,157,1) 100%);">
-					<div class="inner">
-						<div class="title">FEBO TELECOM</div>
-						<p>Сайт провайдера телекоммуникационных услуг, специализирующегося на виртуальных номерах, международной связи и мобильном интернете</p>
-						<a href="https://febotele.com" target="_blank"><button class="btn">Перейти на сайт</button></a>
-					</div>
-				</li>
-				<li style="background: linear-gradient(110.71deg, #F7391F 0.64%, #FF5A35 88.89%);">
-					<div class="inner">
-						<div class="title">Enso Realty</div>
-						<p>Дизайн сайта для компании, занимающейся элитной загородной недвижимостью</p>
-						<a href="https://ensorealty.ru" target="_blank"><button class="btn">Перейти на сайт</button></a>
-					</div>
-				</li>
-				<li style="background: rgb(39,161,254); background: linear-gradient(90deg, rgba(39,161,254,1) 0%, rgba(27,155,252,1) 50%, rgba(15,149,250,1) 100%);">
-					<div class="inner">
-						<div class="title">DOTT Telecom</div>
-						<p>Сайт поставщика телекоммуникационных услуг, связывающего бизнес операторов по всему миру</p>
-						<a href="https://dott.ee" target="_blank"><button class="btn">Перейти на сайт</button></a>
-					</div>
-				</li>
-				<li style="background: rgb(246,95,157);background: linear-gradient(90deg, rgba(246,95,157,1) 0%, rgba(231,66,134,1) 50%, rgba(191,40,102,1) 100%);">
-					<div class="inner">
-						<div class="title">Febo.mobi</div>
-						<p>Одностраничный промо-сайт для кэшбэк-сервиса, где наглядно показали, как быстро и несложно им можно воспользоваться</p>
-						<a href="https://promo.febo.mobi/" target="_blank"><button class="btn">Перейти на сайт</button></a>
-					</div>
-				</li>
-				<li style="background: #023869;">
-					<div class="inner">
-						<div class="title">СМАРТЭНЕРГО</div>
-						<p>Сайт для компании, специализирующейся на создании и реализации «под ключ» комплексных решений на базе интеллектуальных систем учета электроэнергии</p>
-						<a href="https://smartenergo-rt.ru/" target="_blank"><button class="btn">Перейти на сайт</button></a>
-					</div>
-				</li>
-				<!--
-				<li style="background: linear-gradient(180deg, #1D93C9 0%, #35ACE2 100%)">
-					<div class="inner">
-						<div class="title">Байкал Климат</div>
-						<p>Сайт климатической компании, которая проектирует и устанавливает вентиляцию для крупных сооружений</p>
-						<a href="http://baikalklimat.ru" target="_blank"><button class="btn">Перейти на сайт</button></a>
-					</div>
-				</li>
-			-->
-				<li style="background: rgb(33,126,241);background: linear-gradient(130deg, rgba(33,126,241,1) 0%, rgba(15,98,202,1) 50%, rgba(10,83,175,1) 100%);">
-					<div class="inner">
-						<div class="title">РОСТ</div>
-						<p>Сайт консалтинговой группы, которая с 2010 года оказывает услуги в сфере вступления в СРО, получении лицензий и сертификатов ISO, регистрации и законной ликвидации бизнеса</p>
-						<a href="https://сророст.рф/" target="_blank"><button class="btn">Перейти на сайт</button></a>
-					</div>
-				</li>
-			</ul>
-		</section>
+			<div class="holder">
+				<h2>Работы</h2>
+				<div class="section-lead">
+					<p>От производства до телекома: каждый проект начинается с&nbsp;задачи бизнеса, а&nbsp;не&nbsp;с&nbsp;готового шаблона.</p>
+				</div>
 
-		<%BL_BANNER%>
+				<!-- Скриншот: заменить <div class="shot empty">…</div> на <div class="shot"><img src="images/works/NAME.jpg" alt=""></div> -->
+				<ul class="works">
+					<li>
+						<a class="work" href="https://промвкладыш.рф" target="_blank" rel="noopener" style="--c1:#c2e23f;--c2:#9fbf22;">
+							<div class="cover"><span class="domain">промвкладыш.рф</span><span class="go"><span>Открыть сайт</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></i></span><div class="browser"><div class="bar"><i></i><i></i><i></i></div><div class="shot empty"><span>Промвкладыш</span></div></div></div>
+							<div class="info">
+								<h3>Промвкладыш</h3>
+								<p>Сайт компании, занимающейся производством индукционных вкладышей и платинок для герметизации тары</p>
+								<div class="tags"><span>Сайт компании</span><span>Производство</span></div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="work" href="https://psk-si.ru" target="_blank" rel="noopener" style="--c1:#361787;--c2:#5232c4;">
+							<div class="cover"><span class="domain">psk-si.ru</span><span class="go"><span>Открыть сайт</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></i></span><div class="browser"><div class="bar"><i></i><i></i><i></i></div><div class="shot empty"><span>ПСК</span></div></div></div>
+							<div class="info">
+								<h3>ПСК</h3>
+								<p>Сайт для компании, которая производит комплексные поставки оборудования и материалов для сферы энергетики</p>
+								<div class="tags"><span>Сайт компании</span><span>Энергетика</span></div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="work" href="https://tele-whale.com" target="_blank" rel="noopener" style="--c1:#2fcbcb;--c2:#006b83;">
+							<div class="cover"><span class="domain">tele-whale.com</span><span class="go"><span>Открыть сайт</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></i></span><div class="browser"><div class="bar"><i></i><i></i><i></i></div><div class="shot empty"><span>Tele Whale</span></div></div></div>
+							<div class="info">
+								<h3>Tele Whale</h3>
+								<p>Сайт глобального провайдера телекоммуникационных и IT&nbsp;услуг</p>
+								<div class="tags"><span>Сайт компании</span><span>Телеком</span></div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="work" href="https://febotele.com" target="_blank" rel="noopener" style="--c1:#063e9d;--c2:#061d81;">
+							<div class="cover"><span class="domain">febotele.com</span><span class="go"><span>Открыть сайт</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></i></span><div class="browser"><div class="bar"><i></i><i></i><i></i></div><div class="shot empty"><span>FEBO TELECOM</span></div></div></div>
+							<div class="info">
+								<h3>FEBO TELECOM</h3>
+								<p>Сайт провайдера телекоммуникационных услуг, специализирующегося на виртуальных номерах, международной связи и мобильном интернете</p>
+								<div class="tags"><span>Сайт компании</span><span>Телеком</span></div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="work" href="https://ensorealty.ru" target="_blank" rel="noopener" style="--c1:#FF5A35;--c2:#F7391F;">
+							<div class="cover"><span class="domain">ensorealty.ru</span><span class="go"><span>Открыть сайт</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></i></span><div class="browser"><div class="bar"><i></i><i></i><i></i></div><div class="shot empty"><span>Enso Realty</span></div></div></div>
+							<div class="info">
+								<h3>Enso Realty</h3>
+								<p>Дизайн сайта для компании, занимающейся элитной загородной недвижимостью</p>
+								<div class="tags"><span>Дизайн</span><span>Недвижимость</span></div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="work" href="https://dott.ee" target="_blank" rel="noopener" style="--c1:#27a1fe;--c2:#0f95fa;">
+							<div class="cover"><span class="domain">dott.ee</span><span class="go"><span>Открыть сайт</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></i></span><div class="browser"><div class="bar"><i></i><i></i><i></i></div><div class="shot empty"><span>DOTT Telecom</span></div></div></div>
+							<div class="info">
+								<h3>DOTT Telecom</h3>
+								<p>Сайт поставщика телекоммуникационных услуг, связывающего бизнес операторов по всему миру</p>
+								<div class="tags"><span>Сайт компании</span><span>Телеком</span></div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="work" href="https://promo.febo.mobi/" target="_blank" rel="noopener" style="--c1:#f65f9d;--c2:#bf2866;">
+							<div class="cover"><span class="domain">promo.febo.mobi</span><span class="go"><span>Открыть сайт</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></i></span><div class="browser"><div class="bar"><i></i><i></i><i></i></div><div class="shot empty"><span>Febo.mobi</span></div></div></div>
+							<div class="info">
+								<h3>Febo.mobi</h3>
+								<p>Одностраничный промо-сайт для кэшбэк-сервиса, где наглядно показали, как быстро и несложно им можно воспользоваться</p>
+								<div class="tags"><span>Промо-сайт</span><span>Финтех</span></div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="work" href="https://smartenergo-rt.ru/" target="_blank" rel="noopener" style="--c1:#0a5ca8;--c2:#023869;">
+							<div class="cover"><span class="domain">smartenergo-rt.ru</span><span class="go"><span>Открыть сайт</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></i></span><div class="browser"><div class="bar"><i></i><i></i><i></i></div><div class="shot empty"><span>СМАРТЭНЕРГО</span></div></div></div>
+							<div class="info">
+								<h3>СМАРТЭНЕРГО</h3>
+								<p>Сайт для компании, специализирующейся на создании и реализации «под ключ» комплексных решений на базе интеллектуальных систем учета электроэнергии</p>
+								<div class="tags"><span>Сайт компании</span><span>Энергетика</span></div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="work" href="https://сророст.рф/" target="_blank" rel="noopener" style="--c1:#217ef1;--c2:#0a53af;">
+							<div class="cover"><span class="domain">сророст.рф</span><span class="go"><span>Открыть сайт</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></i></span><div class="browser"><div class="bar"><i></i><i></i><i></i></div><div class="shot empty"><span>РОСТ</span></div></div></div>
+							<div class="info">
+								<h3>РОСТ</h3>
+								<p>Сайт консалтинговой группы, которая с 2010 года оказывает услуги в сфере вступления в СРО, получении лицензий и сертификатов ISO, регистрации и законной ликвидации бизнеса</p>
+								<div class="tags"><span>Сайт компании</span><span>Консалтинг</span></div>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</section>
 
 		<section id="services">
 			<div class="holder">
 				<h2>Наши услуги</h2>
-				<div class="text">
-					<p>Наша основная экспертиза — разработка сайта под ключ. <br>Однако, любую услугу из цикла разработки проекта мы можем предоставить отдельно. </p>
+				<div class="section-lead">
+					<p>Ведём проект целиком или берём отдельное направление: от дизайна и разработки до поддержки и продвижения.</p>
 				</div>
 
-				<ul>
-					<li>
-						<h3>Сайт под ключ</h3>
-						<div class="exp">Дизайн/адаптивная верстка/программирование/тестирование/запуск</div>
-						<div class="toggler"></div>
-						<div class="desc">
-							<p>Мы знаем, каким сложным может быть процесс разработки сайта. Чтобы все прошло гладко, нужно учесть массу нюансов: правильно обозначить задачи, поставить цели, наладить коммуникацию, спрогнозировать сроки, выбрать модель ведения проекта, наконец &#151; запустить и протестировать сайт. Все это мы прошли не один раз, поэтому не учимся на деньги наших клиентов.</p>
-							<div class="btn-line">
-								<button class="btn" data-modal="modal-question">Задать вопрос</button>
-							</div>
+				<div class="rows">
+					<article class="row">
+						<div class="head">
+						<div class="ico c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><path d="M6.5 6.5h.01M9.5 6.5h.01"/><path d="M7 13h5M7 16h3"/><rect x="14.5" y="12" width="3.5" height="4.5" rx=".8"/></svg></div>
+							<div class="num">01</div>
+							<h3>Сайты и веб-сервисы</h3>
+							<div class="exp">Корпоративные сайты / лендинги / порталы / личные кабинеты</div>
 						</div>
-					</li>
-					<li>
-						<h3>UX/UI-DESIGN</h3>
-						<div class="exp">Прототипирование/дизайн/анимация</div>
-						<div class="toggler"></div>
-						<div class="desc">
-							<p>Удобный сайт &#151; это прежде всего хорошо спроектированный интерфейс. Когда продуманы пользовательские маршруты, проведены исследования рынка, конкурентов и найдены best practices в сфере бизнеса клиента.  А хороший визуальный стиль делает использование такого интерфейса приятным.</p>
-							<div class="btn-line">
-								<button class="btn" data-modal="modal-question">Задать вопрос</button>
-							</div>
+						<div class="body">
+							<p>Разрабатываем сайты и веб-сервисы под ключ: от брифа и прототипа до запуска. Корпоративные сайты, лендинги, B2B-порталы, личные кабинеты и сервисы с интеграциями.</p>
+							<ul class="incl">
+								<li>Прототип и дизайн</li>
+								<li>Адаптивная верстка</li>
+								<li>Frontend и Backend</li>
+								<li>Интеграции и API</li>
+								<li>Тестирование и запуск</li>
+							</ul>
+							<div class="foot"><button class="ask" data-modal="modal-question"><span>Задать вопрос</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button></div>
 						</div>
-					</li>
-					<li>
-						<h3>Frontend</h3>
-						<div class="exp">Адаптивная верстка/javascript/фреймворки</div>
-						<div class="toggler"></div>
-						<div class="desc">
-							<p>Знаем, что дизайн не всегда может получиться таким, каким он был задуман. Поэтому, научились контролировать процесс верстки макетов, а также оптимизировать нагрузку на стороне клиента. В нашем арсенале React, Vue, разработка и поддержка REST API интерфейсов XML/JSON, работа с Jquery, Bootstrap, LESS, SASS, BEM. Полностью адаптивная современная верстка на HTML5 и CSS3, работающая на всех браузерах и устройствах.</p>
-							<div class="btn-line">
-								<button class="btn" data-modal="modal-question">Задать вопрос</button>
-							</div>
+					</article>
+					<article class="row">
+						<div class="head">
+						<div class="ico c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/><path d="M9.5 12.5a2.5 2.5 0 0 0 5 0"/></svg></div>
+							<div class="num">02</div>
+							<h3>Интернет-магазины</h3>
+							<div class="exp">Каталог / корзина / оплата / интеграции</div>
 						</div>
-					</li>
-					<li>
-						<h3>Backend</h3>
-						<div class="exp">PHP/CRM/CMS/API</div>
-						<div class="toggler"></div>
-						<div class="desc">
-							<p>Выстраиваем серверную бизнес-логику веб-проектов, реализуем архитектурные решения для интеграции клиентских систем, разработка REST API. Работаем с PHP5/7, SQL, Laravel, Symfony. Crm и cms: Wordpress, 1C-Bitrix, Opencart и другие.</p>
-							<div class="btn-line">
-								<button class="btn" data-modal="modal-question">Задать вопрос</button>
-							</div>
+						<div class="body">
+							<p>Делаем интернет-магазины и каталоги: удобная витрина, корзина и онлайн-оплата, интеграции с 1С, CRM и службами доставки. Работаем с Opencart, 1С-Битрикс, WordPress и на собственной разработке.</p>
+							<ul class="incl">
+								<li>Каталог и фильтры</li>
+								<li>Онлайн-оплата</li>
+								<li>Интеграция с 1С и CRM</li>
+								<li>Доставка</li>
+							</ul>
+							<div class="foot"><button class="ask" data-modal="modal-question"><span>Задать вопрос</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button></div>
 						</div>
-					</li>
-					<li>
-						<h3>Графический дизайн</h3>
-						<div class="exp">Логотипы/презентации/полиграфия</div>
-						<div class="toggler"></div>
-						<div class="desc">
-							<p>Мы умеем разрабатывать не только цифровые продукты, но и физические носители. Например, мы можем разработать эффектную полиграфию для выступления на конференциях, визитки, которые не хочется выпускать из рук, или обновить весь фирменный стиль компании.</p>
-							<div class="btn-line">
-								<button class="btn" data-modal="modal-question">Задать вопрос</button>
-							</div>
+					</article>
+					<article class="row">
+						<div class="head">
+						<div class="ico c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/><path d="M12 7h5M12 17h5"/></svg></div>
+							<div class="num">03</div>
+							<h3>Поддержка, развитие, DevOps</h3>
+							<div class="exp">Сопровождение / доработки / хостинг / безопасность</div>
 						</div>
-					</li>
-				</ul>
-			</div>
-		</section>
-
-		<section class="lightgray" id="about">
-			<div class="holder">
-				<h2>О нас</h2>
-				<div class="text">
-					<p>Мы разрабатываем сайты, которые несут пользу для бизнеса клиента. Собираем и анализируем требования, проектируем функции, разрабатываем дизайн-макеты и запускаем. Затем сопровождаем проект столько, сколько потребует заказчик.</p>
+						<div class="body">
+							<p>Берём сайт на сопровождение после запуска: исправляем ошибки, вносим правки, развиваем функциональность, следим за хостингом, резервными копиями и безопасностью.</p>
+							<ul class="incl">
+								<li>Техническая поддержка</li>
+								<li>Доработки и развитие</li>
+								<li>Хостинг и серверы</li>
+								<li>Резервные копии</li>
+								<li>Мониторинг и безопасность</li>
+							</ul>
+							<div class="foot"><button class="ask" data-modal="modal-question"><span>Задать вопрос</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button></div>
+						</div>
+					</article>
+					<article class="row">
+						<div class="head">
+						<div class="ico c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3l1.9 5.1L17 10l-5.1 1.9L10 17l-1.9-5.1L3 10l5.1-1.9L10 3z"/><path d="M18 14l.9 2.1L21 17l-2.1.9L18 20l-.9-2.1L15 17l2.1-.9L18 14z"/></svg></div>
+							<div class="num">04</div>
+							<h3>ИИ-решения</h3>
+							<div class="exp">Чат-боты / ИИ-агенты / ИИ-сервисы</div>
+						</div>
+						<div class="body">
+							<p>Внедряем ИИ там, где он экономит время и помогает получать заявки: чат-боты для сайта и мессенджеров, ИИ-агенты для рутинных задач, сервисы на базе языковых моделей.</p>
+							<ul class="incl">
+								<li>Чат-боты</li>
+								<li>ИИ-агенты</li>
+								<li>ИИ-ассистенты для поддержки и продаж</li>
+								<li>Интеграция с сайтом и CRM</li>
+							</ul>
+							<div class="foot"><button class="ask" data-modal="modal-question"><span>Задать вопрос</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button></div>
+						</div>
+					</article>
+					<article class="row">
+						<div class="head">
+						<div class="ico c5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="4.5"/><rect x="12.5" y="12.5" width="8" height="8" rx="1.8"/><path d="M3.5 20.5l4-7 4 7h-8z"/></svg></div>
+							<div class="num">05</div>
+							<h3>Брендинг и продуктовый дизайн</h3>
+							<div class="exp">Фирменный стиль / UX/UI / дизайн-системы</div>
+						</div>
+						<div class="body">
+							<p>Проектируем интерфейсы и фирменный стиль: изучаем рынок и пользователей, рисуем прототипы и дизайн, собираем дизайн-систему и готовим носители от логотипа до презентаций.</p>
+							<ul class="incl">
+								<li>UX/UI-дизайн</li>
+								<li>Прототипы</li>
+								<li>Дизайн-система</li>
+								<li>Логотип и фирменный стиль</li>
+								<li>Презентации и полиграфия</li>
+							</ul>
+							<div class="foot"><button class="ask" data-modal="modal-question"><span>Задать вопрос</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button></div>
+						</div>
+					</article>
+					<article class="row">
+						<div class="head">
+						<div class="ico c6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><rect x="5" y="12" width="3.5" height="8" rx=".8"/><rect x="10.3" y="8" width="3.5" height="12" rx=".8"/><rect x="15.5" y="4" width="3.5" height="16" rx=".8"/></svg></div>
+							<div class="num">06</div>
+							<h3>SEO, реклама, аналитика</h3>
+							<div class="exp">Продвижение / контекст / веб-аналитика</div>
+						</div>
+						<div class="body">
+							<p>Помогаем сайту приводить клиентов: технический SEO-аудит и продвижение, контекстная и таргетированная реклама, настройка Яндекс Метрики, целей и сквозной аналитики.</p>
+							<ul class="incl">
+								<li>SEO-аудит и продвижение</li>
+								<li>Яндекс Директ</li>
+								<li>Таргетированная реклама</li>
+								<li>Метрика и цели</li>
+								<li>Сквозная аналитика</li>
+							</ul>
+							<div class="foot"><button class="ask" data-modal="modal-question"><span>Задать вопрос</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button></div>
+						</div>
+					</article>
 				</div>
-
-				<ul>
-					<li>
-						<h3>5</h3>
-						<p>Лет упорной работы</p>
-					</li><!--
-					--><li>
-						<h3>47</h3>
-						<p>Запущенных проектов</p>
-					</li><!--
-					--><li>
-						<h3>9</h3>
-						<p>Специалистов в команде</p>
-					</li>
-				</ul>
-			</div>
-		</section>
-
-		<section class="darkgray" id="feedback">
-			<div class="holder">
-				<h2>Давайте начнем новый проект вместе!</h2>
-
-				<form action="/ajax-act-Feedback/" method="post">
-					<div class="form">
-						<div class="col-half">
-							<div class="fld-holder">
-								<input type="text" name="name" placeholder="Имя" maxlength="255" required>
-								<i>Имя</i>
-							</div>
-						</div><!--
-						--><div class="col-half">
-							<div class="fld-holder">
-								<input type="tel" name="tel" placeholder="Телефон" required>
-								<i>Телефон</i>
-							</div>
-						</div>
-						<div class="fld-holder">
-							<input type="text" name="text" placeholder="Коротко опишите задачу">
-							<i>Коротко опишите задачу</i>
-						</div>
-
-						<div class="agree"><input type="checkbox" name="agree" id="agree-feedback" required><label for="agree-feedback">Я согласен на <a href="/privacy/" target="_blank">обработку своих персональных данных</a></label></div>
-
-						<div class="btn-line">
-							<button class="btn type3" name="submit_btn">Отправить</button>
-							<input type="hidden" name="code" value="feedback"/>
+				<div class="cta">
+					<div class="deco" aria-hidden="true"><span class="ring"></span><span class="sphere"></span><span class="drop"></span></div>
+					<div class="text-side">
+						<h3>Не знаете, с&nbsp;чего начать?</h3>
+						<p>Расскажите, что нужно бизнесу, в&nbsp;свободной форме. Подскажем, обсудим условия, оценим сроки и&nbsp;стоимость.</p>
+						<div class="cta-actions">
+							<button class="btn type2" data-modal="modal-feedback">Рассказать о задаче</button>
+							<a href="https://wa.me/79872608688" class="chat wa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>WhatsApp</a>
+							<a href="https://t.me/romanproudly" class="chat tg" target="_blank" rel="noopener"><svg viewBox="0 0 1024 1024" aria-hidden="true"><path transform="matrix(1 0 0 -1 0 960)" fill-rule="evenodd" d="M512 960Q406 960 313 920Q220 879 150.5 809.5Q81 740 40 647Q0 554 0 448Q0 342 40 249Q81 156 150.5 86.5Q220 17 313 -24Q406 -64 512 -64Q618 -64 711 -24Q804 17 873.5 86.5Q943 156 984 249Q1024 342 1024 448Q1024 554 984 647Q943 740 873.5 809.5Q804 879 711 920Q618 960 512 960ZM936 448A424 424 0 1 0 88 448A424 424 0 1 0 936 448ZM220 466 714 657Q731 663 743.0 652.5Q755 642 749 616L665 220Q660 199 648.0 194.0Q636 189 619 199L491 293Q491 293 489.0 294.5Q487 296 484 298Q455 319 453.5 353.0Q452 387 478 411L650 566Q657 572 650.5 575.0Q644 578 634 571L400 424Q372 406 338.5 401.5Q305 397 273 407L214 426Q193 432 193.5 444.0Q194 456 220 466Z"/></svg>Telegram</a>
 						</div>
 					</div>
-				</form>
+				</div>
+			</div>
+		</section>
+
+		<section id="reviews">
+			<div class="holder">
+				<h2>Что говорят клиенты</h2>
+				<div class="section-lead">
+					<p>Благодарственные письма наших клиентов. Нам важно, что к&nbsp;нам возвращаются и&nbsp;продолжают работать на&nbsp;долгие годы.</p>
+				</div>
+
+				<div class="reviews-grid">
+					<article class="rv rv-lime">
+						<div class="top"><span class="plate"><img class="logo" width="129" height="30" src="images/reviews/polistamp.svg" alt="ГК «Полиштамп»"></span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span></div>
+						<blockquote><p>«Мы не ограничим наше сотрудничество одним проектом, а будем продолжать дальнейшее плотное взаимодействие по решению целого ряда актуальных задач.»</p></blockquote>
+						<div class="bottom">
+							<div class="who"><div class="name">ГК «Полиштамп»</div><div class="what">Ребрендинг корпоративного сайта</div></div>
+							<button type="button" class="read" data-modal="modal-review-1">Читать письмо</button>
+						</div>
+					</article>
+					<article class="rv rv-purple">
+						<div class="top"><span class="plate"><img class="logo" width="164" height="28" src="images/reviews/psk.svg" alt="ПСК"></span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span></div>
+						<blockquote><p>«Мы можем рекомендовать «Proudly» как ответственного подрядчика, который предлагает решения под наши задачи и не только доводит до готовности каждый проект, но и сопровождает его, помогая нам развиваться.»</p></blockquote>
+						<div class="bottom">
+							<div class="who"><div class="name">ПСК</div><div class="what">Разработка и модернизация сайта, фирменный стиль, полиграфия</div></div>
+							<button type="button" class="read" data-modal="modal-review-2">Читать письмо</button>
+						</div>
+					</article>
+					<article class="rv rv-blue">
+						<div class="top"><span class="plate"><img class="logo" width="195" height="26" src="images/reviews/promenergo.svg" alt="Промэнерго"></span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span></div>
+						<blockquote><p>«Подробное описание товаров, услуг, наших производственных мощностей и профессиональных компетенций было реализовано в современном и функциональном сайте.»</p></blockquote>
+						<div class="bottom">
+							<div class="who"><div class="name">Промэнерго</div><div class="what">Корпоративный сайт</div></div>
+							<button type="button" class="read" data-modal="modal-review-3">Читать письмо</button>
+						</div>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section id="process">
+			<div class="holder">
+				<h2>Как мы работаем</h2>
+				<div class="section-lead">
+					<p>Понятный процесс без сюрпризов: на&nbsp;каждом этапе вы знаете, что происходит и&nbsp;что получите дальше.</p>
+				</div>
+
+				<div class="steps">
+					<div class="step">
+						<span class="num">01</span>
+						<h3>Знакомство и бриф</h3>
+						<p>Обсуждаем задачу, цели и&nbsp;аудиторию. Называем сроки и&nbsp;стоимость.</p>
+					</div>
+					<div class="step">
+						<span class="num">02</span>
+						<h3>Аудит и прототип</h3>
+						<p>Анализируем нишу и&nbsp;конкуренты, проектируем структуру и&nbsp;сценарии. Согласуем до&nbsp;начала дизайна.</p>
+					</div>
+					<div class="step">
+						<span class="num">03</span>
+						<h3>Дизайн</h3>
+						<p>Рисуем макеты и&nbsp;анимации в&nbsp;вашем стиле. Вносим правки до&nbsp;утверждения.</p>
+					</div>
+					<div class="step">
+						<span class="num">04</span>
+						<h3>Разработка</h3>
+						<p>Адаптивная верстка, программирование, тестирование на&nbsp;устройствах и&nbsp;в&nbsp;браузерах.</p>
+					</div>
+					<div class="step">
+						<span class="num">05</span>
+						<h3>Запуск и поддержка</h3>
+						<p>Запускаем сайт, подключаем аналитику и&nbsp;остаёмся на&nbsp;связи столько, сколько нужно.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="about">
+			<div class="holder">
+				<h2>О нас</h2>
+				<div class="section-lead">
+					<p>Мы разрабатываем сайты, которые несут пользу для бизнеса клиента. Собираем и&nbsp;анализируем требования, проектируем функции, разрабатываем дизайн-макеты и&nbsp;запускаем. Затем сопровождаем проект столько, сколько потребует заказчик.</p>
+				</div>
+
+				<div class="principles">
+					<div>
+						<h3>Начинаем с&nbsp;задач бизнеса</h3>
+						<p>Сначала разбираемся, какую цель решает сайт, и&nbsp;только потом выбираем дизайн и&nbsp;технологии.</p>
+					</div>
+					<div>
+						<h3>Говорим понятно</h3>
+						<p>Объясняем решения простым языком, фиксируем договорённости и&nbsp;не&nbsp;прячемся за терминами.</p>
+					</div>
+					<div>
+						<h3>Остаёмся после запуска</h3>
+						<p>Дорабатываем, обновляем и&nbsp;поддерживаем сайт, пока он работает на&nbsp;ваш бизнес.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="faq">
+			<div class="holder">
+				<h2>Частые вопросы</h2>
+				<div class="section-lead">
+					<p>Если не&nbsp;нашли ответ, задайте вопрос&nbsp;&#151; мы отвечаем в&nbsp;течение рабочего дня.</p>
+				</div>
+
+				<div class="list">
+					<details>
+						<summary>Сколько стоит сайт?</summary>
+						<div class="answer">Зависит от задач: лендинг и&nbsp;корпоративный портал с&nbsp;интеграциями&nbsp;&#151; разные проекты. После короткого брифа мы называем вилку стоимости и&nbsp;сроки, а&nbsp;точную смету фиксируем в&nbsp;договоре.</div>
+					</details>
+					<details>
+						<summary>Сколько времени занимает разработка?</summary>
+						<div class="answer">От пары недель для одностраничного сайта до&nbsp;нескольких месяцев для сложного проекта с&nbsp;интеграциями. Сроки по&nbsp;этапам согласуем до&nbsp;старта работ.</div>
+					</details>
+					<details>
+						<summary>На какой CMS вы делаете сайты?</summary>
+						<div class="answer">Подбираем под задачу: WordPress, 1С-Битрикс, Opencart или собственная разработка на&nbsp;PHP. Главное, чтобы вам было удобно управлять сайтом без разработчика.</div>
+					</details>
+					<details>
+						<summary>Работаете ли вы по договору?</summary>
+						<div class="answer">Да. В&nbsp;договоре фиксируем этапы, сроки, стоимость и&nbsp;передачу прав на&nbsp;результат.</div>
+					</details>
+					<details>
+						<summary>Что происходит после запуска?</summary>
+						<div class="answer">Мы остаёмся на&nbsp;связи: исправляем ошибки, вносим правки, дорабатываем функциональность и&nbsp;помогаем с&nbsp;хостингом. Формат поддержки обсуждаем отдельно.</div>
+					</details>
+					<details>
+						<summary>Можете доработать уже существующий сайт?</summary>
+						<div class="answer">Да. Сначала смотрим, в&nbsp;каком состоянии код и&nbsp;дизайн, и&nbsp;предлагаем один из&nbsp;вариантов: точечные доработки, редизайн или перенос на&nbsp;новую платформу.</div>
+					</details>
+				</div>
 			</div>
 		</section>
 
 		<footer id="footer">
 			<div class="holder">
-				<a href="tel:<%TELLINK%>" class="phone"><%TEL%></a>
-				<a href="mailto:<%EMAIL%>" class="email"><%EMAIL%></a>
-				<div class="footer-right">
-					<address><%ADDRESS%></address>
+				<div class="f-top">
+					<div class="f-lead">
+						<div class="f-title">Обсудим проект?</div>
+						<a href="mailto:<%EMAIL%>" class="f-mail"><%EMAIL%></a>
+					</div>
+					<div class="f-connect">
+						<a href="tel:<%TELLINK%>" class="f-phone"><%TEL%></a>
+						<div class="f-msgs">
+							<a href="https://wa.me/79872608688" class="msg wa" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+							<a href="https://t.me/romanproudly" class="msg tg" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram"><svg viewBox="0 0 1024 1024" aria-hidden="true"><path transform="matrix(1 0 0 -1 0 960)" fill-rule="evenodd" d="M512 960Q406 960 313 920Q220 879 150.5 809.5Q81 740 40 647Q0 554 0 448Q0 342 40 249Q81 156 150.5 86.5Q220 17 313 -24Q406 -64 512 -64Q618 -64 711 -24Q804 17 873.5 86.5Q943 156 984 249Q1024 342 1024 448Q1024 554 984 647Q943 740 873.5 809.5Q804 879 711 920Q618 960 512 960ZM936 448A424 424 0 1 0 88 448A424 424 0 1 0 936 448ZM220 466 714 657Q731 663 743.0 652.5Q755 642 749 616L665 220Q660 199 648.0 194.0Q636 189 619 199L491 293Q491 293 489.0 294.5Q487 296 484 298Q455 319 453.5 353.0Q452 387 478 411L650 566Q657 572 650.5 575.0Q644 578 634 571L400 424Q372 406 338.5 401.5Q305 397 273 407L214 426Q193 432 193.5 444.0Q194 456 220 466Z"/></svg></a>
+						</div>
+					</div>
+				</div>
+
+				<div class="f-cols">
+					<div class="col brand">
+						<a href="/" class="f-logo"><img src="images/logo_white.svg" alt="Proudly" width="124" height="31"></a>
+						<p>Разрабатываем сайты, полезные бизнесу.</p>
+					</div>
+					<div class="col">
+						<%MN_MAIN%>
+					</div>
+					<div class="col">
+						<ul class="f-list">
+						<li><a href="#services" class="js-anchor">Сайты и веб-сервисы</a></li>
+						<li><a href="#services" class="js-anchor">Интернет-магазины</a></li>
+						<li><a href="#services" class="js-anchor">Поддержка, развитие, DevOps</a></li>
+						<li><a href="#services" class="js-anchor">ИИ-решения</a></li>
+						<li><a href="#services" class="js-anchor">Брендинг и продуктовый дизайн</a></li>
+						<li><a href="#services" class="js-anchor">SEO, реклама, аналитика</a></li>
+						</ul>
+					</div>
+					<div class="col contacts">
+						<address><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><%ADDRESS%></span></address>
+						<div class="badge"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="22" stroke="currentColor" stroke-opacity=".35" stroke-width="1.5"/><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-opacity=".6" stroke-width="1.5" stroke-dasharray="2 3.4"/><circle cx="24" cy="24" r="6.5" fill="#1771F8"/></svg><span>На&nbsp;рынке с&nbsp;2012&nbsp;года.<br>Более 50&nbsp;запущенных проектов</span></div>
+					</div>
+				</div>
+
+				<div class="f-bottom">
+					<span>&copy; 2012&ndash;<span class="js-year">2026</span> Proudly</span>
 					<a href="/privacy/" class="privacy-link" target="_blank">Политика обработки персональных данных</a>
 				</div>
+
 			</div>
 		</footer>
 	</div>
@@ -356,7 +574,58 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal-wrapper modal-letter" id="modal-review-1">
+		<div class="modal">
+			<div class="contents">
+				<div class="modal-close" title="Закрыть"></div>
+				<div class="h1">ГК «Полиштамп»</div>
+				<div class="what">Ребрендинг корпоративного сайта</div>
+				<div class="body">
+					<p>Группа компаний «Полиштамп» выражает искреннюю благодарность команде «Proudly» за комплексный ребрендинг нашего корпоративного сайта. Мы по достоинству оценили непомерное терпение в доведении крайне важных для нас деталей и нюансов, помогающих правильно раскрыть производимый нами продукт. Также хочется отметить инициативу сотрудников компании, которые вели наш проект — они сами предлагали конкретные решения под наши специфические задачи, извлекая из большого потока пожеланий крупицы того, что действительно будет важно и даст классный результат.</p>
+					<p>Мы не ограничим наше сотрудничество одним проектом, а будем продолжать дальнейшее плотное взаимодействие по решению целого ряда актуальных задач.</p>
+				</div>
+				<div class="sign">Группа компаний «Полиштамп»</div>
+				<div class="links"><a href="https://промвкладыш.рф" target="_blank" rel="noopener">промвкладыш.рф<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal-wrapper modal-letter" id="modal-review-2">
+		<div class="modal">
+			<div class="contents">
+				<div class="modal-close" title="Закрыть"></div>
+				<div class="h1">ПСК</div>
+				<div class="what">Разработка и модернизация сайта, фирменный стиль, полиграфия</div>
+				<div class="body">
+					<p>Выражаем благодарность команде «Proudly» за продолжительное сотрудничество в разработке и регулярной модернизации нашего корпоративного сайта.</p>
+					<p>Отдельно можем отметить, что кроме веб-дизайна, команда «Proudly» успешно справлялась с задачами по разработке элементов фирменного стиля и верстке полиграфической продукции. Мы можем рекомендовать «Proudly» как ответственного подрядчика, который предлагает решения под наши задачи и не только доводит до готовности каждый проект, но и сопровождает его, помогая нам развиваться.</p>
+				</div>
+				<div class="sign">Л.Р. Яруллин, директор ООО «ПСК СтройИнвест», 16.05.2023</div>
+				<div class="links"><a href="https://psk-si.ru" target="_blank" rel="noopener">psk-si.ru<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+				<a class="scan-link js-lightbox" href="images/reviews/psk-letter.jpg" title="Скан письма"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg><span>Скан оригинала письма</span></a>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal-wrapper modal-letter" id="modal-review-3">
+		<div class="modal">
+			<div class="contents">
+				<div class="modal-close" title="Закрыть"></div>
+				<div class="h1">Промэнерго</div>
+				<div class="what">Корпоративный сайт</div>
+				<div class="body">
+					<p>Благодарим компанию «Proudly» за профессионализм в создании корпоративного сайта. Подробное описание товаров, услуг, наших производственных мощностей и профессиональных компетенций было реализовано в современном и функциональном сайте. Стильная и информативная презентация соответствует нашему комплексному подходу в развитии интеллектуальных систем учета энергии и предоставлении клиентам эффективного инструмента для снижения эксплуатационных расходов и цифровой трансформации измерений потребления электроэнергии и газа. Развивая собственное производство, мы уверены, что команда «Proudly» поможет нам достойно презентовать наши решения для эффективного управления энергией.</p>
+				</div>
+				<div class="sign">Промэнерго</div>
+				<div class="links"><a href="https://promenergo-rt.ru" target="_blank" rel="noopener">promenergo-rt.ru<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+			</div>
+		</div>
+	</div>
+
+	<button type="button" class="to-top" id="to-top" aria-label="Наверх" title="Наверх"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+
 	<div class="cookie-notice" id="cookie-notice" role="dialog" aria-live="polite">
+		<span class="cn-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9 4 4 0 0 1-4-4 4 4 0 0 1-4-4 1 1 0 0 0-1-1z"/><circle cx="8.5" cy="11" r=".6" fill="currentColor"/><circle cx="12" cy="16" r=".6" fill="currentColor"/><circle cx="15.5" cy="13" r=".6" fill="currentColor"/></svg></span>
 		<p>Мы используем файлы cookie, чтобы сайт работал лучше. Оставаясь с нами, вы соглашаетесь на <a href="/privacy/" target="_blank">использование файлов cookie</a>.</p>
 		<button class="btn type2" type="button">Окей</button>
 	</div>

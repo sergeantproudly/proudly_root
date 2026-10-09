@@ -103,11 +103,5 @@ class blocks extends krn_abstract{
 		return $result;
 	}
 
-	/** Блок - Баннер */
-	public function BlockBanner() {
-		$result = LoadTemplate('bl_banner');
-		return $result;
-	}
-
 }
 ?>

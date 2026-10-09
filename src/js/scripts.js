@@ -930,21 +930,6 @@ function checkElements(elements,patterns,mode){
 			});
 		});
 
-		$('#services ul>li').click(function() {
-			if (!$(this).hasClass('opened')) {
-				$(this).addClass('opened')
-					.children('.desc').stop().slideDown(__animationSpeed);
-			}
-		});
-		$('#services ul>li>h3, #services ul>li>.exp, #services ul>li>.toggler').click(function(e) {
-			var $li = $(this).closest('li');
-			if ($li.hasClass('opened')) {
-				e.stopPropagation();
-				$li.removeClass('opened')
-					.children('.desc').stop().slideUp(__animationSpeed);
-			}
-		});
-
 		$('#feedback form input').each(function() {
 			//if ()
 		});
@@ -1093,19 +1078,15 @@ function checkElements(elements,patterns,mode){
 			}
 		});
 
-        $('header .btn').click(function() {
+        $('header .btn, #direction .actions .btn').click(function() {
                 ym(31289493, 'reachGoal', 'clickFeedbackButton');
         });
 
-        $('#services ul>li>.desc>.btn-line>.btn').click(function() {
+        $('#services [data-modal="modal-question"]').click(function() {
                 ym(31289493, 'reachGoal', 'clickQuestionButton');
         });
 
-        if ($('#bl-banner').length) {
-        	setTimeout(function() {
-        		$('#bl-banner .price').addClass('pulse-size-fast');
-        	}, 2000);
-        }
+        $('.js-year').text(new Date().getFullYear());
 
         // KNOW BASE
         if ($('.knowbase').length) {
@@ -1116,7 +1097,7 @@ function checkElements(elements,patterns,mode){
         	});
         }
 	})
-})(jQuery)
+})(jQuery);
 
 
 // COOKIE NOTICE
@@ -1140,5 +1121,70 @@ function checkElements(elements,patterns,mode){
 			} catch (e) {}
 			$notice.removeClass('visible');
 		});
+	});
+})(jQuery);
+
+
+// MODALS: закрытие по Esc и по клику в пустую область
+(function ($) {
+	var downOutside = false;
+
+	$(document).on('keydown', function (e) {
+		if ((e.key === 'Escape' || e.keyCode === 27) && $('.modal-wrapper:visible').length) {
+			if ($.magnificPopup && $.magnificPopup.instance && $.magnificPopup.instance.isOpen) return;
+			closeModal();
+		}
+	});
+
+	// закрываем, только если и нажатие, и отпускание были вне окна (чтобы не закрывать при выделении текста)
+	$(document).on('mousedown', '.modal-wrapper', function (e) {
+		downOutside = !$(e.target).closest('.contents').length;
+	}).on('click', '.modal-wrapper', function (e) {
+		if (downOutside && !$(e.target).closest('.contents').length) {
+			closeModal(this);
+		}
+		downOutside = false;
+	});
+})(jQuery);
+
+
+// TO TOP
+(function ($) {
+	$(function () {
+		var $btn = $('#to-top');
+		if (!$btn.length) return;
+
+		var toggle = function () {
+			$btn.toggleClass('visible', $(window).scrollTop() > 700);
+		};
+		$(window).on('scroll', toggle);
+		toggle();
+
+		$btn.on('click', function () {
+			$('html, body').animate({scrollTop: 0}, 700);
+		});
+	});
+})(jQuery);
+
+
+// PROCESS: этапы появляются слева направо
+(function ($) {
+	$(function () {
+		var $steps = $('#process .steps');
+		if (!$steps.length) return;
+		$steps.find('.step').each(function (i) {
+			this.style.setProperty('--i', i);
+		});
+		if (!('IntersectionObserver' in window)) return;
+		$steps.addClass('armed');
+		var io = new IntersectionObserver(function (entries) {
+			entries.forEach(function (en) {
+				if (en.isIntersecting) {
+					$steps.addClass('in');
+					io.disconnect();
+				}
+			});
+		}, {threshold: 0.25});
+		io.observe($steps[0]);
 	});
 })(jQuery);
