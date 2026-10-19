@@ -1148,6 +1148,21 @@ function checkElements(elements,patterns,mode){
 })(jQuery);
 
 
+// WORKS: ссылка внутри карточки-ссылки (вложенный <a> невалиден)
+(function ($) {
+	function go(el, e) {
+		e.preventDefault();
+		e.stopPropagation();
+		window.open($(el).data('href'), '_blank', 'noopener');
+	}
+	$(document).on('click', '.work .lnk', function (e) {
+		go(this, e);
+	}).on('keydown', '.work .lnk', function (e) {
+		if (e.key === 'Enter' || e.key === ' ') go(this, e);
+	});
+})(jQuery);
+
+
 // TO TOP
 (function ($) {
 	$(function () {
@@ -1186,5 +1201,123 @@ function checkElements(elements,patterns,mode){
 			});
 		}, {threshold: 0.25});
 		io.observe($steps[0]);
+	});
+})(jQuery);
+
+// HERO: сетка точек с волнами от курсора и кликов
+(function ($) {
+	$(function () {
+		var hero = document.getElementById('direction');
+		var cv = hero && hero.querySelector('.waves');
+		if (!cv || !cv.getContext) return;
+		var ctx = cv.getContext('2d');
+		var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		var DPR = Math.min(window.devicePixelRatio || 1, 2);
+		var noHover = window.matchMedia && window.matchMedia('(hover: none)').matches;
+		var S = 30, W = 0, H = 0, cols = 0, rows = 0, mx = -9999, my = -9999, rip = [], last = 0, visible = true, running = false;
+
+		function size() {
+			var r = cv.getBoundingClientRect();
+			W = r.width; H = r.height;
+			cv.width = Math.max(1, Math.round(W * DPR));
+			cv.height = Math.max(1, Math.round(H * DPR));
+			cols = Math.ceil(W / S) + 1;
+			rows = Math.ceil(H / S) + 1;
+			render(performance.now());
+		}
+
+		function render(now) {
+			ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+			ctx.clearRect(0, 0, W, H);
+			rip = rip.filter(function (r) { return now - r.t < 3200; });
+			for (var i = 0; i < cols; i++) {
+				for (var j = 0; j < rows; j++) {
+					var x = i * S + 10, y = j * S + 10, k = 0;
+					var dx = x - mx, dy = y - my, d = Math.sqrt(dx * dx + dy * dy);
+					if (d < 150) k = 1 - d / 150;
+					for (var q = 0; q < rip.length; q++) {
+						var age = (now - rip[q].t) / 1000, ex = x - rip[q].x, ey = y - rip[q].y;
+						var ed = Math.sqrt(ex * ex + ey * ey);
+						var w = Math.exp(-Math.pow((ed - age * 380) / 55, 2)) * (1 - age / 3.2);
+						if (w > k) k = w;
+					}
+					ctx.fillStyle = k > 0.04 ? 'rgba(23,113,248,' + (0.35 + k * 0.65) + ')' : 'rgba(21,23,28,0.2)';
+					ctx.beginPath();
+					ctx.arc(x, y, 1.7 + k * 5.5, 0, 6.2832);
+					ctx.fill();
+				}
+			}
+		}
+
+		function loop() {
+			if (!visible) { running = false; return; }
+			var now = performance.now();
+			if (now - last > 3800) {
+				if (mx > -999) {
+					last = now;
+					rip.push({x: mx, y: my, t: now});
+				} else if (noHover) {
+					last = now;
+					rip.push({x: W * 0.72, y: H * 0.45, t: now});
+				}
+			}
+			render(now);
+			requestAnimationFrame(loop);
+		}
+
+		function start() {
+			if (running || reduce) return;
+			running = true;
+			loop();
+		}
+
+		size();
+		$(window).on('resize', size);
+		var entered = false;
+		if (reduce) {
+			rip.push({x: W * 0.72, y: H * 0.45, t: performance.now() - 900});
+			render(performance.now());
+			return;
+		}
+		$(hero).on('pointermove pointerdown', function (e) {
+			var r = cv.getBoundingClientRect();
+			mx = e.clientX - r.left;
+			my = e.clientY - r.top;
+			if (e.type === 'pointerdown') {
+				last = performance.now();
+				rip.push({x: mx, y: my, t: last});
+			}
+			else if (!entered) {
+				// первое появление курсора в hero: волна под ним (если стартовая только что вышла — не дублируем)
+				entered = true;
+				var n = performance.now();
+				if (n - last > 2500) {
+					last = n;
+					rip.push({x: mx, y: my, t: n});
+				}
+			}
+		});
+		hero.addEventListener('pointerleave', function (e) {
+			// курсор реально ушёл за границы hero (а не перекрыт плавающим блоком вроде чата)
+			var r = hero.getBoundingClientRect();
+			if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) {
+				mx = my = -9999;
+				entered = false;
+			}
+		});
+		if ('IntersectionObserver' in window) {
+			new IntersectionObserver(function (en) {
+				visible = en[0].isIntersecting;
+				if (visible) start();
+			}).observe(hero);
+		}
+		// стартовая волна: показывает, что сетка живая и реагирует
+		// (небольшая задержка: если курсор уже над hero, волна пойдёт из-под него)
+		start();
+		setTimeout(function () {
+			last = performance.now();
+			rip.push(mx > -999 ? {x: mx, y: my, t: last} : {x: W * 0.72, y: H * 0.45, t: last});
+			entered = mx > -999;
+		}, 500);
 	});
 })(jQuery);
