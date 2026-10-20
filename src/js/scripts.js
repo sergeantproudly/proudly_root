@@ -1258,7 +1258,7 @@ function checkElements(elements,patterns,mode){
                 ym(31289493, 'reachGoal', 'clickFeedbackButton');
         });
 
-        $('#services [data-modal="modal-question"], #faq [data-modal="modal-question"]').click(function() {
+        $('#services [data-modal="modal-question"], #faq [data-modal="modal-question"], #process [data-modal="modal-question"]').click(function() {
                 ym(31289493, 'reachGoal', 'clickQuestionButton');
         });
 
@@ -1448,6 +1448,15 @@ function checkElements(elements,patterns,mode){
 			entries.forEach(function (en) {
 				if (en.isIntersecting) {
 					$steps.addClass('in');
+					// подсвечиваем этапы по очереди, пока они появляются
+					$steps.find('.step').each(function (i) {
+						var $step = $(this);
+						setTimeout(function () {
+							$step.addClass('active');
+							setTimeout(function () { $step.removeClass('active'); }, 800);
+						}, i * 450 + 150);
+					});
+					setTimeout(function () { $steps.addClass('done'); }, $steps.find('.step').length * 450 + 1000);
 					io.disconnect();
 				}
 			});
