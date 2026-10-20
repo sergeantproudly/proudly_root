@@ -37,7 +37,133 @@ class ajax extends krn_abstract{
 		return false;
 	}
 
+	// вложения формы: до 5 файлов, 10 МБ на файл, 25 МБ суммарно
+	const FEEDBACK_MAX_FILES = 5;
+	const FEEDBACK_MAX_FILE_SIZE = 10485760;
+	const FEEDBACK_MAX_TOTAL_SIZE = 26214400;
+	const FEEDBACK_MAIL_ATTACH_LIMIT = 5242880;
+
+	// допустимые расширения => допустимые типы содержимого (по finfo)
+	private function FeedbackAllowedTypes(){
+		$ole = array('application/msword', 'application/vnd.ms-office', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/CDFV2', 'application/x-ole-storage', 'application/octet-stream');
+		$ooxml = array('application/zip', 'application/x-zip-compressed', 'application/octet-stream', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation');
+		$text = array('text/plain', 'text/csv', 'application/csv', 'text/x-csv', 'application/x-empty', 'inode/x-empty');
+		return array(
+			'pdf' => array('application/pdf'),
+			'doc' => $ole, 'xls' => $ole, 'ppt' => $ole,
+			'docx' => $ooxml, 'xlsx' => $ooxml, 'pptx' => $ooxml,
+			'png' => array('image/png'),
+			'webp' => array('image/webp'),
+			'svg' => array('image/svg+xml', 'image/svg', 'text/xml', 'text/plain', 'application/xml'),
+			'jpg' => array('image/jpeg'), 'jpeg' => array('image/jpeg'),
+			'txt' => $text, 'csv' => $text,
+			'rtf' => array('text/rtf', 'application/rtf', 'text/plain'),
+		);
+	}
+
+	private static function FeedbackTranslitMap(){
+		return array('а'=>'a','б'=>'b','в'=>'v','г'=>'g','д'=>'d','е'=>'e','ё'=>'e','ж'=>'zh','з'=>'z','и'=>'i','й'=>'y','к'=>'k','л'=>'l','м'=>'m','н'=>'n','о'=>'o','п'=>'p','р'=>'r','с'=>'s','т'=>'t','у'=>'u','ф'=>'f','х'=>'h','ц'=>'c','ч'=>'ch','ш'=>'sh','щ'=>'sch','ъ'=>'','ы'=>'y','ь'=>'','э'=>'e','ю'=>'yu','я'=>'ya');
+	}
+
+	// проверяет и сохраняет загруженные файлы; возвращает array('files' => [...], 'error' => '...')
+	private function FeedbackSaveFiles(){
+		$result = array('files' => array(), 'error' => '');
+		if (empty($_FILES['files']) || !is_array($_FILES['files']['name'])) return $result;
+
+		$list = array();
+		foreach ($_FILES['files']['name'] as $i => $origName) {
+			if ($_FILES['files']['error'][$i] === UPLOAD_ERR_NO_FILE) continue;
+			$list[] = array(
+				'name' => (string)$origName,
+				'tmp' => $_FILES['files']['tmp_name'][$i],
+				'size' => (int)$_FILES['files']['size'][$i],
+				'error' => $_FILES['files']['error'][$i],
+			);
+		}
+		if (!$list) return $result;
+
+		if (count($list) > self::FEEDBACK_MAX_FILES) {
+			$result['error'] = 'Можно прикрепить не больше ' . self::FEEDBACK_MAX_FILES . ' файлов.';
+			return $result;
+		}
+
+		$allowed = $this->FeedbackAllowedTypes();
+		$finfo = function_exists('finfo_open') ? finfo_open(FILEINFO_MIME_TYPE) : false;
+		$total = 0;
+		foreach ($list as $k => $f) {
+			if ($f['error'] !== UPLOAD_ERR_OK || !is_uploaded_file($f['tmp'])) {
+				$result['error'] = ($f['error'] === UPLOAD_ERR_INI_SIZE || $f['error'] === UPLOAD_ERR_FORM_SIZE)
+					? 'Файл «' . $f['name'] . '» слишком большой. Максимум 10 МБ на файл.'
+					: 'Не удалось загрузить файл «' . $f['name'] . '». Попробуйте ещё раз.';
+				return $result;
+			}
+			if ($f['size'] > self::FEEDBACK_MAX_FILE_SIZE) {
+				$result['error'] = 'Файл «' . $f['name'] . '» слишком большой. Максимум 10 МБ на файл.';
+				return $result;
+			}
+			$total += $f['size'];
+			$ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
+			if (!isset($allowed[$ext])) {
+				$result['error'] = 'Файл «' . $f['name'] . '» этого формата принять не можем. Подойдут PDF, Word, Excel, PowerPoint, PNG, JPG, WebP, SVG и текстовые файлы.';
+				return $result;
+			}
+			if ($finfo) {
+				$mime = finfo_file($finfo, $f['tmp']);
+				if (!in_array($mime, $allowed[$ext], true)) {
+					$result['error'] = 'Содержимое файла «' . $f['name'] . '» не соответствует формату .' . $ext . '.';
+					return $result;
+				}
+			}
+			// SVG может содержать скрипты: такие не принимаем
+			if ($ext == 'svg' && preg_match('/<script|javascript:|\bon[a-z]+\s*=|<foreignObject|<iframe|<!ENTITY/i', file_get_contents($f['tmp'], false, null, 0, self::FEEDBACK_MAX_FILE_SIZE))) {
+				$result['error'] = 'SVG-файл «' . $f['name'] . '» содержит скрипты, такой принять не можем. Пришлите его в PNG или PDF.';
+				return $result;
+			}
+			$list[$k]['ext'] = $ext;
+		}
+		if ($finfo) finfo_close($finfo);
+		if ($total > self::FEEDBACK_MAX_TOTAL_SIZE) {
+			$result['error'] = 'Общий размер файлов больше 25 МБ. Прикрепите меньше файлов или пришлите ссылку.';
+			return $result;
+		}
+
+		// папка с запретом исполнения скриптов; у каждой заявки своя папка со случайным именем
+		$base = ROOT_PATH . 'uploads/requests/';
+		if (!is_dir($base)) @mkdir($base, 0755, true);
+		if (is_dir($base) && !file_exists($base . '.htaccess')) {
+			@file_put_contents($base . '.htaccess', "Options -Indexes -ExecCGI\nRemoveHandler .php .phtml .php3 .php4 .php5 .php7 .phps\nRemoveType .php .phtml\n<IfModule mod_php7.c>\nphp_flag engine off\n</IfModule>\n<IfModule mod_headers.c>\nHeader set X-Content-Type-Options nosniff\nHeader set Content-Disposition attachment\n</IfModule>\n");
+		}
+		$dirName = date('Ymd') . '-' . bin2hex(random_bytes(12));
+		$dir = $base . $dirName . '/';
+		if (!@mkdir($dir, 0755, true)) {
+			$result['error'] = 'Не удалось сохранить файлы. Попробуйте ещё раз или напишите нам на почту.';
+			return $result;
+		}
+
+		$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+		foreach ($list as $n => $f) {
+			$baseName = pathinfo($f['name'], PATHINFO_FILENAME);
+			$safe = strtr(mb_strtolower($baseName, 'UTF-8'), self::FeedbackTranslitMap());
+			$safe = preg_replace('/[^a-z0-9_-]+/', '_', $safe);
+			$safe = trim(substr($safe, 0, 60), '_-');
+			if ($safe === '') $safe = 'file';
+			$fileName = ($n + 1) . '-' . $safe . '.' . $f['ext'];
+			if (!@move_uploaded_file($f['tmp'], $dir . $fileName)) {
+				$result['error'] = 'Не удалось сохранить файл «' . $f['name'] . '».';
+				return $result;
+			}
+			$result['files'][] = array(
+				'name' => $f['name'],
+				'path' => $dir . $fileName,
+				'size' => $f['size'],
+				'url' => $scheme . '://' . $_SERVER['HTTP_HOST'] . '/uploads/requests/' . $dirName . '/' . rawurlencode($fileName),
+			);
+		}
+		return $result;
+	}
+
 	function Feedback(){
+		$email = '';
 		$name = trim($_POST['name']);
 		$tel = trim($_POST['tel']);
 		$text = $_POST['text'];
@@ -45,16 +171,53 @@ class ajax extends krn_abstract{
 
 		$capcha = $_POST['capcha'];
 
+		// превышен post_max_size: PHP отбрасывает всё тело запроса
+		if (empty($_POST) && empty($_FILES) && (int)$_SERVER['CONTENT_LENGTH'] > 0) {
+			return json_encode(array('status' => false, 'message' => 'Файлы слишком большие. Общий размер не должен превышать 25 МБ.'));
+		}
+
+		// ловушка для ботов: поле скрыто от людей
+		if (!empty($_POST['website'])) {
+			return json_encode(array('status' => true, 'message' => ''));
+		}
+
+		// не больше 5 заявок с вложениями за 10 минут с одной сессии
+		if (!empty($_FILES['files'])) {
+			$now = time();
+			$hits = isset($_SESSION['feedback_hits']) ? array_filter($_SESSION['feedback_hits'], function($t) use ($now) { return $t > $now - 600; }) : array();
+			if (count($hits) >= 5) {
+				return json_encode(array('status' => false, 'message' => 'Слишком много заявок подряд. Попробуйте чуть позже или напишите нам на почту.'));
+			}
+			$hits[] = $now;
+			$_SESSION['feedback_hits'] = $hits;
+		}
+
 		// проверка на спамбота
 		// основывается на сверке user agent-ов
 		if ($capcha == $_SERVER['HTTP_USER_AGENT']) {
 			if ($name && $tel) {				
+				$saved = $this->FeedbackSaveFiles();
+				if ($saved['error']) {
+					return json_encode(array('status' => false, 'message' => $saved['error']));
+				}
 				$form = $this->db->getRow('SELECT Id, Title, Success FROM forms WHERE Code=?s', $code);				
 				$request = '';
 				if ($name) $request .= "Имя: $name\r\n";
 				if ($email) $request .= "E-mail: $email\r\n";
 				if ($tel) $request .= "Телефон: $tel\r\n";
 				if ($text) $request .= 'Текст:'."\r\n$text\r\n";
+				$attachPaths = array();
+				if ($saved['files']) {
+					$attachTotal = 0;
+					$request .= "Файлы:\r\n";
+					foreach ($saved['files'] as $file) {
+						$request .= $file['name'] . ' (' . ($file['size'] >= 1048576 ? round($file['size'] / 1048576, 1) . ' МБ' : max(1, round($file['size'] / 1024)) . ' КБ') . '): ' . $file['url'] . "\r\n";
+						$attachTotal += $file['size'];
+					}
+					if ($attachTotal <= self::FEEDBACK_MAIL_ATTACH_LIMIT) {
+						foreach ($saved['files'] as $file) $attachPaths[] = $file['path'];
+					}
+				}
 				$this->db->query('INSERT INTO requests SET DateTime=NOW(), Name=?s, Phone=?s, Text=?s, RefererPage=?s, IsSet=0',
 				 	$name,
 				 	$tel,
@@ -72,7 +235,7 @@ class ajax extends krn_abstract{
 				$letter['html'] = '<b>'.$form['Title'].'</b><br/><br/>';
 				$letter['html'] .= str_replace("\r\n",'<br/>',$request);
 				$mail=new Mail();
-				$mail->SendMailFromSite($adminEmail, $letter['subject'], $letter['html']);
+				$mail->SendMailFromSite($adminEmail, $letter['subject'], $letter['html'], $attachPaths);
 
 				if ($name) $data['name'] = $name;
 				if ($tel) $data['phone'] = $tel;

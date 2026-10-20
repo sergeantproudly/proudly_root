@@ -6,6 +6,7 @@
     include_once LIBRARY_DIR.'dbmysqli.lib.php';
     include_once LIBRARY_DIR.'kernel.lib.php';
     include_once LIBRARY_DIR.'site.lib.php';
+    include_once LIBRARY_DIR.'typograf.lib.php';
 	
 	if(function_exists('date_default_timezone_set')) date_default_timezone_set('Europe/Moscow');	
 	session_start();	
@@ -25,7 +26,7 @@
 		}
 	}else{
 		header('Content-type: text/html; charset=utf-8');
-		echo $Site->GetPage();
+		echo typografHtml($Site->GetPage());
 	}
 
 ?>

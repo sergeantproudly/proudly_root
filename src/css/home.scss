@@ -11,6 +11,20 @@ $radius-l: 28px;
 $brand-wa: #25D366;
 $brand-tg: #26A5E4;
 
+// форма нарисована на сетке 44×33 с целыми координатами и выводится в 44×33 пикселя — края получаются чёткими
+$quote-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 33' shape-rendering='geometricPrecision'%3E%3Cpath d='M0 33V19C0 8 6 2 17 0l2 4C13 5.5 11 8.5 11 14h8v19zM25 33V19c0-11 6-17 17-19l2 4c-6 1.5-8 4.5-8 10h8v19z'/%3E%3C/svg%3E");
+
+// декоративная кавычка: заливка берётся из background, форма — маска
+@mixin quote-mark($w: 44px) {
+	content: '';
+	display: block;
+	width: $w;
+	height: round($w * 0.75);
+	-webkit-mask: $quote-mask 0 0 / 100% 100% no-repeat;
+	mask: $quote-mask 0 0 / 100% 100% no-repeat;
+}
+
+
 @mixin home-section($top: 0) {
 	padding-top: $top;
 	padding-bottom: 140px;
@@ -499,6 +513,47 @@ $brand-tg: #26A5E4;
 			}
 		}
 
+		// «Показать ещё»: на узких экранах часть работ скрыта (класс .collapsed ставит JS, без JS видно всё)
+		.works-more-wrap {
+			display: none;
+			margin-top: 48px;
+			text-align: center;
+		}
+
+		.works-more {
+			padding: 16px 36px;
+			font-family: inherit;
+			font-size: 17px;
+			font-weight: 500;
+			color: $ink;
+			cursor: pointer;
+			background: transparent;
+			border: 1px solid rgba(21, 23, 28, 0.22);
+			@include radius(50px);
+			transition: border-color 0.2s ease, color 0.2s ease;
+
+			&:hover {
+				color: $accent;
+				border-color: $accent;
+			}
+		}
+
+		@media (max-width: $adaptive-width-tablet) {
+			.works.collapsed li.more {
+				display: none;
+			}
+
+			.works.collapsed ~ .works-more-wrap {
+				display: block;
+			}
+		}
+
+		@media (max-width: $adaptive-width-tablet-small) {
+			.works.collapsed li.more2 {
+				display: none;
+			}
+		}
+
 		.col {
 			display: flex;
 			flex-direction: column;
@@ -581,7 +636,7 @@ $brand-tg: #26A5E4;
 			color: #fff;
 			background: $ink;
 			opacity: 0;
-			transform: scale(0.7);
+			transform: scale(0.55);
 			transition: opacity 0.3s ease, transform 0.3s ease;
 			@include radius(50%);
 
@@ -942,6 +997,18 @@ $brand-tg: #26A5E4;
 				position: relative;
 				z-index: 1;
 				max-width: 780px;
+
+				@media (max-width: $adaptive-width-desktop-small) {
+					max-width: calc(100% - 300px);
+				}
+
+				@media (max-width: $adaptive-width-tablet) {
+					max-width: calc(100% - 250px);
+				}
+
+				@media (max-width: $adaptive-width-tablet-small) {
+					max-width: none;
+				}
 			}
 
 			h3,
@@ -1019,56 +1086,90 @@ $brand-tg: #26A5E4;
 				}
 			}
 
-			// Декор: сфера и кольцо
+			// Декор: планета и спутник на наклонной орбите (орбита — эллипс, наклон вправо-вверх -35°;
+			// задняя половина кольца под планетой, передняя над ней).
+			// Размер задаётся одной переменной --d, все внутренние размеры — в процентах от неё (эталон 480)
 			.deco {
+				--d: 480px;
 				position: absolute;
 				top: 50%;
-				right: 7%;
-				width: 380px;
-				height: 380px;
-				margin-top: -190px;
+				right: 3%;
+				width: var(--d);
+				height: var(--d);
+				margin-top: calc(var(--d) / -2);
 				pointer-events: none;
 
-				@media (max-width: $adaptive-width-tablet) {
-					right: -120px;
-					opacity: 0.5;
+				@media (max-width: $adaptive-width-desktop-small) {
+					--d: 400px;
+					right: 2%;
 				}
 
-				@media (max-width: $adaptive-width-mobile) {
-					display: none;
+				@media (max-width: $adaptive-width-tablet) {
+					--d: 300px;
+					right: 16px;
+				}
+
+				// узкие экраны: орбита целиком над текстом
+				@media (max-width: $adaptive-width-tablet-small) {
+					--d: min(280px, calc(100vw - 100px));
+					position: relative;
+					top: auto;
+					right: auto;
+					margin: -8px auto 4px;
 				}
 
 				.sphere,
-				.ring,
 				.drop {
 					position: absolute;
 					@include radius(50%);
 				}
 
+				.ring {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					fill: none;
+					stroke-width: 1.5;
+
+					&.back {
+						z-index: 0;
+						stroke: rgba(255, 255, 255, 0.14);
+
+						.arc {
+							stroke: url(#orbit-g);
+						}
+					}
+
+					&.front {
+						z-index: 3;
+						stroke: url(#orbit-g);
+						// поверх планеты рисуем только часть дуги внутри её круга, остальное — на заднем слое (под спутником)
+						clip-path: circle(29.17% at 50% 50%);
+					}
+				}
+
 				.sphere {
-					top: 50px;
-					left: 50px;
-					width: 280px;
-					height: 280px;
+					z-index: 2;
+					top: 20.83%;
+					left: 20.83%;
+					width: 58.33%;
+					height: 58.33%;
 					background: radial-gradient(circle at 30% 25%, #a9c8ff 0%, #1771F8 42%, #0a2a73 100%);
 					box-shadow: inset -24px -30px 60px rgba(5, 20, 70, 0.55), 0 40px 90px rgba(23, 113, 248, 0.35);
 				}
 
-				.ring {
-					top: 0;
-					left: 0;
-					width: 380px;
-					height: 380px;
-					border: 1px solid rgba(255, 255, 255, 0.16);
-				}
-
+				// стартовое положение (без JS) = угол 55° на орбите
 				.drop {
-					top: 30px;
-					right: 40px;
-					width: 44px;
-					height: 44px;
+					z-index: 4;
+					top: 39.58%;
+					left: 74.17%;
+					width: 9.58%;
+					height: 9.58%;
 					background: radial-gradient(circle at 32% 28%, #ffb0a0 0%, #FF3F3F 60%, #b81d1d 100%);
 					box-shadow: 0 12px 26px rgba(255, 63, 63, 0.4);
+					will-change: transform;
 				}
 			}
 		}
@@ -1108,18 +1209,21 @@ $brand-tg: #26A5E4;
 				--c1: #c2e23f;
 				--c2: #9fbf22;
 				--fg: #{$ink};
+				--qo: 0.72;
 			}
 
 			&.rv-purple {
 				--c1: #361787;
 				--c2: #5232c4;
 				--fg: #fff;
+				--qo: 0.5;
 			}
 
 			&.rv-blue {
 				--c1: #0a5ca8;
 				--c2: #023869;
 				--fg: #fff;
+				--qo: 0.5;
 			}
 
 			&:hover {
@@ -1187,6 +1291,19 @@ $brand-tg: #26A5E4;
 		blockquote {
 			flex: 1 1 auto;
 			margin: 0 0 36px;
+
+			// декоративная открывающая кавычка цвета текста карточки (вместо «» в самом тексте)
+			&:before {
+				@include quote-mark(44px);
+				margin-bottom: 22px;
+				background: var(--fg);
+				opacity: var(--qo, 0.4);
+
+				@media (max-width: $adaptive-width-mobile) {
+					@include quote-mark(33px);
+					margin-bottom: 18px;
+				}
+			}
 
 			p {
 				margin: 0;
@@ -1437,6 +1554,20 @@ $brand-tg: #26A5E4;
 	// ---------- FAQ ----------
 	#faq {
 		@include home-section();
+
+		// ссылка «задайте вопрос» открывает форму
+		.ask-link {
+			color: $ink;
+			text-decoration: underline;
+			text-decoration-color: rgba(21, 23, 28, 0.3);
+			text-underline-offset: 3px;
+			transition: color 0.2s ease, text-decoration-color 0.2s ease;
+
+			&:hover {
+				color: $accent;
+				text-decoration-color: $accent;
+			}
+		}
 
 		.list {
 			border-top: 1px solid $line;
@@ -1797,6 +1928,29 @@ $brand-tg: #26A5E4;
 		color: #6b6f7a;
 	}
 
+	// открывающая и закрывающая кавычки обрамляют текст письма
+	.body {
+		&:before,
+		&:after {
+			@include quote-mark(33px);
+			background: $ink;
+			opacity: 0.5;
+
+			@media (max-width: $adaptive-width-mobile) {
+				@include quote-mark(26px);
+			}
+		}
+
+		&:before {
+			margin-bottom: 18px;
+		}
+
+		&:after {
+			margin: 8px 0 0 auto;
+			transform: rotate(180deg);
+		}
+	}
+
 	.body p {
 		margin-bottom: 16px;
 		font-size: 19px;
@@ -1807,14 +1961,23 @@ $brand-tg: #26A5E4;
 		}
 	}
 
-	.sign {
+	// подпись автора слева, ссылка на сайт справа на той же линии (если не хватает места — ссылка переносится вниз)
+	.end {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 10px 32px;
 		margin-top: 28px;
+	}
+
+	.sign {
 		font-size: 16px;
 		font-weight: 600;
 	}
 
 	.links {
-		margin-top: 20px;
+		margin-left: auto;
 
 		a {
 			display: inline-flex;
@@ -1824,7 +1987,11 @@ $brand-tg: #26A5E4;
 			font-weight: 600;
 			color: #15171C;
 			text-decoration: none;
-			border-bottom: 1.5px solid #15171C;
+
+			// подчёркивается только адрес, стрелка — без линии
+			> span {
+				border-bottom: 1.5px solid #15171C;
+			}
 		}
 
 		svg {
@@ -1905,4 +2072,517 @@ $brand-tg: #26A5E4;
 		width: 42px;
 		height: 42px;
 	}
+}
+
+
+// ---------- Окно «Задайте вопрос» ----------
+.modal-wrapper.modal-ask {
+	position: fixed;
+	z-index: 1001;
+	top: 0 !important;
+	height: 100%;
+	min-height: 0;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	padding: 16px;
+	box-sizing: border-box;
+
+	@media (max-width: $adaptive-width-tablet-small) {
+		padding: 0;
+	}
+
+	& > .modal {
+		display: block;
+		width: 100%;
+		max-width: 560px;
+		height: auto;
+		margin: auto;
+		overflow: visible;
+		background: none;
+		line-height: 1.5;
+
+		@media (max-width: $adaptive-width-tablet-small) {
+			max-width: none;
+			margin: auto 0 0;
+		}
+	}
+
+	.modal > .contents {
+		display: block;
+		width: auto;
+		height: auto;
+		margin: 0;
+		padding: 44px 44px 36px;
+		text-align: left;
+		background: #fff;
+		border: 1px solid rgba(21, 23, 28, 0.06);
+		box-shadow: 0 24px 80px rgba(21, 23, 28, 0.2);
+		@include radius(32px);
+
+		@media (max-width: $adaptive-width-tablet-small) {
+			padding: 32px 20px 24px;
+			border-width: 1px 0 0;
+			@include radius(28px 28px 0 0);
+		}
+
+		&.drag:after {
+			content: 'Отпустите файл, чтобы прикрепить';
+			position: absolute;
+			left: 10px;
+			top: 10px;
+			right: 10px;
+			bottom: 10px;
+			z-index: 5;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			font-size: 18px;
+			font-weight: 600;
+			color: $accent;
+			background: rgba(255, 255, 255, 0.94);
+			border: 2px dashed $accent;
+			@include radius(24px);
+			pointer-events: none;
+		}
+	}
+
+	.modal-close {
+		top: 20px;
+		right: 20px;
+		width: 40px;
+		height: 40px;
+		background: $bg url('../../images/ico_close.svg') no-repeat center / 14px;
+		@include radius(50%);
+		transition: background-color 0.2s;
+
+		&:hover {
+			background-color: darken($bg, 5%);
+		}
+	}
+
+	.h1 {
+		margin: 0 48px 10px 0;
+		font-size: 34px;
+		font-weight: 600;
+		line-height: 1.08;
+		letter-spacing: -0.035em;
+
+		@media (max-width: $adaptive-width-mobile) {
+			font-size: 28px;
+		}
+	}
+
+	.ask-sub {
+		margin: 0 0 38px;
+
+		@media (max-width: $adaptive-width-mobile) {
+			margin-bottom: 30px;
+		}
+		font-size: 15px;
+		line-height: 1.5;
+		color: $muted;
+	}
+
+	.form {
+		max-width: none;
+	}
+
+	.ask-row {
+		display: flex;
+		gap: 14px;
+
+		& > .ask-fld {
+			flex: 1 1 0;
+			min-width: 0;
+		}
+
+		@media (max-width: $adaptive-width-mobile) {
+			display: block;
+		}
+	}
+
+	.ask-fld {
+		margin-bottom: 16px;
+		text-align: left;
+
+		label {
+			display: block;
+			margin-bottom: 6px;
+			font-size: 13px;
+			font-weight: 500;
+			color: $muted;
+		}
+
+		input[type="text"],
+		input[type="tel"],
+		textarea {
+			display: block;
+			width: 100%;
+			box-sizing: border-box;
+			padding: 14px 16px;
+			font: inherit;
+			font-size: 16px;
+			line-height: 1.4;
+			color: $ink;
+			background: $bg;
+			border: 2px solid transparent;
+			outline: 0;
+			box-shadow: none;
+			-webkit-appearance: none;
+			appearance: none;
+			@include radius(16px);
+			transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+
+			&:focus {
+				background: #fff;
+				border-color: $accent;
+				box-shadow: 0 0 0 4px rgba(23, 113, 248, 0.14);
+			}
+		}
+
+		textarea {
+			min-height: 112px;
+			resize: vertical;
+		}
+
+		&.invalid {
+			input,
+			textarea {
+				border-color: #FF3F3F;
+				background: #fff;
+			}
+
+			input:focus,
+			textarea:focus {
+				box-shadow: 0 0 0 4px rgba(255, 63, 63, 0.14);
+			}
+		}
+
+		.msg {
+			margin-top: 6px;
+			font-size: 13px;
+			color: #E02F2F;
+		}
+	}
+
+	.ask-files {
+		margin: 4px 0 32px;
+
+		@media (max-width: $adaptive-width-mobile) {
+			margin-bottom: 26px;
+		}
+		text-align: left;
+	}
+
+	.ask-file-input {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		opacity: 0;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	.ask-attach {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 4px 0;
+		font: inherit;
+		font-size: 14px;
+		line-height: 1.3;
+		color: $muted;
+		background: none;
+		border: 0;
+		cursor: pointer;
+		transition: color 0.2s;
+
+		svg {
+			width: 16px;
+			height: 16px;
+			flex: none;
+		}
+
+		span {
+			text-decoration: underline dashed;
+			text-decoration-color: rgba(21, 23, 28, 0.4);
+			text-decoration-thickness: 1px;
+			text-underline-offset: 4px;
+			transition: text-decoration-color 0.2s;
+		}
+
+		&:hover,
+		&:focus-visible {
+			color: $accent;
+			outline: 0;
+
+			span {
+				text-decoration-color: $accent;
+			}
+		}
+
+		&[disabled] {
+			opacity: 0.45;
+			cursor: default;
+			color: $muted;
+
+			span {
+				text-decoration-color: rgba(21, 23, 28, 0.3);
+			}
+		}
+	}
+
+	.ask-list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			margin-top: 8px;
+			padding: 7px 8px 7px 14px;
+			font-size: 14px;
+			background: $bg;
+			@include radius(14px);
+
+			&.bad {
+				background: rgba(255, 63, 63, 0.08);
+			}
+		}
+
+		.nm {
+			flex: 1 1 auto;
+			min-width: 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			color: $ink;
+		}
+
+		.sz {
+			flex: none;
+			font-size: 12.5px;
+			color: $muted;
+		}
+
+		.rm {
+			flex: none;
+			position: relative;
+			width: 28px;
+			height: 28px;
+			padding: 0;
+			border: 0;
+			background: transparent;
+			cursor: pointer;
+			@include radius(50%);
+
+			&:before,
+			&:after {
+				content: '';
+				position: absolute;
+				left: 8px;
+				top: 13px;
+				width: 12px;
+				height: 2px;
+				background: $muted;
+				@include radius(1px);
+				transform: rotate(45deg);
+			}
+
+			&:after {
+				transform: rotate(-45deg);
+			}
+
+			&:hover,
+			&:focus-visible {
+				background: rgba(21, 23, 28, 0.08);
+				outline: 0;
+			}
+		}
+	}
+
+	.ask-trap {
+		position: absolute;
+		left: -9999px;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+	}
+
+	.ask-agree {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+		margin: 0 0 18px;
+		font-size: 14px;
+		line-height: 1.45;
+		color: $muted;
+		cursor: pointer;
+		text-align: left;
+
+		input {
+			position: absolute;
+			opacity: 0;
+			width: 1px;
+			height: 1px;
+		}
+
+		.box {
+			position: relative;
+			flex: none;
+			width: 22px;
+			height: 22px;
+			margin-top: -1px;
+			background: $bg;
+			border: 2px solid transparent;
+			@include radius(7px);
+			transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+
+			&:after {
+				content: '';
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				width: 4px;
+				height: 8px;
+				border: solid #fff;
+				border-width: 0 2px 2px 0;
+				transform: translate(-50%, -62%) rotate(45deg) scale(0);
+				transition: transform 0.15s;
+			}
+		}
+
+		input:checked + .box {
+			background: $accent;
+
+			&:after {
+				transform: translate(-50%, -62%) rotate(45deg) scale(1);
+			}
+		}
+
+		input:focus-visible + .box {
+			box-shadow: 0 0 0 4px rgba(23, 113, 248, 0.25);
+		}
+
+		&.invalid .box {
+			border-color: #FF3F3F;
+		}
+
+		a {
+			color: $ink;
+			text-decoration: underline;
+			text-decoration-color: rgba(21, 23, 28, 0.35);
+			text-underline-offset: 3px;
+
+			&:hover {
+				text-decoration-color: $ink;
+			}
+		}
+	}
+
+	.ask-error {
+		margin: 0 0 14px;
+		font-size: 14px;
+		line-height: 1.45;
+		color: #E02F2F;
+
+		&:empty {
+			display: none;
+		}
+	}
+
+	.btn-line {
+		margin: 0;
+	}
+
+	.ask-submit {
+		position: relative;
+		display: block;
+		width: 100%;
+		height: 56px;
+		padding: 0 24px;
+		font: inherit;
+		font-size: 17px;
+		font-weight: 600;
+		color: #fff;
+		background: $accent;
+		border: 0;
+		box-shadow: none;
+		cursor: pointer;
+		overflow: hidden;
+		@include radius(999px);
+		transition: background-color 0.2s;
+
+		&:hover {
+			background: darken($accent, 6%);
+		}
+
+		&[disabled] {
+			cursor: default;
+			background: $accent;
+		}
+
+		&.loading {
+			background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.28) var(--p, 0%), transparent var(--p, 0%));
+		}
+	}
+}
+
+// чат Jivo не должен перекрывать кнопку отправки, пока открыто окно вопроса
+html:has(.modal-wrapper.modal-ask[style*="flex"]) jdiv {
+	display: none !important;
+}
+
+
+// ---------- Окно вопроса: оформление «линия» ----------
+@mixin ask-x($size: 14px, $weight: 2px, $color: $ink) {
+	background: none;
+	&:before,
+	&:after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: $size;
+		height: $weight;
+		margin: (-$weight / 2) 0 0 (-$size / 2);
+		background: $color;
+		@include radius($weight);
+		transform: rotate(45deg);
+	}
+	&:after {
+		transform: rotate(-45deg);
+	}
+}
+
+// строки с нижней линией, крестик в тонком круге
+.modal-wrapper.modal-ask {
+	.modal-close {
+		@include ask-x(14px, 1.5px);
+		border: 1.5px solid rgba(21, 23, 28, 0.22);
+		background-color: transparent;
+		&:hover { border-color: $ink; background-color: transparent; }
+	}
+	.ask-fld {
+		label { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: #b8bbc4; }
+		input[type="text"], input[type="tel"], textarea {
+			padding: 8px 0 10px;
+			font-size: 17px;
+			background: transparent;
+			border: 0;
+			border-bottom: 1.5px solid rgba(21, 23, 28, 0.24);
+			@include radius(0);
+			&:hover { border-bottom-color: rgba(21, 23, 28, 0.5); }
+			&:focus { background: transparent; border-bottom-color: $accent; box-shadow: none; }
+		}
+		textarea { min-height: 76px; }
+		&.invalid input, &.invalid textarea { border-bottom-color: #FF3F3F; background: transparent; }
+		&.invalid input:focus, &.invalid textarea:focus { box-shadow: none; }
+	}
+	.ask-list li { background: transparent; border-bottom: 1px solid rgba(21, 23, 28, 0.14); @include radius(0); padding-left: 0; }
+	.ask-agree .box { background: transparent; border-color: rgba(21, 23, 28, 0.3); @include radius(6px); }
+	.ask-agree input:checked + .box { background: $accent; border-color: $accent; }
 }

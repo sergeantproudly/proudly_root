@@ -39,32 +39,46 @@
 
 	<div class="modal-fadeout"></div>
 
-	<div class="modal-wrapper" id="modal-feedback">
+	<div class="modal-wrapper modal-ask" id="modal-feedback" data-ev="task" data-goal="sendFeedbackForm" role="dialog" aria-modal="true" aria-labelledby="ask-task-title">
 		<div class="modal">
 			<div class="contents">
-				<div class="modal-close" title="Закрыть"></div>
+				<div class="modal-close" title="Закрыть" role="button" aria-label="Закрыть"></div>
 
-				<div class="h1">Расскажите о задаче</div>
+				<div class="h1" id="ask-task-title">Расскажите о&nbsp;задаче</div>
+				<p class="ask-sub">Опишите в&nbsp;свободной форме, что нужно сделать.<br>Если у&nbsp;вас есть ТЗ, бриф или пример&nbsp;&#151; прикрепите к&nbsp;этой форме.</p>
 
-				<form action="/ajax-act-Feedback/" method="post">
+				<form action="/ajax-act-Feedback/" method="post" enctype="multipart/form-data" novalidate>
 					<div class="form">
-						<div class="fld-holder">
-							<input type="text" name="name" placeholder="Имя" maxlength="255" required>
-							<i>Имя</i>
-						</div>
-						<div class="fld-holder">
-							<input type="tel" name="tel" placeholder="Телефон" maxlength="255" required>
-							<i>Телефон</i>
-						</div>
-						<div class="fld-holder">
-							<input type="text" name="text" placeholder="Задача" maxlength="255">
-							<i>Задача</i>
+						<div class="ask-row">
+							<div class="ask-fld">
+								<label for="ask-task-name">Имя</label>
+								<input type="text" name="name" id="ask-task-name" placeholder=" " maxlength="255" autocomplete="name" required>
+							</div>
+							<div class="ask-fld">
+								<label for="ask-task-tel">Телефон</label>
+								<input type="tel" name="tel" id="ask-task-tel" placeholder=" " maxlength="255" autocomplete="tel" inputmode="tel" required>
+							</div>
 						</div>
 
-						<div class="agree"><input type="checkbox" name="agree" id="agree-feedback-modal" required><label for="agree-feedback-modal">Я согласен на <a href="/privacy/" target="_blank">обработку своих данных</a></label></div>
+						<div class="ask-fld">
+							<label for="ask-task-text">Задача</label>
+							<textarea name="text" id="ask-task-text" placeholder=" " rows="4" maxlength="3000"></textarea>
+						</div>
+
+						<div class="ask-files">
+							<input type="file" class="ask-file-input" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg,.webp,.svg,.txt,.csv,.rtf" tabindex="-1">
+							<button type="button" class="ask-attach" title="До 5 файлов, 10 МБ каждый. Можно перетащить файл на окно или вставить скриншот"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5l-8.6 8.6a5.5 5.5 0 01-7.8-7.8l9-9a3.7 3.7 0 015.2 5.2l-9 9a1.8 1.8 0 01-2.6-2.6l8.3-8.3"/></svg><span>Прикрепить файл</span></button>
+							<ul class="ask-list" aria-live="polite"></ul>
+						</div>
+
+						<div class="ask-trap" aria-hidden="true"><label>Сайт<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
+						<label class="ask-agree"><input type="checkbox" name="agree" required><span class="box" aria-hidden="true"></span><span class="t">Я&nbsp;согласен с&nbsp;<a href="/privacy/" target="_blank">Политикой обработки персональных&nbsp;данных</a></span></label>
+
+						<div class="ask-error" role="alert" aria-live="assertive"></div>
 
 						<div class="btn-line">
-							<button class="btn type2" name="submit_btn">Отправить</button>
+							<button class="btn type2 ask-submit" name="submit_btn"><span>Отправить</span></button>
 							<input type="hidden" name="code" value="task"/>
 						</div>
 					</div>

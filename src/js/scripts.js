@@ -120,7 +120,7 @@ function initElements(element) {
 		});
 	});
 
-	$element.find('input[type="checkbox"], input[type="radio"]').checkboxradio(); 
+	$element.find('input[type="checkbox"], input[type="radio"]').not('.ask-agree input').checkboxradio(); 
 	$element.find('input[data-mask]').each(function(index,input){
 		$(input).inputmask($(this).attr('data-mask'),{
 			'clearMaskOnLostFocus': true
@@ -256,7 +256,7 @@ function showModal(modal_id, dontHideOthers) {
 
 	$('.modal-fadeout').stop().fadeIn(300);
 	$modal.stop().fadeIn(450).css({
-		'display': __isMobileTablet ? 'block' : 'table',
+		'display': $modal.hasClass('modal-ask') ? 'flex' : (__isMobileTablet ? 'block' : 'table'),
 		'top': $(window).scrollTop()
 	});
 
@@ -919,7 +919,7 @@ function checkElements(elements,patterns,mode){
 
 		$('[data-modal]').each(function(index, object) {
 			$(object).click(function(e) {
-				if (this.tagName.toLowerCase == 'a') {
+				if (this.tagName.toLowerCase() == 'a') {
 					e.preventDefault();
 				}
 				showModal($(this).attr('data-modal'));
@@ -970,119 +970,295 @@ function checkElements(elements,patterns,mode){
 			}
 		});
 
-		$('#modal-feedback form').on('submit', function(e) {
-			e.preventDefault();
+		// ФОРМЫ ОБРАТНОЙ СВЯЗИ (.modal-ask): проверка полей, вложения, отправка одним запросом с прогрессом
+		$('.modal-ask').each(function() {
+			var $modal = $(this);
+			var $form = $modal.find('form');
+			var form = $form.get(0);
+			var $contents = $modal.find('.contents');
+			var $list = $modal.find('.ask-list');
+			var $input = $modal.find('.ask-file-input');
+			var $attach = $modal.find('.ask-attach');
+			var $err = $modal.find('.ask-error');
+			var $submit = $modal.find('.ask-submit');
+			var $submitText = $submit.children('span');
+			var submitLabel = $submitText.text();
+			var modalId = $modal.attr('id');
+			var ev = $modal.attr('data-ev') || 'ask';
+			var okGoal = $modal.attr('data-goal') || 'sendFeedbackForm';
 
-            ym(31289493, 'reachGoal', 'sendFeedbackForm');
-			
-			var form = this;
-			msgUnset(form);
-			checkResetStatus(form, 0);
-			if (checkElements([form.name, form.tel],[{1:true}, {1:true}])) {
-				form.submit_btn.disabled = true;
-				var waitNode = msgSetWait(form);
+			var MAX_FILES = 5;
+			var MAX_FILE = 10 * 1024 * 1024;
+			var MAX_TOTAL = 25 * 1024 * 1024;
+			var EXT = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'png', 'jpg', 'jpeg', 'webp', 'svg', 'txt', 'csv', 'rtf'];
+			var files = [];
+			var sending = false;
+			var dragDepth = 0;
 
-				$(form).append('<input type="hidden" name="capcha" value="' + navigator.userAgent + '"/>');
-					
-				$.ajax({
-					type: $(form).attr('method'),
-					url: $(form).attr('action'),
-					data: $(form).serialize(),
-					dataType: 'json',
-					success: function(response){									
-						if(response.status == true){
-							showModal('modal-done');
-							form.reset();
-								
-						}else{
-							msgSetError(form,response.error);
-						}
-						$(waitNode).remove();
-						form.submit_btn.disabled = false;
+			function goal(name) {
+				try { ym(31289493, 'reachGoal', name); } catch (e) {}
+			}
+
+			function fmtSize(bytes) {
+				if (bytes >= 1048576) return (bytes / 1048576).toFixed(1).replace('.', ',') + ' МБ';
+				return Math.max(1, Math.round(bytes / 1024)) + ' КБ';
+			}
+
+			function fileExt(name) {
+				var m = /\.([^.]+)$/.exec(name);
+				return m ? m[1].toLowerCase() : '';
+			}
+
+			function filesTotal() {
+				var sum = 0;
+				for (var i = 0; i < files.length; i++) sum += files[i].size;
+				return sum;
+			}
+
+			function setError(text) {
+				$err.text(text || '');
+			}
+
+			function render() {
+				$list.empty();
+				$.each(files, function(i, f) {
+					var $li = $('<li>');
+					$li.append($('<span class="nm">').text(f.name));
+					$li.append($('<span class="sz">').text(fmtSize(f.size)));
+					$li.append($('<button type="button" class="rm">').attr({ 'data-i': i, 'aria-label': 'Убрать файл ' + f.name }));
+					$list.append($li);
+				});
+				$attach.prop('disabled', files.length >= MAX_FILES || sending);
+			}
+
+			function addFiles(list) {
+				var rejected = [];
+				var added = 0;
+				$.each(list, function(i, f) {
+					var why = '';
+					var dup = false;
+					$.each(files, function(j, x) {
+						if (x.name == f.name && x.size == f.size) dup = true;
+					});
+					if (dup) return;
+					if (files.length >= MAX_FILES) why = 'не больше ' + MAX_FILES + ' файлов';
+					else if ($.inArray(fileExt(f.name), EXT) < 0) why = 'такой формат не принимаем';
+					else if (f.size === 0) why = 'файл пустой';
+					else if (f.size > MAX_FILE) why = 'больше 10 МБ';
+					else if (filesTotal() + f.size > MAX_TOTAL) why = 'общий размер больше 25 МБ';
+					if (why) rejected.push('«' + f.name + '» — ' + why);
+					else { files.push(f); added++; }
+				});
+				setError(rejected.length ? 'Не прикрепили: ' + rejected.join('; ') + '.' : '');
+				if (added) goal(ev + '_file_attached');
+				if (rejected.length) goal(ev + '_file_error');
+				render();
+			}
+
+			// поля
+			function fieldOf(el) {
+				return $(el).closest('.ask-fld, .ask-agree');
+			}
+
+			function markInvalid(el, msg) {
+				var $f = fieldOf(el);
+				$f.addClass('invalid');
+				$(el).attr('aria-invalid', 'true');
+				$f.find('.msg').remove();
+				if (msg && $f.hasClass('ask-fld')) {
+					var id = 'msg-' + (el.id || el.name);
+					$f.append($('<div class="msg">').attr('id', id).text(msg));
+					$(el).attr('aria-describedby', id);
+				}
+			}
+
+			function markValid(el) {
+				var $f = fieldOf(el);
+				$f.removeClass('invalid').find('.msg').remove();
+				$(el).removeAttr('aria-invalid aria-describedby');
+			}
+
+			function checkField(el) {
+				var v = $.trim($(el).val());
+				var msg = '';
+				if (el.name == 'name') {
+					if (!v) msg = 'Подскажите, как к вам обращаться';
+				} else if (el.name == 'tel') {
+					var digits = v.replace(/\D/g, '').length;
+					if (!digits) msg = 'Оставьте телефон, чтобы мы могли ответить';
+					else if (digits < 11) msg = 'Похоже, в номере не хватает цифр';
+				} else if (el.name == 'text') {
+					if (!v && $(el).prop('required')) msg = 'Напишите, что хотите узнать';
+				}
+				if (msg) markInvalid(el, msg);
+				else markValid(el);
+				return !msg;
+			}
+
+			function validate() {
+				var ok = true;
+				var first = null;
+				$.each($.grep([form.name, form.tel, form.text], function(el) { return el && el.tagName; }), function(i, el) {
+					if (!checkField(el)) {
+						ok = false;
+						if (!first) first = el;
 					}
 				});
-			}else{
-				msgSetError(form, 'Пожалуйста, заполните все поля');
+				if (!form.agree.checked) {
+					markInvalid(form.agree);
+					setError('Нужно согласие на обработку данных.');
+					ok = false;
+					if (!first) first = form.agree;
+				}
+				if (first) first.focus();
+				return ok;
 			}
-		});
 
-		$('#modal-question form').on('submit', function(e) {
-			e.preventDefault();
+			$form.find('input[name="name"], input[name="tel"], textarea[name="text"]').on('blur', function() {
+				if ($.trim($(this).val()) || fieldOf(this).hasClass('invalid')) checkField(this);
+			}).on('input', function() {
+				if (fieldOf(this).hasClass('invalid')) markValid(this);
+			});
 
-            ym(31289493, 'reachGoal', 'sendQuestionForm');
-			
-			var form = this;
-			msgUnset(form);
-			checkResetStatus(form, 0);
-			if (checkElements([form.name, form.tel],[{1:true}, {1:true}])) {
-				form.submit_btn.disabled = true;
-				var waitNode = msgSetWait(form);
+			$(form.agree).on('change', function() {
+				if (this.checked) {
+					markValid(this);
+					if ($err.text().indexOf('согласие') >= 0) setError('');
+				}
+			});
 
-				$(form).append('<input type="hidden" name="capcha" value="' + navigator.userAgent + '"/>');
-					
-				$.ajax({
-					type: $(form).attr('method'),
-					url: $(form).attr('action'),
-					data: $(form).serialize(),
-					dataType: 'json',
-					success: function(response){									
-						if(response.status == true){
-							showModal('modal-done');
-							form.reset();
-								
-						}else{
-							msgSetError(form,response.error);
-						}
-						$(waitNode).remove();
-						form.submit_btn.disabled = false;
-					}
+			// вложения
+			$attach.on('click', function() {
+				$input.get(0).click();
+			});
+			$input.on('change', function() {
+				if (this.files && this.files.length) addFiles(this.files);
+				this.value = '';
+			});
+			$list.on('click', '.rm', function() {
+				files.splice(parseInt($(this).attr('data-i'), 10), 1);
+				setError('');
+				render();
+				$attach.focus();
+			});
+
+			// перетаскивание на всё окно
+			function hasFiles(e) {
+				var dt = e.originalEvent.dataTransfer;
+				return dt && $.inArray('Files', dt.types || []) >= 0;
+			}
+			// слушаем весь документ: файл, брошенный мимо окна (на плашку cookie, чат), браузер иначе откроет в этой вкладке
+			$(document).on('dragenter', function(e) {
+				if (!$modal.is(':visible') || !hasFiles(e)) return;
+				e.preventDefault();
+				dragDepth++;
+				$contents.addClass('drag');
+			}).on('dragover', function(e) {
+				if (!$modal.is(':visible') || !hasFiles(e)) return;
+				e.preventDefault();
+				e.originalEvent.dataTransfer.dropEffect = 'copy';
+				$contents.addClass('drag');
+			}).on('dragleave', function(e) {
+				if (!$modal.is(':visible') || !hasFiles(e)) return;
+				dragDepth = Math.max(0, dragDepth - 1);
+				if (!dragDepth) $contents.removeClass('drag');
+			}).on('drop', function(e) {
+				if (!$modal.is(':visible') || !hasFiles(e)) return;
+				e.preventDefault();
+				dragDepth = 0;
+				$contents.removeClass('drag');
+				if (!sending) addFiles(e.originalEvent.dataTransfer.files);
+			}).on('dragend', function() {
+				dragDepth = 0;
+				$contents.removeClass('drag');
+			});
+
+			// вставка скриншота из буфера
+			$(document).on('paste', function(e) {
+				if (!$modal.is(':visible') || sending) return;
+				var cd = e.originalEvent.clipboardData;
+				if (cd && cd.files && cd.files.length) {
+					e.preventDefault();
+					addFiles(cd.files);
+				}
+			});
+
+			// Esc закрывает окно
+			$(document).on('keydown', function(e) {
+				if (e.keyCode == 27 && $modal.is(':visible') && !sending) {
+					closeModal($modal.find('.modal-close').get(0));
+				}
+			});
+
+			function finish() {
+				sending = false;
+				$submit.removeClass('loading').css('--p', '0%').prop('disabled', false);
+				$submitText.text(submitLabel);
+				render();
+			}
+
+			$form.on('submit', function(e) {
+				e.preventDefault();
+				if (sending) return;
+				setError('');
+				if (!validate()) return;
+
+				var fd = new FormData(form);
+				fd.append('capcha', navigator.userAgent);
+				$.each(files, function(i, f) {
+					fd.append('files[]', f, f.name);
 				});
-			}else{
-				msgSetError(form, 'Пожалуйста, заполните все поля');
-			}
-		});
 
-		$('#modal-request form').on('submit', function(e) {
-			e.preventDefault();
+				sending = true;
+				$submit.addClass('loading').prop('disabled', true);
+				$submitText.text('Отправляем…');
+				render();
 
-            ym(31289493, 'reachGoal', 'sendFeedbackForm');
-			
-			var form = this;
-			msgUnset(form);
-			checkResetStatus(form, 0);
-			if (checkElements([form.name, form.tel],[{1:true}, {1:true}])) {
-				form.submit_btn.disabled = true;
-				var waitNode = msgSetWait(form);
-
-				$(form).append('<input type="hidden" name="capcha" value="' + navigator.userAgent + '"/>');
-					
-				$.ajax({
-					type: $(form).attr('method'),
-					url: $(form).attr('action'),
-					data: $(form).serialize(),
-					dataType: 'json',
-					success: function(response){									
-						if(response.status == true){
-							showModal('modal-done');
-							form.reset();
-								
-						}else{
-							msgSetError(form,response.error);
-						}
-						$(waitNode).remove();
-						form.submit_btn.disabled = false;
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', form.getAttribute('action'));
+				xhr.timeout = 180000;
+				xhr.upload.onprogress = function(ev) {
+					if (!files.length || !ev.lengthComputable) return;
+					var pct = Math.round(ev.loaded / ev.total * 100);
+					$submit.css('--p', pct + '%');
+					$submitText.text(pct < 100 ? 'Отправляем… ' + pct + '%' : 'Обрабатываем…');
+				};
+				xhr.onload = function() {
+					var response = null;
+					try { response = JSON.parse(xhr.responseText); } catch (err) {}
+					if (response && response.status === true) {
+						goal(okGoal);
+						goal(ev + '_success');
+						form.reset();
+						files = [];
+						finish();
+						$modal.stop().hide();
+						showModal('modal-done');
+					} else {
+						goal(ev + '_error');
+						setError((response && (response.message || response.error)) || 'Не удалось отправить. Попробуйте ещё раз или напишите нам на почту.');
+						finish();
 					}
-				});
-			}else{
-				msgSetError(form, 'Пожалуйста, заполните все поля');
-			}
+				};
+				xhr.onerror = xhr.ontimeout = function() {
+					goal(ev + '_error');
+					setError('Не удалось отправить: нет связи с сервером. Всё, что вы ввели, сохранилось — попробуйте ещё раз.');
+					finish();
+				};
+				xhr.send(fd);
+			});
+
+			// открытие окна
+			$('[data-modal="' + modalId + '"]').on('click', function() {
+				goal(ev + '_open');
+			});
 		});
 
         $('header .btn, #direction .actions .btn').click(function() {
                 ym(31289493, 'reachGoal', 'clickFeedbackButton');
         });
 
-        $('#services [data-modal="modal-question"]').click(function() {
+        $('#services [data-modal="modal-question"], #faq [data-modal="modal-question"]').click(function() {
                 ym(31289493, 'reachGoal', 'clickQuestionButton');
         });
 
@@ -1159,6 +1335,82 @@ function checkElements(elements,patterns,mode){
 		go(this, e);
 	}).on('keydown', '.work .lnk', function (e) {
 		if (e.key === 'Enter' || e.key === ' ') go(this, e);
+	});
+})(jQuery);
+
+
+// WORKS: «Показать ещё» на узких экранах
+(function ($) {
+	$(function () {
+		var $works = $('#portfolio .works');
+		if (!$works.length) return;
+		$works.addClass('collapsed');
+		$('#portfolio .works-more').on('click', function () {
+			$works.removeClass('collapsed');
+			$(this).parent().remove();
+		});
+	});
+})(jQuery);
+
+
+// CTA: спутник облетает планету по наклонной орбите
+(function ($) {
+	$(function () {
+		var deco = document.querySelector('#services .cta .deco');
+		var drop = deco && deco.querySelector('.drop');
+		if (!drop) return;
+
+		var A = 225, B = 70, TILT = 35 * Math.PI / 180, COS = Math.cos(TILT), SIN = Math.sin(TILT);
+		var T0 = 55 * Math.PI / 180;      // стартовое положение совпадает с CSS (top/left)
+		var PERIOD = 11000;               // мс на оборот
+
+		function pos(t) {
+			var lx = A * Math.cos(t), ly = B * Math.sin(t);
+			return { x: lx * COS + ly * SIN, y: -lx * SIN + ly * COS, d: Math.sin(t) };
+		}
+		var p0 = pos(T0);
+
+		var S = 1;                         // масштаб относительно эталона 480px
+		function measure() { S = deco.offsetWidth / 480 || 1; }
+		measure();
+		$(window).on('resize', measure);
+
+		function place(t) {
+			var p = pos(t);
+			var k = 0.74 + 0.26 * (p.d + 1) / 2;       // дальняя половина орбиты меньше
+			drop.style.transform = 'translate(' + ((p.x - p0.x) * S).toFixed(1) + 'px,' + ((p.y - p0.y) * S).toFixed(1) + 'px) scale(' + k.toFixed(3) + ')';
+			drop.style.filter = 'brightness(' + (0.78 + 0.22 * (p.d + 1) / 2).toFixed(2) + ')';   // не opacity: иначе орбита просвечивает
+			drop.style.zIndex = p.d >= 0 ? 4 : 1;      // сзади — под планетой, спереди — над ней
+		}
+
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+		var raf = 0, t0 = 0, base = T0, phase = T0;
+		function frame(now) {
+			if (!t0) t0 = now;
+			phase = base + (now - t0) / PERIOD * Math.PI * 2;
+			place(phase);
+			raf = requestAnimationFrame(frame);
+		}
+		function start() {
+			if (raf) return;
+			t0 = 0;
+			raf = requestAnimationFrame(frame);
+		}
+		function stop() {
+			if (!raf) return;
+			cancelAnimationFrame(raf);
+			raf = 0;
+			base = phase;   // продолжим с того же места
+		}
+
+		if ('IntersectionObserver' in window) {
+			new IntersectionObserver(function (en) {
+				en[0].isIntersecting ? start() : stop();
+			}).observe(deco);
+		} else {
+			start();
+		}
 	});
 })(jQuery);
 

@@ -7,3 +7,4 @@ robots.txt
 *.sql
 /node_modules
 package-lock.json
+/uploads/requests
