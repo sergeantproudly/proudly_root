@@ -971,7 +971,7 @@ function checkElements(elements,patterns,mode){
 		});
 
 		// ФОРМЫ ОБРАТНОЙ СВЯЗИ (.modal-ask): проверка полей, вложения, отправка одним запросом с прогрессом
-		$('.modal-ask').each(function() {
+		$('.modal-ask').not('.modal-thanks').each(function() {
 			var $modal = $(this);
 			var $form = $modal.find('form');
 			var form = $form.get(0);

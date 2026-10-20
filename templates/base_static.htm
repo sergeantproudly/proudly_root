@@ -87,19 +87,18 @@
 		</div>
 	</div>
 
-	<div class="modal-wrapper" id="modal-done">
+	<div class="modal-wrapper modal-ask modal-thanks" id="modal-done" role="dialog" aria-modal="true" aria-labelledby="done-title">
 		<div class="modal">
 			<div class="contents">
-				<div class="modal-close" title="Закрыть"></div>
+				<div class="modal-close" title="Закрыть" role="button" aria-label="Закрыть"></div>
 
-				<div class="h1">Спасибо!</div>
-
-				<div class="text">
-					<p>Мы уже получили заявку и скоро вам ответим.</p>
-				</div>
+				<div class="thanks-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+				<div class="h1" id="done-title">Спасибо за&nbsp;фидбэк!</div>
+				<p class="ask-sub">Приняли вашу информацию. Мы изучим ее и&nbsp;вернемся к&nbsp;вам с&nbsp;ответом.</p>
+				<p class="ask-sub thanks-call">Если ответы нужны быстрее, пожалуйста, позвоните по&nbsp;телефону:<br><a href="tel:<%TELLINK%>" class="thanks-phone"><%TEL%></a></p>
 
 				<div class="btn-line">
-					<button class="btn type2 js-close">Отлично</button>
+					<button type="button" class="btn type2 ask-submit js-close"><span>Отлично</span></button>
 				</div>
 			</div>
 		</div>

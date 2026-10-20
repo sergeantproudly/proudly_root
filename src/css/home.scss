@@ -393,6 +393,7 @@ $quote-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' v
 				}
 
 				&:hover {
+					opacity: 1; // общее правило a:hover { opacity: .8 } делало кнопку полупрозрачной
 					color: #fff;
 					background: $ink;
 
@@ -2677,7 +2678,8 @@ $quote-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' v
 
 		&[disabled] {
 			cursor: default;
-			background: $accent;
+			color: #fff;
+			background-color: $accent;
 		}
 
 		&.loading {
@@ -2760,5 +2762,48 @@ html:has(.modal-wrapper.modal-ask[style*="flex"]) jdiv {
 	.home #process .step .rocket,
 	.home #process .step .rocket .flame {
 		animation: none;
+	}
+}
+
+// окно благодарности после отправки формы
+.modal-wrapper.modal-thanks {
+	.thanks-ico {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 56px;
+		height: 56px;
+		margin-bottom: 22px;
+		color: $accent;
+		background: rgba(23, 113, 248, 0.1);
+		@include radius(50%);
+
+		svg {
+			width: 26px;
+			height: 26px;
+		}
+	}
+
+	.ask-sub {
+		margin-bottom: 14px;
+	}
+
+	.thanks-call {
+		margin-bottom: 32px;
+	}
+
+	.thanks-phone {
+		display: inline-block;
+		margin-top: 8px;
+		font-size: 24px;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		color: $ink;
+		text-decoration: none;
+		transition: color 0.2s;
+
+		&:hover {
+			color: $accent;
+		}
 	}
 }

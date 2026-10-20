@@ -2806,3 +2806,127 @@
 [03.09.2026 07:10:55] true
 [03.09.2026 07:10:55] Refresh attempts count exceeded: 
 [03.09.2026 07:10:55] 1
+[20.10.2026 20:59:12] ReadyToWork
+[20.10.2026 20:59:12] Is tokenData exists: 
+[20.10.2026 20:59:12] array (
+  'access_token' => NULL,
+  'refresh_token' => NULL,
+  'token_type' => NULL,
+  'expires_in' => NULL,
+  'expires_ts' => 1788408655,
+  'expires_time' => '03.09.2026 07:10',
+)
+[20.10.2026 20:59:12] Is token expired: 
+[20.10.2026 20:59:12] true
+[20.10.2026 20:59:12] Refresh going
+[20.10.2026 20:59:12] Error 400: 
+[20.10.2026 20:59:12] 'Undefined error'
+[20.10.2026 20:59:12] Refresh: 
+[20.10.2026 20:59:12] '{"hint":"Check the `refresh_token` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}'
+[20.10.2026 20:59:12] ReadyToWork
+[20.10.2026 20:59:12] Is tokenData exists: 
+[20.10.2026 20:59:12] array (
+  'access_token' => NULL,
+  'refresh_token' => NULL,
+  'token_type' => NULL,
+  'expires_in' => NULL,
+  'expires_ts' => 1792519152,
+  'expires_time' => '20.10.2026 20:59',
+)
+[20.10.2026 20:59:12] Is token expired: 
+[20.10.2026 20:59:12] true
+[20.10.2026 20:59:12] Refresh attempts count exceeded: 
+[20.10.2026 20:59:12] 1
+[20.10.2026 21:04:20] ReadyToWork
+[20.10.2026 21:04:20] Is tokenData exists: 
+[20.10.2026 21:04:20] array (
+  'access_token' => NULL,
+  'refresh_token' => NULL,
+  'token_type' => NULL,
+  'expires_in' => NULL,
+  'expires_ts' => 1792519152,
+  'expires_time' => '20.10.2026 20:59',
+)
+[20.10.2026 21:04:20] Is token expired: 
+[20.10.2026 21:04:20] true
+[20.10.2026 21:04:20] Refresh going
+[20.10.2026 21:04:20] Error 400: 
+[20.10.2026 21:04:20] 'Undefined error'
+[20.10.2026 21:04:20] Refresh: 
+[20.10.2026 21:04:20] '{"hint":"Check the `refresh_token` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}'
+[20.10.2026 21:04:20] ReadyToWork
+[20.10.2026 21:04:20] Is tokenData exists: 
+[20.10.2026 21:04:20] array (
+  'access_token' => NULL,
+  'refresh_token' => NULL,
+  'token_type' => NULL,
+  'expires_in' => NULL,
+  'expires_ts' => 1792519460,
+  'expires_time' => '20.10.2026 21:04',
+)
+[20.10.2026 21:04:20] Is token expired: 
+[20.10.2026 21:04:20] true
+[20.10.2026 21:04:20] Refresh attempts count exceeded: 
+[20.10.2026 21:04:20] 1
+[20.10.2026 21:04:32] ReadyToWork
+[20.10.2026 21:04:32] Is tokenData exists: 
+[20.10.2026 21:04:32] array (
+  'access_token' => NULL,
+  'refresh_token' => NULL,
+  'token_type' => NULL,
+  'expires_in' => NULL,
+  'expires_ts' => 1792519460,
+  'expires_time' => '20.10.2026 21:04',
+)
+[20.10.2026 21:04:32] Is token expired: 
+[20.10.2026 21:04:32] true
+[20.10.2026 21:04:32] Refresh going
+[20.10.2026 21:04:32] Error 400: 
+[20.10.2026 21:04:32] 'Undefined error'
+[20.10.2026 21:04:32] Refresh: 
+[20.10.2026 21:04:32] '{"hint":"Check the `refresh_token` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}'
+[20.10.2026 21:04:32] ReadyToWork
+[20.10.2026 21:04:32] Is tokenData exists: 
+[20.10.2026 21:04:32] array (
+  'access_token' => NULL,
+  'refresh_token' => NULL,
+  'token_type' => NULL,
+  'expires_in' => NULL,
+  'expires_ts' => 1792519472,
+  'expires_time' => '20.10.2026 21:04',
+)
+[20.10.2026 21:04:32] Is token expired: 
+[20.10.2026 21:04:32] true
+[20.10.2026 21:04:32] Refresh attempts count exceeded: 
+[20.10.2026 21:04:32] 1
+[20.10.2026 21:14:38] ReadyToWork
+[20.10.2026 21:14:38] Is tokenData exists: 
+[20.10.2026 21:14:38] array (
+  'access_token' => NULL,
+  'refresh_token' => NULL,
+  'token_type' => NULL,
+  'expires_in' => NULL,
+  'expires_ts' => 1792519472,
+  'expires_time' => '20.10.2026 21:04',
+)
+[20.10.2026 21:14:38] Is token expired: 
+[20.10.2026 21:14:38] true
+[20.10.2026 21:14:38] Refresh going
+[20.10.2026 21:14:38] Error 400: 
+[20.10.2026 21:14:38] 'Undefined error'
+[20.10.2026 21:14:38] Refresh: 
+[20.10.2026 21:14:38] '{"hint":"Check the `refresh_token` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}'
+[20.10.2026 21:14:38] ReadyToWork
+[20.10.2026 21:14:38] Is tokenData exists: 
+[20.10.2026 21:14:38] array (
+  'access_token' => NULL,
+  'refresh_token' => NULL,
+  'token_type' => NULL,
+  'expires_in' => NULL,
+  'expires_ts' => 1792520078,
+  'expires_time' => '20.10.2026 21:14',
+)
+[20.10.2026 21:14:38] Is token expired: 
+[20.10.2026 21:14:38] true
+[20.10.2026 21:14:38] Refresh attempts count exceeded: 
+[20.10.2026 21:14:38] 1
