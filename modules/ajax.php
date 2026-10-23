@@ -2,7 +2,7 @@
 
 krnLoadLib('mail');
 krnLoadLib('settings');
-krnLoadLib('amo');
+// krnLoadLib('amo'); // интеграция с amoCRM отключена
 
 class ajax extends krn_abstract{
 
@@ -162,6 +162,72 @@ class ajax extends krn_abstract{
 		return $result;
 	}
 
+	// отправляет уведомление в Telegram уже после ответа клиенту (api.telegram.org с хостинга отвечает нестабильно)
+	private function FeedbackTelegramLater($title, $name, $tel, $text, $files, $page){
+		$self = $this;
+		register_shutdown_function(function() use ($self, $title, $name, $tel, $text, $files, $page) {
+			if (function_exists('session_write_close')) @session_write_close();
+			if (function_exists('fastcgi_finish_request')) @fastcgi_finish_request();
+			$self->FeedbackTelegram($title, $name, $tel, $text, $files, $page);
+		});
+	}
+
+	// настройки в таблице settings (админка): TelegramNotifierToken, TelegramNotifierChatId (можно несколько через запятую),
+	// TelegramNotifierProxy (необязательно, например socks5://host:port — если api.telegram.org недоступен с хостинга)
+	public function FeedbackTelegram($title, $name, $tel, $text, $files, $page){
+		$token = trim((string)stGetSetting('TelegramNotifierToken'));
+		$chats = array_filter(array_map('trim', explode(',', (string)stGetSetting('TelegramNotifierChatId'))));
+		$proxy = trim((string)stGetSetting('TelegramNotifierProxy'));
+		if (!$token || !$chats) return false;
+
+		$esc = function($v){ return htmlspecialchars((string)$v, ENT_NOQUOTES, 'UTF-8'); };
+		$msg = "ð <b>" . $esc($title ? $title : 'Заявка') . "</b> â proudly.ru
+
+";
+		$msg .= "Имя: " . $esc($name) . "
+";
+		$msg .= "Телефон: " . $esc($tel) . "
+";
+		if (trim((string)$text) !== '') $msg .= "Текст: " . $esc(mb_substr($text, 0, 2500)) . "
+";
+		if ($files) $msg .= "
+Файлы:
+" . $esc(implode("
+", $files)) . "
+";
+		if ($page) $msg .= "
+Страница: " . $esc($page);
+
+		$ok = true;
+		foreach ($chats as $chat) {
+			$sent = false;
+			for ($try = 1; $try <= 3 && !$sent; $try++) {
+				$ch = curl_init('https://api.telegram.org/bot' . $token . '/sendMessage');
+				curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, array('chat_id' => $chat, 'text' => $msg, 'parse_mode' => 'HTML', 'disable_web_page_preview' => 'true'));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 4);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 8);
+				if ($proxy) curl_setopt($ch, CURLOPT_PROXY, $proxy);
+				$out = curl_exec($ch);
+				$code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				$err = curl_error($ch);
+				curl_close($ch);
+				if ($code === 200) { $sent = true; break; }
+				// 4xx (неверный токен, чат не найден) повторять бессмысленно
+				if ($code >= 400 && $code < 500) { $this->FeedbackTelegramLog('HTTP ' . $code . ' ' . $out); break; }
+				$this->FeedbackTelegramLog('try ' . $try . ': HTTP ' . $code . ' ' . $err);
+			}
+			if (!$sent) $ok = false;
+		}
+		return $ok;
+	}
+
+	private function FeedbackTelegramLog($text){
+		@file_put_contents(ROOT_PATH . 'telegram.log', '[' . date('d.m.Y H:i:s') . '] ' . $text . "
+", FILE_APPEND);
+	}
+
 	function Feedback(){
 		$email = '';
 		$name = trim($_POST['name']);
@@ -237,6 +303,8 @@ class ajax extends krn_abstract{
 				$mail=new Mail();
 				$mail->SendMailFromSite($adminEmail, $letter['subject'], $letter['html'], $attachPaths);
 
+				// Интеграция с amoCRM отключена (неактуальна), вместо неё уведомление в Telegram:
+				/*
 				if ($name) $data['name'] = $name;
 				if ($tel) $data['phone'] = $tel;
 				if ($email) $data['email'] = $email;
@@ -245,7 +313,12 @@ class ajax extends krn_abstract{
 				$data['page_name'] = 'Главая страница';
 				AmoApi::SetLogLevel(AmoApi::LOGLEVELMAX);
 				AmoApi::SendData($data);
-											
+				*/
+
+				$tgFiles = array();
+				foreach ($saved['files'] as $file) $tgFiles[] = $file['name'] . ': ' . $file['url'];
+				$this->FeedbackTelegramLater($form['Title'], $name, $tel, $text, $tgFiles, isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
+
 				$json = array(
 					'status' => true,
 					'message' => $form['Success']

@@ -10,3 +10,4 @@ package-lock.json
 /uploads/requests
 
 /amo.log
+/telegram.log
