@@ -181,22 +181,12 @@ class ajax extends krn_abstract{
 		if (!$token || !$chats) return false;
 
 		$esc = function($v){ return htmlspecialchars((string)$v, ENT_NOQUOTES, 'UTF-8'); };
-		$msg = "ð <b>" . $esc($title ? $title : 'Заявка') . "</b> â proudly.ru
-
-";
-		$msg .= "Имя: " . $esc($name) . "
-";
-		$msg .= "Телефон: " . $esc($tel) . "
-";
-		if (trim((string)$text) !== '') $msg .= "Текст: " . $esc(mb_substr($text, 0, 2500)) . "
-";
-		if ($files) $msg .= "
-Файлы:
-" . $esc(implode("
-", $files)) . "
-";
-		if ($page) $msg .= "
-Страница: " . $esc($page);
+		$msg = "🔔 <b>" . $esc($title ? $title : 'Заявка') . "</b> — proudly.ru\n\n";
+		$msg .= "Имя: " . $esc($name) . "\n";
+		$msg .= "Телефон: " . $esc($tel) . "\n";
+		if (trim((string)$text) !== '') $msg .= "Текст: " . $esc(mb_substr($text, 0, 2500)) . "\n";
+		if ($files) $msg .= "Файлы:\n" . $esc(implode("\n", $files)) . "\n";
+		if ($page) $msg .= "Страница: " . $esc($page);
 
 		$ok = true;
 		foreach ($chats as $chat) {
@@ -224,8 +214,7 @@ class ajax extends krn_abstract{
 	}
 
 	private function FeedbackTelegramLog($text){
-		@file_put_contents(ROOT_PATH . 'telegram.log', '[' . date('d.m.Y H:i:s') . '] ' . $text . "
-", FILE_APPEND);
+		@file_put_contents(ROOT_PATH . 'telegram.log', '[' . date('d.m.Y H:i:s') . '] ' . $text . "\\n", FILE_APPEND);
 	}
 
 	function Feedback(){
