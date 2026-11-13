@@ -217,6 +217,64 @@ class ajax extends krn_abstract{
 		@file_put_contents(ROOT_PATH . 'telegram.log', '[' . date('d.m.Y H:i:s') . '] ' . $text . "\\n", FILE_APPEND);
 	}
 
+	// сохраняет заявку: таблица requests, письмо администратору, уведомление в Telegram; возвращает строку формы (Title, Success)
+	public function SaveRequest($code, $name, $tel, $text, $files = array(), $page = ''){
+		$email = '';
+		$form = $this->db->getRow('SELECT Id, Title, Success FROM forms WHERE Code=?s', $code);				
+		$request = '';
+		if ($name) $request .= "Имя: $name\r\n";
+		if ($email) $request .= "E-mail: $email\r\n";
+		if ($tel) $request .= "Телефон: $tel\r\n";
+		if ($text) $request .= 'Текст:'."\r\n$text\r\n";
+		$attachPaths = array();
+		if ($files) {
+			$attachTotal = 0;
+			$request .= "Файлы:\r\n";
+			foreach ($files as $file) {
+				$request .= $file['name'] . ' (' . ($file['size'] >= 1048576 ? round($file['size'] / 1048576, 1) . ' МБ' : max(1, round($file['size'] / 1024)) . ' КБ') . '): ' . $file['url'] . "\r\n";
+				$attachTotal += $file['size'];
+			}
+			if ($attachTotal <= self::FEEDBACK_MAIL_ATTACH_LIMIT) {
+				foreach ($files as $file) $attachPaths[] = $file['path'];
+			}
+		}
+		$this->db->query('INSERT INTO requests SET DateTime=NOW(), Name=?s, Phone=?s, Text=?s, RefererPage=?s, IsSet=0',
+		 	$name,
+		 	$tel,
+			str_replace('"','\"',$request),
+			$page
+		);
+			
+		global $Config;
+		$siteTitle = strtr(stGetSetting('SiteEmailTitle', $Config['Site']['Title']), array('«'=>'"','»'=>'"','—'=>'-'));
+		$siteEmail = stGetSetting('SiteEmail', $Config['Site']['Email']);
+		$adminTitle = 'Администратор';
+		$adminEmail = stGetSetting('AdminEmail', $siteEmail);
+			
+		$letter['subject'] = $form['Title'].' с сайта "'.$siteTitle.'"';
+		$letter['html'] = '<b>'.$form['Title'].'</b><br/><br/>';
+		$letter['html'] .= str_replace("\r\n",'<br/>',$request);
+		$mail=new Mail();
+		$mail->SendMailFromSite($adminEmail, $letter['subject'], $letter['html'], $attachPaths);
+
+		// Интеграция с amoCRM отключена (неактуальна), вместо неё уведомление в Telegram:
+		/*
+		if ($name) $data['name'] = $name;
+		if ($tel) $data['phone'] = $tel;
+		if ($email) $data['email'] = $email;
+		$data['form_id'] = $form['Id'];
+		$data['form_name'] = $form['Title'];
+		$data['page_name'] = 'Главая страница';
+		AmoApi::SetLogLevel(AmoApi::LOGLEVELMAX);
+		AmoApi::SendData($data);
+		*/
+
+		$tgFiles = array();
+		foreach ($files as $file) $tgFiles[] = $file['name'] . ': ' . $file['url'];
+		$this->FeedbackTelegramLater($form['Title'], $name, $tel, $text, $tgFiles, $page);
+		return $form;
+	}
+
 	function Feedback(){
 		$email = '';
 		$name = trim($_POST['name']);
@@ -255,58 +313,13 @@ class ajax extends krn_abstract{
 				if ($saved['error']) {
 					return json_encode(array('status' => false, 'message' => $saved['error']));
 				}
-				$form = $this->db->getRow('SELECT Id, Title, Success FROM forms WHERE Code=?s', $code);				
-				$request = '';
-				if ($name) $request .= "Имя: $name\r\n";
-				if ($email) $request .= "E-mail: $email\r\n";
-				if ($tel) $request .= "Телефон: $tel\r\n";
-				if ($text) $request .= 'Текст:'."\r\n$text\r\n";
-				$attachPaths = array();
-				if ($saved['files']) {
-					$attachTotal = 0;
-					$request .= "Файлы:\r\n";
-					foreach ($saved['files'] as $file) {
-						$request .= $file['name'] . ' (' . ($file['size'] >= 1048576 ? round($file['size'] / 1048576, 1) . ' МБ' : max(1, round($file['size'] / 1024)) . ' КБ') . '): ' . $file['url'] . "\r\n";
-						$attachTotal += $file['size'];
-					}
-					if ($attachTotal <= self::FEEDBACK_MAIL_ATTACH_LIMIT) {
-						foreach ($saved['files'] as $file) $attachPaths[] = $file['path'];
-					}
+				// заявка из чата: добавляем заполненный посетителем бриф
+				if ($code === 'ai-chat' && !empty($_SESSION['ai_chat']['brief'])) {
+					krnLoadLib('ai');
+					$brief = AiAssistant::BriefText($_SESSION['ai_chat']['brief']);
+					if ($brief) $text .= "\n\n" . $brief;
 				}
-				$this->db->query('INSERT INTO requests SET DateTime=NOW(), Name=?s, Phone=?s, Text=?s, RefererPage=?s, IsSet=0',
-				 	$name,
-				 	$tel,
-					str_replace('"','\"',$request),
-					$_SERVER['HTTP_REFERER']
-				);
-					
-				global $Config;
-				$siteTitle = strtr(stGetSetting('SiteEmailTitle', $Config['Site']['Title']), array('«'=>'"','»'=>'"','—'=>'-'));
-				$siteEmail = stGetSetting('SiteEmail', $Config['Site']['Email']);
-				$adminTitle = 'Администратор';
-				$adminEmail = stGetSetting('AdminEmail', $siteEmail);
-					
-				$letter['subject'] = $form['Title'].' с сайта "'.$siteTitle.'"';
-				$letter['html'] = '<b>'.$form['Title'].'</b><br/><br/>';
-				$letter['html'] .= str_replace("\r\n",'<br/>',$request);
-				$mail=new Mail();
-				$mail->SendMailFromSite($adminEmail, $letter['subject'], $letter['html'], $attachPaths);
-
-				// Интеграция с amoCRM отключена (неактуальна), вместо неё уведомление в Telegram:
-				/*
-				if ($name) $data['name'] = $name;
-				if ($tel) $data['phone'] = $tel;
-				if ($email) $data['email'] = $email;
-				$data['form_id'] = $form['Id'];
-				$data['form_name'] = $form['Title'];
-				$data['page_name'] = 'Главая страница';
-				AmoApi::SetLogLevel(AmoApi::LOGLEVELMAX);
-				AmoApi::SendData($data);
-				*/
-
-				$tgFiles = array();
-				foreach ($saved['files'] as $file) $tgFiles[] = $file['name'] . ': ' . $file['url'];
-				$this->FeedbackTelegramLater($form['Title'], $name, $tel, $text, $tgFiles, isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
+				$form = $this->SaveRequest($code, $name, $tel, $text, $saved['files'], isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
 
 				$json = array(
 					'status' => true,

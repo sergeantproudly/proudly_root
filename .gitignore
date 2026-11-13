@@ -11,3 +11,5 @@ package-lock.json
 
 /amo.log
 /telegram.log
+/assets/dev
+/dev/agentation/node_modules

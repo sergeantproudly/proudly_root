@@ -568,7 +568,7 @@
 
 /* ================= Финальный призыв ================= */
 #layout.home .ai-band {
-	padding: 56px 0 24px;
+	padding: 56px 0 120px;
 }
 
 .ai-band .box {
@@ -668,6 +668,7 @@
 }
 
 @media (max-width: 620px) {
+	#layout.home .ai-band { padding-bottom: 80px; }
 	#layout.home #direction.ai-hero { padding-top: 12px; }
 	.ai-hero .panel { padding: 40px 22px; border-radius: 28px; }
 	#layout.home .ai-hero h1 { font-size: 32px; }

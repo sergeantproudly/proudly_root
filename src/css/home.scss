@@ -736,33 +736,14 @@ $quote-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' v
 				}
 			}
 
-			// теги услуг видны сразу: значок цвета категории + название
+			// теги услуг: простые серые пилюли без значков (общий стиль .tags span)
 			.tags {
 				display: flex;
 				flex-wrap: wrap;
-				align-items: center;
 				gap: 8px;
 
 				.chip {
-					display: inline-flex;
-					align-items: center;
-					gap: 7px;
 					margin: 0;
-					padding: 7px 14px 7px 10px;
-
-					svg {
-						flex: 0 0 auto;
-						width: 16px;
-						height: 16px;
-						overflow: visible;
-					}
-
-					&.c1 svg { color: #1771F8; }
-					&.c2 svg { color: #F7391F; }
-					&.c3 svg { color: #006b83; }
-					&.c4 svg { color: #5232c4; }
-					&.c5 svg { color: #bf2866; }
-					&.c6 svg { color: #6f8a0f; }
 				}
 			}
 		}
@@ -2814,5 +2795,705 @@ html:has(.modal-wrapper.modal-ask[style*="flex"]) jdiv {
 		&:hover {
 			color: $accent;
 		}
+	}
+}
+
+// ---------- Живая точка в hero и чат с ассистентом ----------
+// Шар повторяет точку из логотипа. Состояния: is-listen (наведение), is-think (готовит ответ), is-speak (отвечает)
+.orb,
+.orb-dock,
+.ai-chat .mini {
+	position: relative;
+	display: block;
+	padding: 0;
+	border: 0;
+	background: none;
+	border-radius: 50%;
+	-webkit-tap-highlight-color: transparent;
+
+	// рисунок на двух canvas, как у шара в hero (scripts.js)
+	.ob-core,
+	.ob-ring {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+
+	.ob-core {
+		filter: blur(0.8px);
+	}
+}
+
+#direction .orb-wrap {
+	position: absolute;
+	// в правой части сетки (контейнер до 1920px), а не у края широкого экрана
+	left: calc(50% + min(24.2%, 465px));
+	top: 235px; // центр шара вместе с тенью — на уровне середины текста первого экрана
+	z-index: 2;
+	width: 440px;
+	height: 440px;
+	margin: -220px 0 0 -220px;
+
+	@media (max-width: 1180px) {
+		left: 78%;
+		width: 340px;
+		height: 340px;
+		margin: -170px 0 0 -170px;
+	}
+
+	@media (max-width: $adaptive-width-tablet) {
+		display: none;
+	}
+}
+
+#direction .orb {
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	transform: translate(var(--lx, 0), var(--ly, 0)) scale(var(--s, 1));
+	transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+	span,
+	i {
+		pointer-events: none;
+	}
+
+	&:focus-visible {
+		outline: none;
+
+		&::after {
+			content: '';
+			position: absolute;
+			inset: 19%;
+			border-radius: 50%;
+			box-shadow: 0 0 0 3px #fff, 0 0 0 6px $accent;
+		}
+	}
+}
+
+.orb-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+
+	button {
+		padding: 7px 12px;
+		font: inherit;
+		font-size: 13px;
+		font-weight: 500;
+		line-height: 1.2;
+		color: $ink;
+		background: $bg;
+		border: 0;
+		border-radius: 999px;
+		cursor: pointer;
+		transition: background 0.2s, color 0.2s;
+
+		&:hover {
+			color: #fff;
+			background: $accent;
+		}
+	}
+}
+
+// кнопка чата в углу, когда шар в hero не виден
+.orb-dock {
+	position: fixed;
+	right: 24px;
+	bottom: 24px;
+	z-index: 95;
+	width: 60px;
+	height: 60px;
+	cursor: pointer;
+	background: #fff;
+	box-shadow: 0 12px 30px rgba(23, 113, 248, 0.28);
+	opacity: 0;
+	visibility: hidden;
+	transform: scale(0.6);
+	transition: opacity 0.3s, transform 0.3s, visibility 0s 0.3s;
+
+	&.show {
+		opacity: 1;
+		visibility: visible;
+		transform: scale(1);
+		transition: opacity 0.3s, transform 0.3s, visibility 0s;
+	}
+
+	&:hover {
+		transform: scale(1.06);
+	}
+}
+
+// затемнение сайта на время разговора в чате: над шапкой и плашкой cookie (z-index 1000), под окном чата;
+// клик по затемнению снимает его
+html.ai-chat-dimmed .ai-chat {
+	z-index: 1002;
+}
+
+.ai-chat-dim {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1001;
+	background: rgba(10, 14, 30, .24);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	// гаснет чуть быстрее, чем появляется; кривые без резкого старта
+	transition: opacity .6s cubic-bezier(.4, 0, .2, 1), visibility 0s linear .6s;
+
+	&.on {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		cursor: pointer;
+		// появляется очень медленно и с почти незаметным стартом, чтобы посетитель не замечал перехода
+		transition: opacity 3.5s cubic-bezier(.4, 0, .6, 1), visibility 0s;
+	}
+}
+
+html.ai-chat-on .orb-dock {
+	opacity: 0;
+	visibility: hidden;
+}
+
+// окно чата
+.ai-chat {
+	position: fixed;
+	right: 32px;
+	bottom: 32px;
+	z-index: 100;
+	display: flex;
+	flex-direction: column;
+	width: 400px;
+	height: min(640px, calc(100vh - 64px));
+	overflow: hidden;
+	font-size: 15px;
+	line-height: 1.45;
+	color: $ink;
+	background: #fff;
+	border-radius: 28px;
+	box-shadow: 0 30px 80px rgba(21, 23, 28, 0.22);
+	opacity: 0;
+	transform: scale(0.4);
+	transform-origin: var(--ox, 100%) var(--oy, 100%);
+	transition: opacity 0.25s, transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+	&[hidden] {
+		display: none;
+	}
+
+	&.open {
+		opacity: 1;
+		transform: none;
+	}
+
+	@media (max-width: $adaptive-width-tablet-small) {
+		inset: 0;
+		width: auto;
+		height: 100%;
+		border-radius: 0;
+		transform: translateY(40px);
+	}
+}
+
+.ai-chat-head {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 16px 16px 16px 20px;
+	border-bottom: 1px solid $line;
+
+	.mini {
+		flex: 0 0 auto;
+		width: 38px;
+		height: 38px;
+	}
+
+	.who {
+		display: flex;
+		flex: 1 1 auto;
+		flex-direction: column;
+
+		b {
+			font-size: 16px;
+		}
+
+		.st {
+			font-size: 13px;
+			color: $muted;
+
+			// «печатает» + три точки, которые загораются по очереди
+			&.is-typing {
+				color: $accent;
+
+				&::after {
+					content: '...';
+					display: inline-block;
+					width: 1.2em;
+					overflow: hidden;
+					vertical-align: bottom;
+					white-space: nowrap;
+					animation: ai-typing 1.2s steps(4, end) infinite;
+				}
+			}
+		}
+	}
+
+	@keyframes ai-typing {
+		from { width: 0; }
+		to { width: 1.2em; }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.who .st.is-typing::after {
+			animation: none;
+			width: auto;
+		}
+	}
+
+	.x {
+		position: relative;
+		flex: 0 0 auto;
+		width: 40px;
+		height: 40px;
+		padding: 0;
+		background: none;
+		border: 1.5px solid $line;
+		border-radius: 50%;
+		cursor: pointer;
+		transition: border-color 0.2s;
+
+		&::before,
+		&::after {
+			content: '';
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 14px;
+			height: 1.5px;
+			margin: -0.75px 0 0 -7px;
+			background: $ink;
+			transform: rotate(45deg);
+		}
+
+		&::after {
+			transform: rotate(-45deg);
+		}
+
+		&:hover {
+			border-color: $ink;
+		}
+	}
+}
+
+.ai-chat-log {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	gap: 10px;
+	padding: 20px;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+
+	.m {
+		max-width: 86%;
+		margin: 0;
+		padding: 11px 15px;
+		white-space: pre-line;
+		border-radius: 18px;
+		overflow-wrap: anywhere;
+		animation: ai-msg-in 0.3s ease both;
+
+		a {
+			color: inherit;
+			text-decoration: underline;
+		}
+
+		// время сообщения в правом нижнем углу пузыря
+		time {
+			display: block;
+			margin-top: 4px;
+			font-size: 11px;
+			line-height: 1;
+			text-align: right;
+			opacity: 0.5;
+		}
+
+		// переход к разделу сайта или звонок под ответом ассистента
+		a.more {
+			display: inline-block;
+			margin-top: 6px;
+			color: $accent;
+			font-weight: 600;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.bot {
+		align-self: flex-start;
+		background: $bg;
+		border-bottom-left-radius: 6px;
+	}
+
+	// «печатает»: три точки по очереди подпрыгивают на месте будущего ответа
+	.dots {
+		display: flex;
+		gap: 5px;
+		align-items: center;
+		min-height: 20px;
+
+		i {
+			width: 7px;
+			height: 7px;
+			border-radius: 50%;
+			background: $muted;
+			animation: ai-dot 1.2s ease-in-out infinite;
+
+			&:nth-child(2) { animation-delay: .15s; }
+			&:nth-child(3) { animation-delay: .3s; }
+		}
+	}
+
+	@keyframes ai-dot {
+		0%, 60%, 100% { transform: translateY(0); opacity: .35; }
+		30% { transform: translateY(-4px); opacity: 1; }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.dots i { animation: none; opacity: .6; }
+	}
+
+	.me {
+		align-self: flex-end;
+		color: #fff;
+		background: $accent;
+		border-bottom-right-radius: 6px;
+
+		time {
+			opacity: 0.75;
+		}
+	}
+
+	.orb-chips {
+		margin: 2px 0 4px;
+
+		button {
+			background: #fff;
+			box-shadow: inset 0 0 0 1.5px rgba(23, 113, 248, 0.35);
+
+			&:hover {
+				color: #fff;
+				background: $accent;
+				box-shadow: none;
+			}
+		}
+	}
+}
+
+// форма контакта внутри чата
+.ai-lead {
+	align-self: stretch;
+	padding: 16px;
+	background: #fff;
+	border-radius: 18px;
+	box-shadow: inset 0 0 0 1.5px $line;
+	animation: ai-msg-in 0.3s ease both;
+
+	p {
+		margin: 0 0 10px;
+		font-weight: 600;
+	}
+
+	input[type="text"],
+	input[type="tel"] {
+		display: block;
+		width: 100%;
+		margin-bottom: 8px;
+		height: auto;
+		padding: 10px 0;
+		font: inherit;
+		font-size: 15px;
+		line-height: 22px;
+		color: $ink;
+		background: transparent;
+		border: 0;
+		border-bottom: 1.5px solid rgba(21, 23, 28, 0.2);
+		border-radius: 0;
+		outline: none;
+
+		&::-webkit-input-placeholder { color: $muted; opacity: 1; }
+		&::-moz-placeholder { color: $muted; opacity: 1; }
+
+		&:focus {
+			border-bottom-color: $accent;
+		}
+
+		// поле не заполнено или заполнено с ошибкой
+		&.invalid {
+			border-bottom-color: #E5484D;
+		}
+	}
+
+	// молния после заголовка формы
+	.bolt {
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		margin-left: 2px;
+		vertical-align: -2px;
+		fill: #FFB800;
+	}
+
+	label {
+		display: flex;
+		align-items: flex-start;
+		gap: 8px;
+		margin: 6px 0 12px;
+		font-size: 12px;
+		line-height: 1.4;
+		color: $muted;
+
+		input {
+			margin: 2px 0 0;
+			accent-color: $accent;
+		}
+
+		a {
+			color: inherit;
+		}
+
+		// не отмечено согласие
+		&.invalid {
+			color: #E5484D;
+
+			input {
+				outline: 1.5px solid #E5484D;
+				outline-offset: 1px;
+			}
+		}
+	}
+
+	.err {
+		margin: -4px 0 10px;
+		font-size: 13px;
+		color: #E5484D;
+	}
+
+	button[type="submit"] {
+		width: 100%;
+		padding: 12px;
+		font: inherit;
+		font-weight: 600;
+		color: #fff;
+		background: $accent;
+		border: 0;
+		border-radius: 999px;
+		cursor: pointer;
+
+		&[disabled] {
+			opacity: 0.6;
+			cursor: default;
+		}
+	}
+
+	// вложения: кнопка-скрепка и список выбранных файлов
+	.files {
+		margin: 12px 0 10px;
+
+		// вспомогательная ссылка: приглушённая, не спорит с полями и кнопкой
+		.attach {
+			display: inline-flex;
+			align-items: center;
+			gap: 5px;
+			padding: 4px 0;
+			font: inherit;
+			font-size: 13px;
+			font-weight: 400;
+			color: $muted;
+			background: none;
+			border: 0;
+			cursor: pointer;
+			transition: color .2s;
+
+			svg {
+				width: 15px;
+				height: 15px;
+			}
+
+			span {
+				border-bottom: 1px dashed currentColor;
+			}
+
+			&:hover {
+				color: $accent;
+			}
+
+			&[disabled] {
+				opacity: 0.4;
+				cursor: default;
+			}
+		}
+
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		li {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			padding: 6px 0;
+			font-size: 13px;
+			border-bottom: 1px solid $line;
+
+			.nm {
+				flex: 1 1 auto;
+				min-width: 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			.sz {
+				flex: 0 0 auto;
+				color: $muted;
+			}
+
+			// крестик «убрать файл»
+			.rm {
+				position: relative;
+				flex: 0 0 auto;
+				width: 22px;
+				height: 22px;
+				padding: 0;
+				background: none;
+				border: 0;
+				border-radius: 50%;
+				cursor: pointer;
+
+				&::before,
+				&::after {
+					content: '';
+					position: absolute;
+					left: 5px;
+					top: 10px;
+					width: 12px;
+					height: 1.5px;
+					background: $muted;
+					transform: rotate(45deg);
+				}
+
+				&::after {
+					transform: rotate(-45deg);
+				}
+
+				&:hover {
+					background: $bg;
+				}
+			}
+		}
+	}
+}
+
+.ai-chat-form {
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+	padding: 12px 12px 12px 20px;
+	border-top: 1px solid $line;
+
+	textarea {
+		flex: 1 1 auto;
+		height: 44px;
+		min-height: 0;
+		max-height: 120px;
+		padding: 11px 0;
+		font: inherit;
+		font-size: 15px;
+		line-height: 22px;
+		color: $ink;
+		overflow-y: auto;
+
+		&::-webkit-input-placeholder { color: $muted; opacity: 1; }
+		&::-moz-placeholder { color: $muted; opacity: 1; }
+		resize: none;
+		background: transparent;
+		border: 0;
+		outline: none;
+	}
+
+	button {
+		display: flex;
+		flex: 0 0 auto;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		color: #fff;
+		background: $accent;
+		border: 0;
+		border-radius: 50%;
+		cursor: pointer;
+
+		&[disabled] {
+			opacity: 0.4;
+			cursor: default;
+		}
+
+		svg {
+			width: 20px;
+			height: 20px;
+		}
+	}
+}
+
+@keyframes ai-msg-in {
+	from { opacity: 0; transform: translateY(6px); }
+	to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ai-chat-log .m,
+	.ai-lead {
+		animation: none !important;
+	}
+
+	#direction .orb,
+	.ai-chat {
+		transition: none;
+	}
+}
+
+// живая точка в hero: переливающийся сгусток в стеклянной оболочке (рисуется на двух canvas, см. scripts.js)
+#direction .orb {
+	.ob-core,
+	.ob-ring {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	// сгусток мягкий, без чётких краёв; кольца лишь слегка размыты
+	.ob-core {
+		filter: blur(6px);
+	}
+
+	.ob-ring {
+		filter: blur(2px);
 	}
 }

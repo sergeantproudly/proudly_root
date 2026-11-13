@@ -32,6 +32,14 @@
 			));
 		}
 
+		// Локальная панель визуальных заметок (dev/agentation). Подключается только на хостах *.local
+		function GetDevTools() {
+			$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+			$file = 'assets/dev/agentation.js';
+			if (substr($host, -6) !== '.local' || !file_exists(ROOT_PATH . $file)) return '';
+			return '<script src="' . $file . '?v=' . filemtime(ROOT_PATH . $file) . '"></script>';
+		}
+
 		function GetContactData() {
 			return $this->db->getRow('SELECT * FROM contacts WHERE RegionId = ?i OR RegionId = 0 ORDER BY RegionId DESC', $_SESSION['ClientUser']['Region']['Id']);
 		}
@@ -60,6 +68,8 @@
 		    	'<%BL_SOCIAL%>'				=> $Blocks->BlockSocial(),
 		    	'<%VERSION%>'				=> stGetSetting('AssetsVersion') ? '?v1.' . stGetSetting('AssetsVersion') : '',
 		    	'<%YEAR%>'				=> date('Y'),
+		    	'<%DEV_TOOLS%>'			=> $this->GetDevTools(),
+		    	'<%AI_LEAD_TITLE%>'		=> htmlspecialchars(stGetSetting('AiLeadTitle', 'Оставьте телефон, и мы вам перезвоним молниеносно!'), ENT_QUOTES, 'UTF-8'),
 			));
 
 			$contacts = $this->GetContactData();
