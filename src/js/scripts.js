@@ -1971,7 +1971,7 @@ function checkElements(elements,patterns,mode){
 				requestAnimationFrame(function () { requestAnimationFrame(function () { chat.classList.add('open'); }); });
 				if (!log.children.length) {
 					addMsg('bot', 'Здравствуйте, я виртуальный специалист компании Proudly. Расскажите, какую задачу хотите решить. Подскажу по услугам, срокам и стоимости.');
-					addChips(['Сколько стоит сайт?', 'Как быстро запуститесь?', 'Что умеет ИИ?']);
+					addChips(['Нужно внедрение ИИ', 'Нужен сайт', 'Нужны реклама и продвижение']);
 				}
 				goal('ai_chat_open');
 			}
@@ -2105,6 +2105,12 @@ function checkElements(elements,patterns,mode){
 		this.C = W / 2;
 		// в hero вокруг шара место для тени и парения, в иконках шар занимает почти всё
 		this.R = W * (this.small ? 0.4 : 0.3);
+		// размытие пропорционально размеру шара (эталон — шар в hero на десктопе: R 132px, сгусток 6px, кольца 2px),
+		// чтобы кнопка в углу, аватар в чате и шар на мобайле выглядели уменьшенной копией большого
+		var k = this.R / 132;
+		this.core.style.filter = 'blur(' + (6 * k).toFixed(2) + 'px)';
+		// у маленьких шаров кольца размыты сильнее пропорции (1.2px при R 24px): иначе тонкие кольца читаются как обводка, а не объём
+		this.ring.style.filter = 'blur(' + (this.small ? this.R * 0.05 : 2 * k).toFixed(2) + 'px)';
 		return true;
 	};
 
@@ -2196,7 +2202,8 @@ function checkElements(elements,patterns,mode){
 		c1.save();
 		c1.translate(C + sx * R * 0.1, gy + sy * R * 0.08);
 		c1.scale(sc, sc);
-		var rb = R * 0.8;
+		// у маленьких шаров сгусток крупнее, чтобы кольца (они размыты сильнее) не отступали от него заметно больше, чем у большого
+		var rb = R * (small ? 0.91 : 0.8);
 		this.blobPath(c1, rb, 1 + this.think * 0.5 + this.talk * 0.4, 0.06 * mag, dir);
 		c1.save();
 		c1.clip();
@@ -2262,8 +2269,8 @@ function checkElements(elements,patterns,mode){
 		c2.fill();
 
 		// кольца: слегка не совпадают, вращаются и колышутся
-		// в маленьких иконках кольца полупрозрачные, чтобы не перетягивали внимание с ядра
-		var ringAlpha = small ? 0.45 : 1;
+		// у маленьких шаров кольца той же яркости, что у большого: оболочка — часть узнаваемого рисунка
+		var ringAlpha = 1;
 		for (i = 0; i < RINGS.length; i++) {
 			var q = RINGS[i];
 			var ca = this.t * q.sp * 0.8 + q.ph;

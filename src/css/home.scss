@@ -348,6 +348,11 @@ $quote-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' v
 				margin-bottom: 64px;
 			}
 
+			// на планшетах и мобайлах под кнопками стоит шар, отступ до цифр задаёт он
+			@media (max-width: $adaptive-width-tablet) {
+				margin-bottom: 0;
+			}
+
 			.btn {
 				margin: 0 28px 12px 0;
 				padding: 18px 38px;
@@ -2827,11 +2832,13 @@ html:has(.modal-wrapper.modal-ask[style*="flex"]) jdiv {
 	}
 }
 
+// в разметке шар стоит между кнопками и цифрами: на мобайлах он там и выводится,
+// а на десктопе вынесен вправо (holder во всю ширину hero, отступ сверху 40px)
 #direction .orb-wrap {
 	position: absolute;
 	// в правой части сетки (контейнер до 1920px), а не у края широкого экрана
 	left: calc(50% + min(24.2%, 465px));
-	top: 235px; // центр шара вместе с тенью — на уровне середины текста первого экрана
+	top: 195px; // центр шара вместе с тенью — на уровне середины текста первого экрана
 	z-index: 2;
 	width: 440px;
 	height: 440px;
@@ -2844,8 +2851,20 @@ html:has(.modal-wrapper.modal-ask[style*="flex"]) jdiv {
 		margin: -170px 0 0 -170px;
 	}
 
+	// планшеты и мобайлы: шар по центру под кнопками, до цифр; пустое поле холста над шаром частично заходит под кнопки
 	@media (max-width: $adaptive-width-tablet) {
-		display: none;
+		position: relative;
+		left: auto;
+		top: auto;
+		width: 320px;
+		height: 320px;
+		margin: -24px auto 12px;
+	}
+
+	@media (max-width: $adaptive-width-mobile) {
+		width: 280px;
+		height: 280px;
+		margin: -20px auto 12px;
 	}
 }
 
@@ -2908,8 +2927,10 @@ html:has(.modal-wrapper.modal-ask[style*="flex"]) jdiv {
 	width: 60px;
 	height: 60px;
 	cursor: pointer;
-	background: #fff;
-	box-shadow: 0 12px 30px rgba(23, 113, 248, 0.28);
+	// без белой подложки: кольца шара на круге-подложке читались как обводка кнопки, а не как объём, как у большого шара;
+	// тень повторяет форму шара
+	background: none;
+	filter: drop-shadow(0 6px 10px rgba(23, 113, 248, 0.28));
 	opacity: 0;
 	visibility: hidden;
 	transform: scale(0.6);
